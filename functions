@@ -1,1 +1,374 @@
-/home/gtay/.install/functions
+# ~/.install/functions, to be sourced in either .bashrc or .bash_profile or any script
+#
+# The download/install shell functions are mostly Ubuntu specific, please custiomize it for RHEL or Centos specific if required
+# To view a list of available shell functions simply run: set | grep ' ()' or set an alias for this
+# To view the content of a particular function run: display_shell_function function_name or set an alias for this
+#
+# Assumptions:
+# 1. these packages have already been installed: curl, dos2unix, golang, jq, openssl, unzip, wget
+# 2. default install path for install tools: /usr/local/bin
+# 3. default version for the download/install tools are hard-coded, search for VERSION and change it as required
+
+# Display shell function
+# Ref: https://unix.stackexchange.com/questions/175018/search-for-a-string-and-print-everything-before-and-after-within-a-range
+display_shell_function() {
+  BEGIN="$1"
+  END="}"
+  set | sed -n -e "/^$BEGIN/,/^$END/ p"
+}
+
+# Docker_publish wrapper
+docker_publish() {
+  if [ $# -le 2 ]; then
+    echo "Usage: docker_publish <docker_hub_account> <local_image> <remote_image>"
+    echo "local and remote image: full path in the format REPO/IMAGE:TAG"
+    return 1
+  fi
+  ACCOUNT="$1"
+  LOCAL="$2"
+  REMOTE="$3"
+  echo "Publishing to docker hub account $1 local image $2 to remote image $3..."
+  docker login -u $ACCOUNT 
+  docker tag $LOCAL $REMOTE
+  docker push $REMOTE
+  docker logout
+}
+
+# Docker container's IP address
+docker_ip() {
+  docker inspect --format '{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' $1 | tr -d '/'
+}
+
+# Docker containers' IP addresses
+docker_ips() {
+  docker inspect --format '{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' $(docker ps -aq) | tr -d '/'
+}
+
+# Docker search tags
+docker_search_tags() {
+  [ -n "`echo $1 | grep \/ 2>/dev/null`" ] && IMAGE="$1" || IMAGE="library/$1"
+  curl https://registry.hub.docker.com/v2/repositories/"$IMAGE"/tags/ | jq '."results"[]["name"]'
+}
+
+# Docker volume backup to gz (tar.gz or tgz)
+# Ref: https://stackoverflow.com/questions/53621829/backup-and-restore-docker-named-volume
+# Use case: cron job of docker volume(s) backup
+docker_backup_vol2gz() {
+  if [ $# -le 1 ]; then
+    echo "Usage: docker_backup_vol2gz <docker_volume> <backup.tar.gz>"
+    echo "Example: docker_backup_vol2gz jenkins_home /data/backup/jenkins_home.tar.gz"
+    echo "         highly recommended way of docker data (volume) backup WHEN container(s) is/are shutdown"
+    return 1
+  fi
+  SRC="$1"
+  DEST="$2"
+  docker run --rm -v $1:/source:ro busybox tar -czC /source . >$2
+}
+
+# Docker volume restore from gz (tar.gz or tgz) 
+# Ref: https://stackoverflow.com/questions/53621829/backup-and-restore-docker-named-volume
+docker_restore_gz2vol() {
+  if [ $# -le 1 ]; then
+    echo "Usage: docker_restore_gz2vol <backup.tar.gz> <docker_volume>"
+    echo "Example: docker_restore_gz2vol /data/backup/jenkins_home.tar.gz jenkins_home"
+    echo "         highly recommended way of docker data (volume) restore WHEN container(s) is/are shutdown"
+    return 1
+  fi
+  SRC="$1"
+  DEST="$2"
+  docker run --rm -i -v $2:/target busybox tar -xzC /target <$1
+}
+
+# Docker copy dir content from container to host
+# Ref: https://docs.docker.com/engine/reference/commandline/cp/
+# Use case: after making some jenkins home data or config changes, sync it with a current folder under $PWD
+#           replace the '-v jenkins_home:/var/jenkins_home' (default volume mount) with '$PWD/jenkins_home' (bind mount)
+#           in docker run command before restarting container, doing so will capture the changes to file system
+# Disclaimer: integrity issue as file(s) in-use or locked, or transient config changes may not be backed up properly
+# Solution 1: run cron job using docker_backup_vol2gz WHEN container is shutdown during backup window
+# Solution 2: augment Solution 1 with jenkins 'periodicbackup' or 'thinbackup' plugins which backs up configs
+docker_copy_dir_container2host() {
+  if [ $# -le 2 ]; then
+    echo "Usage: docker_copy_dir_container2host <container_name> <container_dir> <host_dir>"
+    return 1
+  fi
+  CONTAINER="$1"
+  SRC="$2"
+  DEST="$3"
+  docker exec $CONTAINER tar Ccf $(dirname ${SRC}) - $(basename ${SRC}) | tar Cxf ${DEST} -
+}
+
+# Docker copy dir content from host to container
+# Ref: https://docs.docker.com/engine/reference/commandline/cp/
+# Use case: if you happened to destroy a jenkins container and its jenkins_home docker volume (due to reinstall of docker)
+#           you may take the file system $PWD/jenkins_home as bind mount when new container has been re-built
+#           and this file system backup has the jenkins home data and config changes
+docker_copy_dir_host2container() {
+  if [ $# -le 2 ]; then
+    echo "Usage: docker_copy_dir_host2containe <container_name> <host_dir> <container_dir>"
+    return 1
+  fi
+  CONTAINER="$1"
+  SRC="$2"
+  DEST="$3"
+  tar Ccf $(dirname ${SRC}) - $(basename ${SRC}) | docker exec -i $CONTAINER tar Cxf ${DEST} -
+}
+
+# Dos2Unix all text files recursively for a folder (especially from Windows environment)
+dos2unix_all_text_files() {
+  [ -n "$1" ] && DIR="$1" || DIR="." 
+  find_all_text_files | xargs dos2unix >/dev/null 2>&1
+}
+
+# Find all text files
+# Ref: https://stackoverflow.com/questions/4767396/linux-command-how-to-find-only-text-files
+find_all_text_files() {
+  [ -n "$1" ] && DIR="$1" || DIR="." 
+  find $DIR -type f -exec grep -Iq . {} \; -print 
+}
+
+# A version of generating self-signed SSL Cert and Key: one-liner
+generate_ssl_cert() {
+  openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -keyout server.key -out server.crt
+}
+
+# Another version of generating self-signed SSL Cert and Key: three-liner
+generate_self_signed_ssl_cert() {
+  openssl genrsa -out server.key 4096
+  openssl req -new -key server.key -out server.csr
+  openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+}
+
+# Helm v3 release using custom values input file, release name, release source and logfile arguments required
+helm_v3_release() {
+  if [ $# -le 3 ]; then
+    echo "Usage: helm_v3_release <values_file_name> <release_name> <helm_chart_source> <log_file_name> [version]"
+    echo "Note: <helm_chart_source> can be one of the five formats: "
+    echo "1. helm_repo_name/chart_name"
+    echo "2. ./chart_name_version.tgz"
+    echo "3. ./unpacked_Chart_directory"
+    echo "4. https://helm_repo_url/chart_name_version.tgz"
+    echo "5. '--repo helm_repo_url chart_name'"
+    echo "Help: helm install -h"
+    echo "Last argument [version] is OPTIONAL - it is the chart version for format 1 and 5, blank defaults to latest"
+    return 1
+  fi
+  VALUES="$1"
+  RELEASE="$2"
+  SOURCE="$3" 
+  LOGFILE="$4" 
+  [ -n "$5" ] && VERSION="--version $5" || VERSION=""
+  echo "helm install $VALUES $RELEASE $SOURCE $VERSION | tee $LOG"
+  helm install -f $VALUES $RELEASE $SOURCE $VERSION | tee $LOGFILE
+}
+
+# Help GIT commands
+help_git_cmds() {
+  cat <<EOF >&1
+
+  See: https://dzone.com/articles/top-20-git-commands-with-examples
+  See: https://www.freecodecamp.org/news/how-to-delete-a-git-branch-both-locally-and-remotely/
+
+EOF
+}
+
+# Help differences between dockerfile build directives RUN vs CMD vs ENTRYPOINT
+help_diff_run_cmd_ep() {
+  cat <<EOF >&1
+
+  See: https://goinbigdata.com/docker-run-vs-cmd-vs-entrypoint/
+
+  In a nutshell
+    RUN executes command(s) in a new layer and creates a new image. E.g., it is often used for installing software packages.
+    CMD sets default command and/or parameters, which can be overwritten from command line when docker container runs.
+    ENTRYPOINT configures a container that will run as an executable.
+  
+EOF
+}
+
+# Download jenkins-cli.jar at JENKINS_HOME, must be at the Jenkins server
+download_jenkins-cli-jar() {
+  [ -z "$JENKINS_HOME" ] && return 1
+  cd $JENKINS_HOME && curl -OL http://127.0.0.1:8080/jnlpJars/jenkins-cli.jar || true
+}
+
+# Download awscli v2
+# https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html
+download_awscli_v2() {
+  AWSCLI_V2_ZIP_FILE="awscliv2.zip"
+  AWSCLI_V2_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+  curl -L ${AWSCLI_V2_URL} -o ${AWSCLI_V2_ZIP_FILE}
+  echo "Un-zipping awscli v2 files..."
+  unzip -oq ${AWSCLI_V2_ZIP_FILE}
+  rm -f ${AWSCLI_V2_ZIP_FILE}
+}
+
+# Install awscli v2
+install_awscli_v2() {
+  download_awscli_v2 
+  AWSCLI_V2_BIN="aws"
+  if [ -z "$(which $AWSCLI_V2_BIN)" ]; then
+    sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
+  else
+    echo "awscli (might not be the latest release) is most likely installed"
+  fi
+}
+
+# Uninstall awscli v2
+# https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html
+uninstall_awscli_v2() {
+  sudo rm -f /usr/local/bin/aws
+  sudo rm -f /usr/local/bin/aws_completer 
+  sudo rm -rf /usr/local/aws-cli
+}
+
+# Download helm3 v3
+# Ref: https://github.com/helm/helm/releases
+download_helm_v3() {
+  [ -n "$1" ] && VERSION="$1" || VERSION="v3.2.4"
+  HELM_V3_ZIP_FILE="helm-${VERSION}-linux-amd64.tar.gz"
+  HELM_V3_URL="https://get.helm.sh/${HELM_V3_ZIP_FILE}"
+  curl -OL ${HELM_V3_URL}
+  echo "Un-zipping helm v3 binary"
+  tar zxvf ${HELM_V3_ZIP_FILE}
+  mv -f linux-amd64/helm .
+  rm -f ${HELM_V3_ZIP_FILE}
+  rm -rf ./linux-amd64/
+}
+
+# Install helm v3
+install_helm_v3() {
+  download_helm_v3
+  if [ -z "$(which helm)" ]; then
+    sudo mv -f ./helm /usr/local/bin/helm
+    sudo chown root:root /usr/local/bin/helm
+    sudo chmod +x /usr/local/bin/helm 
+    helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+  else
+    echo "helm (might not be the latest release) is most likely installed"
+  fi
+}
+
+# Download kops
+download_kops() {
+  FILE=$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+  curl -OL https://github.com/kubernetes/kops/releases/download/$FILE
+  mv -f kops-linux-amd64 kops
+  chmod +x kops
+}
+
+# Install kops
+install_kops() {
+  download_kops
+  if [ -z "$(which kops)" ]; then
+    sudo mv -f ./kops /usr/local/bin/kops
+    sudo chown root:root /usr/local/bin/kops
+    sudo chmod +x /usr/local/bin/kops 
+  else
+    echo "kops (might not be the latest release) is most likely installed"
+  fi
+}
+
+# Install kubectl
+install_kubectl() {
+  KUBECTL_BIN="kubectl"
+  if [ -z "$(which $KUBECTL_BIN)" ]; then
+    FILE=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/$KUBECTL_BIN
+    curl -OL https://storage.googleapis.com/kubernetes-release/release/$FILE
+    chmod +x ${KUBECTL_BIN}
+    sudo mv ${KUBECTL_BIN} /usr/local/bin/${KUBECTL_BIN}
+    sudo chown root:root /usr/local/bin/${KUBECTL_BIN}
+    sudo chmod +x /usr/local/bin/${KUBECTL_BIN}
+  else
+    echo "kubectl (might not be the latest release) is most likely installed"
+  fi
+}
+
+# Install promtool
+# Requires golang
+install_promtool() {
+  export GOROOT=/usr/local/go
+  export GOPATH=~/go
+  export PATH="$GOROOT"/bin:$PATH
+  go get github.com/prometheus/prometheus/cmd/promtool
+  sudo mv -f $GOPATH/bin/promtool /usr/local/bin/promtool
+  sudo chown root:root /usr/local/bin/promtool
+  sudo chmod +x /usr/local/bin/promtool
+}
+
+# Install puppet6 agent
+install_puppet6_agent() {
+  rm -f puppet6-release-bionic.deb* >/dev/null 2>&1
+  wget https://apt.puppetlabs.com/puppet6-release-bionic.deb
+  sudo dpkg -i puppet6-release-bionic.deb
+  sudo apt update
+  sudo apt install -y puppet-agent
+}
+
+# Download terraform
+download_terraform() {
+  [ -n "$1" ] && VERSION="$1" || VERSION="0.12.28"
+  TERRAFORM_ZIP_FILE=terraform_"${VERSION}"_linux_amd64.zip
+  TERRAFORM_URL="https://releases.hashicorp.com/terraform/${VERSION}"
+  TERRAFORM_BIN="terraform"
+  curl -OL ${TERRAFORM_URL}/${TERRAFORM_ZIP_FILE}
+  unzip -oq ${TERRAFORM_ZIP_FILE}
+  chmod +x ${TERRAFORM_BIN}
+  rm -f ${TERRAFORM_ZIP_FILE}
+}
+
+# Install terraform
+install_terraform() {
+  download_terraform
+  TERRAFORM_BIN="terraform"
+  if [ -z "$(which $TERRAFORM_BIN)" ]; then
+    sudo mv -f ${TERRAFORM_BIN} /usr/local/bin/${TERRAFORM_BIN}
+    sudo chown root:root /usr/local/bin/${TERRAFORM_BIN}
+    sudo chmod +x /usr/local/bin/${TERRAFORM_BIN}
+  else
+    echo "terraform (might not be the latest release) is most likely installed"
+  fi
+}
+
+# Kubernetes get NODE IP for a particular NAMESPACE
+k8s_get_node_ip() {
+  if [ $# -le 0 ]; then
+    echo "Usage: k8s_get_node_ip <namespace>"
+    return 1
+  fi
+  kubectl get nodes --namespace $NAMESPACE -o jsonpath="{.items[0].status.addresses[0].address}"
+  echo ''
+}
+
+# Kubernetes get NODE PORT for a particular SERVICE at a particular NAMESPACE
+k8s_get_node_port() {
+  if [ $# -le 1 ]; then
+    echo "Usage: k8s_get_node_port <namespace> <service>"
+    return 1
+  fi
+  NAMESPACE="$1"
+  SERVICE="$2"
+  kubectl get --namespace $NAMESPACE -o jsonpath="{.spec.ports[0].nodePort}" services $SERVICE
+  echo ''
+}
+
+# Kubernetes get EXTERNAL SERVICE URL for a particular SERVICE at a particular NAMESPACE
+k8s_get_ext_svc_url() {
+  if [ $# -le 1 ]; then
+    echo "Usage: k8s_get_ext_svc_url <namespace> <service>"
+    return 1
+  fi
+  NAMESPACE="$1"
+  SERVICE="$2"
+  NODE_IP=`k8s_get_node_ip $NAMESPACE`
+  NODE_PORT=`k8s_get_node_port $NAMESPACE $SERVICE`
+  echo http://$NODE_IP:$NODE_PORT
+}
+
+# Remove Jenkins plugins, must be at the Jenkins server
+remove_jenkins_plugins() {
+  [ -z "$JENKINS_HOME" ] && return 1
+  [ -z "$1" ] && return 1
+  PI=$1 && cd ${JENKINS_HOME}/plugins && rm -fr $PI && rm -f $PI.jpi || true  
+}
+
