@@ -1,8 +1,10 @@
-a2proxa/
-aws/
-jenkins_home/
-ngproxy/
-samples/
+a2proxa/*
+aws/*
+aws-cli/*
+aws-bin/*
+jenkins_home/*
+ngproxy/*
+samples/*
 aws_bin
 aws_completer
 kops
