@@ -7,7 +7,7 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 3.1 create first admin user account
 3.2 set baseURL
 3.3 enable agent to master access control
-4. The build script makes use of bash shell functions to download awscli v2, kops and terraform binaries so as to be copied to jenkins docker image4
+4. The build script makes use of bash shell functions to download awscli v2, kops and terraform binaries so as to be copied to jenkins docker image
 5. The jenkins docker image also include typical tools including curl, git, jq, maven, tree, wget, zip, python3, pip3, ansible 2.9.10, jinja2, dnspython
 
 # How to run
