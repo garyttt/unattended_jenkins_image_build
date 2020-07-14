@@ -1,4 +1,4 @@
-*.swp
+.*.swp
 a2proxa/*
 aws/*
 aws-cli/*
