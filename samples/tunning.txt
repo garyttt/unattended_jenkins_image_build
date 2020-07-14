@@ -1,0 +1,100 @@
+Ref: https://support.cloudbees.com/hc/en-us/articles/209715698-How-to-add-Java-arguments-to-Jenkins-
+
+How to add Java arguments to Jenkins? 
+
+It depends on the way you ran Jenkins.
+
+Note: The Jenkins System and Remoting Properties are added as Java Arguments.
+Testing the properties
+
+IMPORTANT: This type of setting is not persistent; thus, the property default values will be reset after the next restart.
+
+In the Script Console, depending on the property setting.
+
+Most of the Jenkins properties are static, therefore you can update its value like in the following examples:
+
+TcpSlaveAgentListener.CLI_HOST_NAME="<cje.example>"
+//OR
+com.cloudbees.hudson.plugins.folder.computed.FolderComputation.BACKUP_LOG_COUNT=10
+
+There are some exceptions like the JENKINS-35484 which makes use of the Jenkins SystemProperties
+Traditional Platform
+Running Jenkins inside Jetty Winstone container
+
+This is the default way to run Jenkins if you installed Jenkins using system packages.
+
+To pass Java arguments to Jenkins, you need to change the Jenkins service configuration file. You might require elevated privileges to be able to modify this file.
+
+In CloudBees Core on traditional platforms - Operations Center, you can find this file under:
+
+    /etc/default/cloudbees-core-oc: location for most of the Linux distributions.
+    /etc/sysconfig/cloudbees-core-oc: location for RedHat/CentOS distribution.
+    C:\Program Files\CloudBeesCoreOC\jenkins.xml: default location for Windows.
+
+In CloudBees Core on traditional platforms - Client Master, you can find this file under:
+
+    /etc/default/cloudbees-core-cm: location for most of the Linux distributions.
+    /etc/sysconfig/cloudbees-core-cm: location for RedHat/CentOS distribution.
+    C:\Program Files\CloudBeesCoreCM\jenkins.xml: default location for Windows.
+
+In CloudBees Jenkins Distribution, you can find this file under:
+
+    /etc/default/cloudbees-jenkins-distribution: location for most of the Linux distributions.
+    /etc/sysconfig/cloudbees-jenkins-distribution: location for RedHat/CentOS distribution.
+    C:\Program Files\CloudBeesJenkinsDistribution\jenkins.xml: default location for Windows.
+
+In Jenkins LTS and in CloudBees Jenkins Platform - Client Master, you can find this file under:
+
+    /etc/default/jenkins: location for most of the Linux distributions.
+    /etc/sysconfig/jenkins: location for RedHat/CentOS distribution.
+    C:\Program Files\Jenkins\jenkins.xml: default location for Windows.
+
+In CloudBees Jenkins Platform - Operations Center, you can find this file under:
+
+    /etc/default/jenkins-oc: location for most of the Linux distributions.
+    /etc/sysconfig/jenkins-oc: location for RedHat/CentOS distribution.
+    C:\Program Files\JenkinsOC\jenkins.xml: default location for Windows.
+
+Debian / Ubuntu based Linux distributions
+
+In your service configuration file, look for the argument JAVA_ARGS. It should look something like this:
+
+JAVA_ARGS="-Djava.awt.headless=true"
+
+Then, add the arguments:
+
+JAVA_ARGS="-Xmx2048m -Djava.awt.headless=true"
+
+RedHat Linux based distributions
+
+In your service configuration file, look for the argument JENKINS_JAVA_OPTIONS. It should look something like this:
+
+JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true"
+
+Then, add the arguments:
+
+JENKINS_JAVA_OPTIONS="-Xmx2048m -Djava.awt.headless=true"
+
+Running Jenkins in Windows as a Service
+
+In your service configuration file add the arguments into the <arguments> tag. It should look like this::
+
+<arguments>-Xmx2048m -Dhudson.lifecycle=hudson.lifecycle.WindowsServiceLifecycle -jar "%BASE%\jenkins.war" --httpPort=8080</arguments>
+
+Running Jenkins inside Docker
+
+The JAVA_OPTS should be passed to the container via --env JAVA_OPTS="..." like the following:
+
+docker run --name myjenkins -p 8080:8080 -p 50000:50000 --env JAVA_OPTS=-Dhudson.footerURL=http://mycompany.com jenkins/jenkins:lts
+
+Note: With Docker, in terms of memory, other constraints apply.
+Running Jenkins inside Tomcat
+
+Use environment variable CATALINA_OPTS:
+
+export CATALINA_OPTS="-DJENKINS_HOME=/path/to/jenkins_home/ -Xmx512m"
+
+It is recommended to configure it in the script $CATALINA_BASE/bin/setenv.sh (linux) or %CATALINA_BASE%\bin\setenv.bat (windows) that you’ll create to customize your application server.
+Running Jenkins inside another JEE container
+
+Please refer to the documentation of the container you are using.
