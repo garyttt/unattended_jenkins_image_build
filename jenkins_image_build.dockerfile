@@ -41,7 +41,8 @@ RUN /usr/local/bin/install-plugins.sh ssh-slaves                      # SSH Buil
 RUN /usr/local/bin/install-plugins.sh timestamper                     # Timestamper
 RUN /usr/local/bin/install-plugins.sh trilead-api                     # Trilead API Plugin
 RUN /usr/local/bin/install-plugins.sh ws-cleanup                      # Workspace Cleanup
-# SCM, Builds, Jobs, Pipeline, Workflows
+# SCM, Builds, Jobs Pipeline, Workflows
+RUN /usr/local/bin/install-plugins.sh groovy
 RUN /usr/local/bin/install-plugins.sh job-dsl
 RUN /usr/local/bin/install-plugins.sh maven-plugin
 RUN /usr/local/bin/install-plugins.sh parameterized-trigger
@@ -87,11 +88,11 @@ RUN /usr/local/bin/install-plugins.sh active-directory
 RUN /usr/local/bin/install-plugins.sh aqua-security-scanner
 RUN /usr/local/bin/install-plugins.sh aqua-microscanner
 RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
-# Install various tools: python3, pip3, curl, git, jq, maven, tree, wget, zip, ansible/jinja2/dnspythonn... 
+# Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, wget, zip, ansible/jinja2/dnspythonn... 
 # Group all packages on same command line to reduce image size
 USER root
 RUN apt-get update && \
-  apt-get install -y python3 python3-pip curl git jq maven tree wget zip && \
+  apt-get install -y python3 python3-pip curl git jq maven tree unzip wget zip && \
   pip3 install ansible==2.9.10 jinja2 dnspython
 USER jenkins
 # Set the $HOME of jenkins user

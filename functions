@@ -5,7 +5,7 @@
 # To view the content of a particular function run: display_shell_function function_name or set an alias for this
 #
 # Assumptions:
-# 1. these packages have already been installed: curl, dos2unix, golang, jq, openssl, unzip, wget
+# 1. these packages have already been installed: curl, dos2unix, golang, jq, openssl, wget, zip
 # 2. default install path for install tools: /usr/local/bin
 # 3. default version for the download/install tools are hard-coded, search for VERSION and change it as required
 
