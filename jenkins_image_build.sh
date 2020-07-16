@@ -1,7 +1,7 @@
 #!/bin/bash
 # jenkins_image_build.sh
 
-[ -z "$1" ] && exit 1
+[ -z "$1" ] && echo "TAG is required" && exit 1
 
 . ./functions
 [ ! -d aws/ ] && download_awscli_v2

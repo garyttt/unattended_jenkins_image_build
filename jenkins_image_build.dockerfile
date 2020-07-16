@@ -1,8 +1,8 @@
 # jenkins_image_build.dockerfile v1.0.0
-FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:2.235.2-lts
+ENV JAVA_ARGS -Xmx2048m
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 ENV JENKINS_OPTS --prefix=/
-ENV JAVA_ARGS -Xmx2048m
 # Define fisrt admin user/pass
 ENV JENKINS_FIRST_ADMIN_USER admin
 ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
@@ -15,6 +15,7 @@ COPY aws_completer /usr/local/bin/aws_completer
 RUN mkdir -p /var/tmp/jenkins_config_backup
 # Jenkins init.groovy.d scripts
 RUN rm -f /usr/share/jenkins/ref/init.groovy.d/*.groovy
+# Note: comment out the init groovy scripts for subsequent build, config data may be restored from periodicbackup
 COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
 COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
 COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
@@ -43,7 +44,7 @@ RUN /usr/local/bin/install-plugins.sh ssh-slaves                      # SSH Buil
 RUN /usr/local/bin/install-plugins.sh timestamper                     # Timestamper
 RUN /usr/local/bin/install-plugins.sh trilead-api                     # Trilead API Plugin
 RUN /usr/local/bin/install-plugins.sh ws-cleanup                      # Workspace Cleanup
-# SCM, Builds, Jobs Pipeline, Workflows
+# SCM, Builds, Job DSL, Pipeline, Workflows
 RUN /usr/local/bin/install-plugins.sh git-parameter
 RUN /usr/local/bin/install-plugins.sh groovy
 RUN /usr/local/bin/install-plugins.sh job-dsl
@@ -54,12 +55,12 @@ RUN /usr/local/bin/install-plugins.sh ssh-agent	# SSH Agent Plugin: provides SSH
 RUN /usr/local/bin/install-plugins.sh workflow-multibranch
 # Backup Jenkins Configuration
 RUN /usr/local/bin/install-plugins.sh periodicbackup
-# Java Memory Monitoring
+# Java Memory Monitoring (JavaMelody)
 RUN /usr/local/bin/install-plugins.sh monitoring
 # Project or RBAC Role Based Access Control Authorization Strategies
 RUN /usr/local/bin/install-plugins.sh authorize-project
 RUN /usr/local/bin/install-plugins.sh role-strategy
-# Artifact, Packagig
+# Artifact, Packaging
 RUN /usr/local/bin/install-plugins.sh nexus-jenkins-plugin
 # Alerts, Notifications and Publishing
 RUN /usr/local/bin/install-plugins.sh mailer
@@ -100,4 +101,5 @@ RUN apt-get update && \
 USER jenkins
 # Set the $HOME of jenkins user
 WORKDIR /var/jenkins_home
-HEALTHCHECK --interval=5s --timeout=3s CMD "curl http://localhost:8080 || exit 1"
+# Health Check got to use --head (Show document info only), otherwise it may throw 'anonymousi' access permission denied 
+HEALTHCHECK --interval=5s --timeout=3s --retries=3 --start-period=2m CMD "curl --head http://localhost:8080 && exit 0 || exit 1"

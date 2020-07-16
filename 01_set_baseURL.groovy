@@ -3,7 +3,7 @@ import jenkins.model.JenkinsLocationConfiguration
 import jenkins.model.Jenkins
 
 JenkinsLocationConfiguration location = Jenkins.instance.getExtensionList('jenkins.model.JenkinsLocationConfiguration')[0]
-location.url = 'http://localhost:8080/'
+location.url = 'http://gigantor:8080/'
 location.save()
 
 /*
