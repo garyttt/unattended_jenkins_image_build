@@ -11,6 +11,7 @@ FLAGS="
 --name $IMAGE
 --detach
 --publish 8080:8080
+--mount type=bind,src=$PWD/jenkins_home,dst=/var/jenkins_home
 --env JAVA_ARGS=-Xmx2048m
 --env JAVA_OPTS=-Djenkins.install.runSetupWizard=false
 --env JENKINS_OPTS=--prefix=/

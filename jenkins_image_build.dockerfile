@@ -11,6 +11,8 @@ COPY kops /usr/local/bin/kops
 COPY terraform /usr/local/bin/terraform
 COPY aws_bin /usr/local/bin/aws
 COPY aws_completer /usr/local/bin/aws_completer
+# Pre-Create folder for periodicbackup plugin to backup ConfigOnly data
+RUN mkdir -p /var/tmp/jenkins_config
 # Jenkins init.groovy.d scripts
 RUN rm -f /usr/share/jenkins/ref/init.groovy.d/*.groovy
 COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
