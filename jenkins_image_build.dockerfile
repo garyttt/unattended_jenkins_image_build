@@ -42,6 +42,7 @@ RUN /usr/local/bin/install-plugins.sh timestamper                     # Timestam
 RUN /usr/local/bin/install-plugins.sh trilead-api                     # Trilead API Plugin
 RUN /usr/local/bin/install-plugins.sh ws-cleanup                      # Workspace Cleanup
 # SCM, Builds, Jobs Pipeline, Workflows
+RUN /usr/local/bin/install-plugins.sh git-parameter
 RUN /usr/local/bin/install-plugins.sh groovy
 RUN /usr/local/bin/install-plugins.sh job-dsl
 RUN /usr/local/bin/install-plugins.sh maven-plugin

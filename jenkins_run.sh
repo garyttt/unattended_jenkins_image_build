@@ -1,7 +1,7 @@
 #!/bin/bash
 # jenkins_run.sh
 
-[ -x "$1" ] && exit 1
+[ -z "$1" ] && exit 1
 ./jenkins_stop.sh
 REPO=garyttt8
 IMAGE=jenkins
