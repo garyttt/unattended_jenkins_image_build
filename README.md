@@ -14,9 +14,9 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 6. git clone https://github.com/garyttt/unattended_jenkins_image_build.git
 7. cd unattended_jenkins_image_build
 8. edit all .sh scripts, replace 'REPO=garyttt8' (my Docker Hub account) with your Docker Hub account 'REPO=yourdockerhubaccount'
-9. edit 01_set_baseURL.groovy, replace 'localhost' with your actual docker hostname
+9. edit 01_set_baseURL.groovy, replace hostname in 'localtion.url' with your actual docker hostname
 10. ./jenkins_image_build.sh 1.0.0  # where 1.0.0 is the docker image tag you so desired
-11. go for a 20-min coffee break
+11. go for a 30-min or so coffee break, preferably you rebuild during non-peak/lunch hour
 12. you may inspect the docker_build.log posy build for errors, warnings could usaully be ignored
 
 # How to run the image 
@@ -24,5 +24,9 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 14. docker run log file will be fetched continuously, you may Ctrl-C to break it
 
 # How to access Jenkins
-15. http://localhost.8080, replace localhost with actual hostname, you may logoff/login to re-try admin login and change admin password 
+15. http://hostname.8080, replace hostname with actual docker hostname, please change admin password ASAP
+
+# How to backup/restore config changes betweeen recurring imaage build
 16. refer to 'Jenkins_Period_Backup_Config_Example.pdf' to quickly configure it, do not forget to validate cron syntax and existence of backup folder
+17. take a on-demand config backup whenever you have made changes and note down the timestamp
+18. if you even re-build the image and need the previous config. perform a restore
