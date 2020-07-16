@@ -15,7 +15,7 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 7. cd unattended_jenkins_image_build
 8. edit all .sh scripts, replace 'REPO=garyttt8' (my Docker Hub account) with your Docker Hub account 'REPO=yourdockerhubaccount'
 9. edit 01_set_baseURL.groovy, replace 'localhost' with your actual docker hostname
-10 ./jenkins_image_build.sh 1.0.0  # where 1.0.0 is the docker image tag you so desired
+10. ./jenkins_image_build.sh 1.0.0  # where 1.0.0 is the docker image tag you so desired
 11. go for a 20-min coffee break
 12. you may inspect the docker_build.log
 
