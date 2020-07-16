@@ -2,10 +2,10 @@
 FROM jenkins/jenkins:lts
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 ENV JENKINS_OPTS --prefix=/
+ENV JAVA_ARGS -Xmx2048m
 # Define fisrt admin user/pass
 ENV JENKINS_FIRST_ADMIN_USER admin
 ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
-HEALTHCHECK --interval=5s --timeout=3s CMD "curl http://localhost:8080 || exit 1"
 # Docker build script will download kops, terraform (>0.12)and awscli v2
 COPY kops /usr/local/bin/kops
 COPY terraform /usr/local/bin/terraform
@@ -100,3 +100,4 @@ RUN apt-get update && \
 USER jenkins
 # Set the $HOME of jenkins user
 WORKDIR /var/jenkins_home
+HEALTHCHECK --interval=5s --timeout=3s CMD "curl http://localhost:8080 || exit 1"
