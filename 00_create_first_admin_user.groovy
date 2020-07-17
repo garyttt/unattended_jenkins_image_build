@@ -1,6 +1,7 @@
 #!groovy
 import jenkins.model.*
 import hudson.security.*
+import com.michelin.cio.hudson.plugins.rolestrategy.*
 
 def adminUsername = System.getenv("JENKINS_FIRST_ADMIN_USER")
 def adminPassword = System.getenv("JENKINS_FIRST_ADMIN_PASS")
