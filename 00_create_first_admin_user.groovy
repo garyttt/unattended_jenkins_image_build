@@ -11,9 +11,9 @@ def hudsonRealm = new HudsonPrivateSecurityRealm(false)
 hudsonRealm.createAccount(adminUsername,adminPassword)
 instance.setSecurityRealm(hudsonRealm)
 
-//def strategy = new FullControlOnceLoggedInAuthorizationStrategy()  #not preferred
-
-def strategy = new GlobalMatrixAuthorizationStrategy()
+//def strategy = new FullControlOnceLoggedInAuthorizationStrategy()	//not preferred
+//def strategy = new GlobalMatrixAuthorizationStrategy()		//preferred, uncomment to use
+def strategy = new RoleBasedAuthorizationStrategy()			//preferred, uncomment to use
 strategy.add(Jenkins.ADMINISTER, adminUsername)
 instance.setAuthorizationStrategy(strategy)
 

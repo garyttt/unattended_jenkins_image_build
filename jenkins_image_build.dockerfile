@@ -51,6 +51,11 @@ RUN /usr/local/bin/install-plugins.sh parameterized-trigger
 RUN /usr/local/bin/install-plugins.sh pipeline-utility-steps
 RUN /usr/local/bin/install-plugins.sh ssh-agent	# SSH Agent Plugin: provides SSH credentials to builds
 RUN /usr/local/bin/install-plugins.sh workflow-multibranch
+RUN /usr/local/bin/install-plugins.sh command-launcher # Command Agent Launcher
+RUN /usr/local/bin/install-plugins.sh external-monitor-job # External Monitor Job Type
+RUN /usr/local/bin/install-plugins.sh jaxb # JAXB packaging for more transparent Java 9+ compatibility 
+RUN /usr/local/bin/install-plugins.sh jdk-tool # Oracle Java SE Development Kit Installer
+RUN /usr/local/bin/install-plugins.sh windows-slaves # WMI Windows Agent
 # Backup Jenkins Configuration
 RUN /usr/local/bin/install-plugins.sh periodicbackup
 # Java Memory Monitoring (JavaMelody)
