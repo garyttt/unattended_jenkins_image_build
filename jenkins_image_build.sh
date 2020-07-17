@@ -4,12 +4,15 @@
 [ -z "$1" ] && echo "TAG is required" && exit 1
 
 . ./functions
+
+# download_install_awscli_v2.sh script will be copied to /usr/local/bin of container and runas root in container
 touch download_install_awscli_v2.sh
 chmod 755 download_install_awscli_v2.sh
 display_shell_function download_awscli_v2 >download_install_awscli_v2.sh
 display_shell_function install_awscli_v2 >>download_install_awscli_v2.sh
 echo "install_awscli_v2" >>download_install_awscli_v2.sh
-sed -i 's/sudo //g' download_install_awscli_v2.sh
+sed -i 's/sudo //g' download_install_awscli_v2.sh    # container does not have sudo installed
+echo "rm -rf ./aws" >>download_install_awscli_v2.sh  # clean-up 100M+ of ./aws v2 source files
 download_kops
 download_terraform
 
