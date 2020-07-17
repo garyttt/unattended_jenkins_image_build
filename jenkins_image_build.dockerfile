@@ -91,9 +91,10 @@ RUN /usr/local/bin/install-plugins.sh aqua-microscanner
 RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
 # Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, wget, zip, ansible/jinja2/dnspythonn... 
 # Group all packages on same command line to reduce image size
+# Upgrade openjdk-8-jre
 USER root
 RUN apt-get update && \
-  apt-get install -y python3 python3-pip curl git jq maven tree unzip wget zip && \
+  apt-get install -y python3 python3-pip curl git jq maven openjdk-8-jre tree unzip wget zip && \
   pip3 install ansible==2.9.10 jinja2 dnspython && \
   /usr/local/bin/download_install_awscli_v2.sh
 USER jenkins
