@@ -5,7 +5,7 @@
 # To view the content of a particular function run: display_shell_function function_name or set an alias for this
 #
 # Assumptions:
-# 1. these packages have already been installed: curl, dos2unix, golang, jq, openssl, wget, zip
+# 1. these packages have already been installed: curl, dos2unix, golang, jq, openssl, unzip, wget
 # 2. default install path for install tools: /usr/local/bin
 # 3. default version for the download/install tools are hard-coded, search for VERSION and change it as required
 
@@ -207,11 +207,9 @@ download_awscli_v2() {
 install_awscli_v2() {
   download_awscli_v2 
   AWSCLI_V2_BIN="aws"
-  if [ -z "$(which $AWSCLI_V2_BIN)" ]; then
-    sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
-  else
-    echo "awscli (might not be the latest release) is most likely installed"
-  fi
+  echo "Compiling and installing awscli v2 files..."
+  sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
+  rm -rf ./aws
 }
 
 # Uninstall awscli v2
@@ -371,4 +369,3 @@ remove_jenkins_plugins() {
   [ -z "$1" ] && return 1
   PI=$1 && cd ${JENKINS_HOME}/plugins && rm -fr $PI && rm -f $PI.jpi || true  
 }
-

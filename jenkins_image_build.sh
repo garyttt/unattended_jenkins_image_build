@@ -4,11 +4,12 @@
 [ -z "$1" ] && echo "TAG is required" && exit 1
 
 . ./functions
-[ ! -d aws/ ] && download_awscli_v2
-# Install locally
-./aws/install --bin-dir ./aws-bin --install-dir ./aws-cli --update
-cp -p ./aws-cli/v2/2.*/bin/aws           ./aws_bin
-cp -p ./aws-cli/v2/2.*/bin/aws_completer ./aws_completer
+touch download_install_awscli_v2.sh
+chmod 755 download_install_awscli_v2.sh
+display_shell_function download_awscli_v2 >download_install_awscli_v2.sh
+display_shell_function install_awscli_v2 >>download_install_awscli_v2.sh
+echo "install_awscli_v2" >>download_install_awscli_v2.sh
+sed -i 's/sudo //g' download_install_awscli_v2.sh
 download_kops
 download_terraform
 
@@ -24,9 +25,5 @@ echo "Start: $START"
 echo "End  : $END"
 
 # Clean-up
-[ -d aws/ ] && rm -rf aws
-[ -d aws-bin/ ] && rm -rf aws-bin
-[ -d aws-cli/ ] && rm -rf aws-cli
-rm -f ./aws_*
 rm -f ./kops
 rm -f ./terraform

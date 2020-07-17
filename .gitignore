@@ -1,13 +1,9 @@
 .*.swp
 a2proxy/*
 aws/*
-aws-cli/*
-aws-bin/*
 jenkins_home/*
 jenkins_config_backup/*
 ngproxy/*
 samples/*
-aws_bin
-aws_completer
 kops
 terraform

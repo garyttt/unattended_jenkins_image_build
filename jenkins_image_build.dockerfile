@@ -1,21 +1,18 @@
 # jenkins_image_build.dockerfile v1.0.0
 FROM jenkins/jenkins:2.235.2-lts
-ENV JAVA_ARGS -Xmx2048m
-ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false -Xms2048m -Xmx2048m"
 ENV JENKINS_OPTS --prefix=/
 # Define fisrt admin user/pass
 ENV JENKINS_FIRST_ADMIN_USER admin
 ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
-# Docker build script will download kops, terraform (>0.12)and awscli v2
+# Docker build script will download kops, terraform (>0.12)and create download/install scriot for awscli v2
 COPY kops /usr/local/bin/kops
 COPY terraform /usr/local/bin/terraform
-COPY aws_bin /usr/local/bin/aws
-COPY aws_completer /usr/local/bin/aws_completer
+COPY download_install_awscli_v2.sh /usr/local/bin/download_install_awscli_v2.sh
 # Pre-Create folder for periodicbackup plugin to backup ConfigOnly data
 RUN mkdir -p /var/tmp/jenkins_config_backup
 # Jenkins init.groovy.d scripts
 RUN rm -f /usr/share/jenkins/ref/init.groovy.d/*.groovy
-# Note: comment out the init groovy scripts for subsequent build, config data may be restored from periodicbackup
 COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
 COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
 COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
@@ -97,7 +94,8 @@ RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
 USER root
 RUN apt-get update && \
   apt-get install -y python3 python3-pip curl git jq maven tree unzip wget zip && \
-  pip3 install ansible==2.9.10 jinja2 dnspython
+  pip3 install ansible==2.9.10 jinja2 dnspython && \
+  /usr/local/bin/download_install_awscli_v2.sh
 USER jenkins
 # Set the $HOME of jenkins user
 WORKDIR /var/jenkins_home
