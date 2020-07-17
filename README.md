@@ -7,7 +7,7 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 3.1 create first admin user account
 3.2 set baseURL
 3.3 enable agent to master access control
-4. The build script makes use of bash shell functions to download awscli v2, kops and terraform binaries so as to be copied to jenkins docker image
+4. The build script makes use of bash shell functions to download/install awscli v2 (in container), download kops and terraform binaries so as to be copied to jenkins docker image
 5. The jenkins docker image also includes typical tools including curl, git, jq, maven, tree, wget, zip, python3, pip3, ansible 2.9.10, jinja2, dnspython
 
 # How to build the image
@@ -17,7 +17,7 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 9. edit 01_set_baseURL.groovy, replace hostname in 'localtion.url' with your actual docker hostname
 10. ./jenkins_image_build.sh 1.0.0  # where 1.0.0 is the docker image tag you so desired
 11. go for a 30-min or so coffee break, preferably you rebuild during non-peak/lunch hour
-12. you may inspect the docker_build.log posy build for errors, warnings could usaully be ignored
+12. you may inspect the docker_build.log post build for errors, note that warnings could usaully be ignored
 
 # How to run the image 
 13. ./jenkins_run.sh 1.0.0   # it is actually restarting jenkins, i.e. it calls ./jenkins_stop.sh first
