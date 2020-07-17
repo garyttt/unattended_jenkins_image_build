@@ -1,5 +1,6 @@
 # jenkins_image_build.dockerfile v1.0.0
 FROM jenkins/jenkins:2.235.2-lts-jdk11
+WORKDIR /var/jenkins_home
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
 ENV JENKINS_OPTS --prefix=/
 # Define fisrt admin user/pass
@@ -8,7 +9,7 @@ ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
 # Docker build script will download kops, terraform (>0.12)and create download/install scriot for awscli v2
 COPY kops /usr/local/bin/kops
 COPY terraform /usr/local/bin/terraform
-COPY download_install_awscli_v2.sh /usr/local/bin/download_install_awscli_v2.sh
+COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
 # Pre-Create folder for periodicbackup plugin to backup ConfigOnly data
 RUN mkdir -p /var/tmp/jenkins_config_backup
 # Jenkins init.groovy.d scripts
@@ -89,15 +90,14 @@ RUN /usr/local/bin/install-plugins.sh active-directory
 RUN /usr/local/bin/install-plugins.sh aqua-security-scanner
 RUN /usr/local/bin/install-plugins.sh aqua-microscanner
 RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
-# Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, wget, zip, ansible/jinja2/dnspythonn... 
+# Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, vi, wget, zip, ansible/jinja2/dnspythonn... 
 # Group all packages on same command line to reduce image size
 USER root
 RUN apt-get update && \
-  apt-get install -y python3 python3-pip curl git jq maven tree unzip wget zip && \
+  apt-get install -y python3 python3-pip curl git jq maven tree unzip vi wget zip && \
   pip3 install ansible==2.9.10 jinja2 dnspython && \
-  /usr/local/bin/download_install_awscli_v2.sh
+  /var/tmp/download_install_awscli_v2.sh
 USER jenkins
 # Set the $HOME of jenkins user
-WORKDIR /var/jenkins_home
 # Health Check got to use --head (Show document info only), otherwise it may throw 'anonymousi' access permission denied 
 HEALTHCHECK --interval=5s --timeout=3s --retries=3 --start-period=2m CMD "curl --head http://localhost:8080 && exit 0 || exit 1"

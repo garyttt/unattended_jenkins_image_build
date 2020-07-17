@@ -12,8 +12,8 @@
 # Display shell function
 # Ref: https://unix.stackexchange.com/questions/175018/search-for-a-string-and-print-everything-before-and-after-within-a-range
 display_shell_function() {
-  BEGIN="$1"
-  END="}"
+  local BEGIN="$1"
+  local END="}"
   set | sed -n -e "/^$BEGIN/,/^$END/ p"
 }
 
@@ -24,9 +24,9 @@ docker_publish() {
     echo "local and remote image: full path in the format REPO/IMAGE:TAG"
     return 1
   fi
-  ACCOUNT="$1"
-  LOCAL="$2"
-  REMOTE="$3"
+  local ACCOUNT="$1"
+  local LOCAL="$2"
+  local REMOTE="$3"
   echo "Publishing to docker hub account $1 local image $2 to remote image $3..."
   docker login -u $ACCOUNT 
   docker tag $LOCAL $REMOTE
@@ -46,6 +46,7 @@ docker_ips() {
 
 # Docker search tags
 docker_search_tags() {
+  local IMAGE
   [ -n "`echo $1 | grep \/ 2>/dev/null`" ] && IMAGE="$1" || IMAGE="library/$1"
   curl https://registry.hub.docker.com/v2/repositories/"$IMAGE"/tags/ | jq '."results"[]["name"]'
 }
@@ -60,8 +61,8 @@ docker_backup_vol2gz() {
     echo "         highly recommended way of docker data (volume) backup WHEN container(s) is/are shutdown"
     return 1
   fi
-  SRC="$1"
-  DEST="$2"
+  local SRC="$1"
+  local DEST="$2"
   docker run --rm -v $1:/source:ro busybox tar -czC /source . >$2
 }
 
@@ -74,8 +75,8 @@ docker_restore_gz2vol() {
     echo "         highly recommended way of docker data (volume) restore WHEN container(s) is/are shutdown"
     return 1
   fi
-  SRC="$1"
-  DEST="$2"
+  local SRC="$1"
+  local DEST="$2"
   docker run --rm -i -v $2:/target busybox tar -xzC /target <$1
 }
 
@@ -92,9 +93,9 @@ docker_copy_dir_container2host() {
     echo "Usage: docker_copy_dir_container2host <container_name> <container_dir> <host_dir>"
     return 1
   fi
-  CONTAINER="$1"
-  SRC="$2"
-  DEST="$3"
+  local CONTAINER="$1"
+  local SRC="$2"
+  local DEST="$3"
   docker exec $CONTAINER tar Ccf $(dirname ${SRC}) - $(basename ${SRC}) | tar Cxf ${DEST} -
 }
 
@@ -108,14 +109,15 @@ docker_copy_dir_host2container() {
     echo "Usage: docker_copy_dir_host2containe <container_name> <host_dir> <container_dir>"
     return 1
   fi
-  CONTAINER="$1"
-  SRC="$2"
-  DEST="$3"
+  local CONTAINER="$1"
+  local SRC="$2"
+  local DEST="$3"
   tar Ccf $(dirname ${SRC}) - $(basename ${SRC}) | docker exec -i $CONTAINER tar Cxf ${DEST} -
 }
 
 # Dos2Unix all text files recursively for a folder (especially from Windows environment)
 dos2unix_all_text_files() {
+  local DIR
   [ -n "$1" ] && DIR="$1" || DIR="." 
   find_all_text_files | xargs dos2unix >/dev/null 2>&1
 }
@@ -123,6 +125,7 @@ dos2unix_all_text_files() {
 # Find all text files
 # Ref: https://stackoverflow.com/questions/4767396/linux-command-how-to-find-only-text-files
 find_all_text_files() {
+  local DIR
   [ -n "$1" ] && DIR="$1" || DIR="." 
   find $DIR -type f -exec grep -Iq . {} \; -print 
 }
@@ -153,10 +156,11 @@ helm_v3_release() {
     echo "Last argument [version] is OPTIONAL - it is the chart version for format 1 and 5, blank defaults to latest"
     return 1
   fi
-  VALUES="$1"
-  RELEASE="$2"
-  SOURCE="$3" 
-  LOGFILE="$4" 
+  local VALUES="$1"
+  local RELEASE="$2"
+  local SOURCE="$3" 
+  local LOGFILE="$4" 
+  local VERSION
   [ -n "$5" ] && VERSION="--version $5" || VERSION=""
   echo "helm install $VALUES $RELEASE $SOURCE $VERSION | tee $LOG"
   helm install -f $VALUES $RELEASE $SOURCE $VERSION | tee $LOGFILE
@@ -223,6 +227,7 @@ uninstall_awscli_v2() {
 # Download helm3 v3
 # Ref: https://github.com/helm/helm/releases
 download_helm_v3() {
+  local VERSION
   [ -n "$1" ] && VERSION="$1" || VERSION="v3.2.4"
   HELM_V3_ZIP_FILE="helm-${VERSION}-linux-amd64.tar.gz"
   HELM_V3_URL="https://get.helm.sh/${HELM_V3_ZIP_FILE}"
@@ -305,10 +310,11 @@ install_puppet6_agent() {
 
 # Download terraform
 download_terraform() {
+  local VERSION
   [ -n "$1" ] && VERSION="$1" || VERSION="0.12.28"
-  TERRAFORM_ZIP_FILE=terraform_"${VERSION}"_linux_amd64.zip
-  TERRAFORM_URL="https://releases.hashicorp.com/terraform/${VERSION}"
-  TERRAFORM_BIN="terraform"
+  local TERRAFORM_ZIP_FILE=terraform_"${VERSION}"_linux_amd64.zip
+  local TERRAFORM_URL="https://releases.hashicorp.com/terraform/${VERSION}"
+  local TERRAFORM_BIN="terraform"
   curl -OL ${TERRAFORM_URL}/${TERRAFORM_ZIP_FILE}
   unzip -oq ${TERRAFORM_ZIP_FILE}
   chmod +x ${TERRAFORM_BIN}
@@ -318,7 +324,7 @@ download_terraform() {
 # Install terraform
 install_terraform() {
   download_terraform
-  TERRAFORM_BIN="terraform"
+  local TERRAFORM_BIN="terraform"
   if [ -z "$(which $TERRAFORM_BIN)" ]; then
     sudo mv -f ${TERRAFORM_BIN} /usr/local/bin/${TERRAFORM_BIN}
     sudo chown root:root /usr/local/bin/${TERRAFORM_BIN}
@@ -334,6 +340,7 @@ k8s_get_node_ip() {
     echo "Usage: k8s_get_node_ip <namespace>"
     return 1
   fi
+  local NAMESPACE="$1"
   kubectl get nodes --namespace $NAMESPACE -o jsonpath="{.items[0].status.addresses[0].address}"
   echo ''
 }
@@ -344,8 +351,8 @@ k8s_get_node_port() {
     echo "Usage: k8s_get_node_port <namespace> <service>"
     return 1
   fi
-  NAMESPACE="$1"
-  SERVICE="$2"
+  local NAMESPACE="$1"
+  local SERVICE="$2"
   kubectl get --namespace $NAMESPACE -o jsonpath="{.spec.ports[0].nodePort}" services $SERVICE
   echo ''
 }
@@ -356,16 +363,17 @@ k8s_get_ext_svc_url() {
     echo "Usage: k8s_get_ext_svc_url <namespace> <service>"
     return 1
   fi
-  NAMESPACE="$1"
-  SERVICE="$2"
-  NODE_IP=`k8s_get_node_ip $NAMESPACE`
-  NODE_PORT=`k8s_get_node_port $NAMESPACE $SERVICE`
+  local NAMESPACE="$1"
+  local SERVICE="$2"
+  local NODE_IP=`k8s_get_node_ip $NAMESPACE`
+  local NODE_PORT=`k8s_get_node_port $NAMESPACE $SERVICE`
   echo http://$NODE_IP:$NODE_PORT
 }
 
 # Remove Jenkins plugins, must be at the Jenkins server
 remove_jenkins_plugins() {
-  [ -z "$JENKINS_HOME" ] && return 1
+  [ -z "${JENKINS_HOME}" ] && return 1
   [ -z "$1" ] && return 1
-  PI=$1 && cd ${JENKINS_HOME}/plugins && rm -fr $PI && rm -f $PI.jpi || true  
+  local PI="$1"
+  cd "${JENKINS_HOME}"/plugins && rm -rf $PI && rm -f $PI.jpi || true  
 }
