@@ -26,7 +26,7 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 # How to access Jenkins
 15. http://hostname.8080, replace hostname with actual docker hostname, please change admin password ASAP
 
-# How to backup/restore config changes betweeen image builds
+# How to backup/restore config changes between image builds
 16. refer to 'Jenkins_Period_Backup_Config_Example.pdf' to quickly configure it, do not forget to validate cron syntax and existence of backup folder
 17. take a on-demand config backup whenever you have made changes and note down the timestamp (drop list of recent timestamps is shown when you click 'restore')
 18. if you even re-build the image and need the previous config. perform a restore
