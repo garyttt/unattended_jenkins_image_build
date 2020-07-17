@@ -12,6 +12,8 @@ install_awscli_v2 ()
     download_awscli_v2;
     AWSCLI_V2_BIN="aws";
     echo "Compiling and installing awscli v2 files...";
-    ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
+    ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update;
+    rm -rf ./aws
 }
 install_awscli_v2
+rm -rf ./aws

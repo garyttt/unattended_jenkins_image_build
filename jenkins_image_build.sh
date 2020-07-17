@@ -3,11 +3,12 @@
 
 [ -z "$1" ] && echo "TAG is required" && exit 1
 
+START=`date`
 . ./functions
 
 # download_install_awscli_v2.sh script will be copied to /usr/local/bin of container and runas root in container
 touch download_install_awscli_v2.sh
-chmod 755 download_install_awscli_v2.sh
+chmod 750 download_install_awscli_v2.sh
 display_shell_function download_awscli_v2 >download_install_awscli_v2.sh
 display_shell_function install_awscli_v2 >>download_install_awscli_v2.sh
 echo "install_awscli_v2" >>download_install_awscli_v2.sh
@@ -21,7 +22,6 @@ IMAGE=jenkins
 TAG=$1
 OPTS="-f ${IMAGE}_image_build.dockerfile -t $REPO/$IMAGE:$TAG"
 echo "Please be patience, it takes a while to initialize..."
-START=`date`
 docker build $OPTS . | tee docker_build.log
 END=`date`
 echo "Start: $START"

@@ -14,9 +14,9 @@ docker run \
 --publish 8080:8080 \
 --mount type=bind,src=$PWD/jenkins_home,dst=/var/jenkins_home \
 --mount type=bind,src=$PWD/jenkins_config_backup,dst=/var/tmp/jenkins_config_backup \
---env JAVA_OPTS=-Djenkins.install.runSetupWizard=false \
---env JENKINS_OPTS=--prefix=/ \
---health-cmd "curl --head http://localhost:8080i && exit 0 || exit 1" \
+--env JAVA_OPTS="-Djenkins.install.runSetupWizard=false" \
+--env JENKINS_OPTS="--prefix=/" \
+--health-cmd "curl --head http://localhost:8080 && exit 0 || exit 1" \
 --health-interval 5s \
 --health-timeout 3s \
 --health-retries 3 \
