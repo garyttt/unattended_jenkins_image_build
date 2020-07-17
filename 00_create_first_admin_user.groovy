@@ -1,7 +1,6 @@
 #!groovy
 import jenkins.model.*
 import hudson.security.*
-import com.michelin.cio.hudson.plugins.rolestrategy.*
 
 def adminUsername = System.getenv("JENKINS_FIRST_ADMIN_USER")
 def adminPassword = System.getenv("JENKINS_FIRST_ADMIN_PASS")
@@ -13,8 +12,7 @@ hudsonRealm.createAccount(adminUsername,adminPassword)
 instance.setSecurityRealm(hudsonRealm)
 
 //def strategy = new FullControlOnceLoggedInAuthorizationStrategy()	//not preferred
-//def strategy = new GlobalMatrixAuthorizationStrategy()		//preferred, uncomment to use
-def strategy = new RoleBasedAuthorizationStrategy()			//preferred, uncomment to use
+def strategy = new GlobalMatrixAuthorizationStrategy()		//preferred, uncomment to use
 strategy.add(Jenkins.ADMINISTER, adminUsername)
 instance.setAuthorizationStrategy(strategy)
 
