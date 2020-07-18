@@ -199,8 +199,8 @@ download_jenkins-cli-jar() {
 # Download awscli v2
 # https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html
 download_awscli_v2() {
-  AWSCLI_V2_ZIP_FILE="awscliv2.zip"
-  AWSCLI_V2_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+  local AWSCLI_V2_ZIP_FILE="awscliv2.zip"
+  local AWSCLI_V2_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
   curl -L ${AWSCLI_V2_URL} -o ${AWSCLI_V2_ZIP_FILE}
   echo "Un-zipping awscli v2 files..."
   unzip -oq ${AWSCLI_V2_ZIP_FILE}
@@ -210,7 +210,7 @@ download_awscli_v2() {
 # Install awscli v2
 install_awscli_v2() {
   download_awscli_v2 
-  AWSCLI_V2_BIN="aws"
+  local AWSCLI_V2_BIN="aws"
   echo "Compiling and installing awscli v2 files..."
   sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
   rm -rf ./aws
@@ -229,8 +229,8 @@ uninstall_awscli_v2() {
 download_helm_v3() {
   local VERSION
   [ -n "$1" ] && VERSION="$1" || VERSION="v3.2.4"
-  HELM_V3_ZIP_FILE="helm-${VERSION}-linux-amd64.tar.gz"
-  HELM_V3_URL="https://get.helm.sh/${HELM_V3_ZIP_FILE}"
+  local HELM_V3_ZIP_FILE="helm-${VERSION}-linux-amd64.tar.gz"
+  local HELM_V3_URL="https://get.helm.sh/${HELM_V3_ZIP_FILE}"
   curl -OL ${HELM_V3_URL}
   echo "Un-zipping helm v3 binary"
   tar zxvf ${HELM_V3_ZIP_FILE}
@@ -252,9 +252,34 @@ install_helm_v3() {
   fi
 }
 
+# Download jx (Jenkins X)
+# Ref: https://jenkins-x.io/docs/install-setup/install-binary/
+download_jx() {
+  local JX_ZIP_FILE="jx-linux-amd64.tar.gz"
+  local JX_URL="https://github.com/jenkins-x/jx"
+  local VERSION=$(curl --silent "${JX_URL}/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#')
+  curl -OL "${JX_URL}/releases/download/${VERSION}/${JX_ZIP_FILE}"
+  echo "Un-zipping Jenkins X binary"
+  tar zxvf ${JX_ZIP_FILE} jx
+  rm -f ${JX_ZIP_FILE}
+}
+
+# Install jx (Jenkins X)
+install_jx() {
+  download_jx
+  if [ -z "$(which jx)" ]; then
+    sudo mv -f ./jx /usr/local/bin/jx
+    sudo chown root:root /usr/local/bin/jx
+    sudo chmod +x /usr/local/bin/jx 
+  else
+    echo "jx (might not be the latest release) is most likely installed"
+  fi
+}
+
+# Install helm v3
 # Download kops
 download_kops() {
-  FILE=$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+  local FILE=$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
   curl -OL https://github.com/kubernetes/kops/releases/download/$FILE
   mv -f kops-linux-amd64 kops
   chmod +x kops
@@ -274,9 +299,9 @@ install_kops() {
 
 # Install kubectl
 install_kubectl() {
-  KUBECTL_BIN="kubectl"
+  local KUBECTL_BIN="kubectl"
   if [ -z "$(which $KUBECTL_BIN)" ]; then
-    FILE=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/$KUBECTL_BIN
+    local FILE=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/$KUBECTL_BIN
     curl -OL https://storage.googleapis.com/kubernetes-release/release/$FILE
     chmod +x ${KUBECTL_BIN}
     sudo mv ${KUBECTL_BIN} /usr/local/bin/${KUBECTL_BIN}
