@@ -15,8 +15,7 @@ COPY terraform /usr/local/bin/terraform
 COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
 # Pre-Create folder for periodicbackup plugin to backup ConfigOnly data
 RUN mkdir -p /var/tmp/jenkins_config_backup
-# Jenkins init.groovy.d scripts
-# RUN rm -f /usr/share/jenkins/ref/init.groovy.d/*.groovy
+# Jenkins init.groovy.d scripts, if you make changes, please also copy the changed one to $DOCKER_HOST:$PWD/jenkins_home/init.groovy.d/
 COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
 COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
 COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/

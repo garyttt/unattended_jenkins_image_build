@@ -4,6 +4,7 @@
 [ -z "$1" ] && echo "TAG is required" && exit 1
 UIDNUMBER=`id -u`
 [ $UIDNUMBER -ne 1000 ] && echo "Current user must be 1000 (jenkins) to avoid permission issue" && exit 1
+cp -p [0-9][0-9]_*.groovy $PWD/jenkins_home/init.groovy.d >/dev/null 2>&1  # copy changes
 ./jenkins_stop.sh
 
 REPO=garyttt8
@@ -31,9 +32,9 @@ docker logs -f $IMAGE
 # HTTP or HTTPS please copy and paste as needed
 # HTTP version
 #--publish 8080:8080 \
-#--health-cmd "curl --head http://localhost:8080 && exit 0 || exit 1" \
 #--env JENKINS_OPTS="--prefix=/" \
+#--health-cmd "curl --head http://localhost:8080 && exit 0 || exit 1" \
 # HTTPS version
-#--env JENKINS_OPTS="--prefix=/ --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret" \
 #--publish 8083:8083 \
+#--env JENKINS_OPTS="--prefix=/ --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret" \
 #--health-cmd "curl --insecure --head https://localhost:8083 && exit 0 || exit 1" \
