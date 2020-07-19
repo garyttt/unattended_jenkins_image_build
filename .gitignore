@@ -1,8 +1,8 @@
 .*.swp
 aws/*
+docker_build.log
 jenkins_home/*
 jenkins_config_backup/*
-samples/*
 kops
-terraform
 selfsigned.jks*
+terraform

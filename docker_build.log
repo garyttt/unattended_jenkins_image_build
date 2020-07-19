@@ -1,1618 +1,1902 @@
-Sending build context to Docker daemon  1.076GB
-Step 1/83 : FROM jenkins/jenkins:2.235.2-lts-jdk11
+Sending build context to Docker daemon  1.106GB
+Step 1/80 : FROM jenkins/jenkins:2.235.2-lts-jdk11
  ---> 58a7b71f9939
-Step 2/83 : WORKDIR /var/jenkins_home
+Step 2/80 : WORKDIR /var/jenkins_home
  ---> Using cache
  ---> ee440bae0db5
-Step 3/83 : ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
+Step 3/80 : ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
  ---> Using cache
  ---> 4ade0f5d6976
-Step 4/83 : COPY server.crt /var/jenkins_home/server.crt
- ---> Using cache
- ---> c8bd133e87e6
-Step 5/83 : COPY server.key /var/jenkins_home/server.key
- ---> Using cache
- ---> 71b2332ee04e
-Step 6/83 : ENV JENKINS_OPTS "--prefix=/ --httpPort=-1 --httpsPort=8083 --httpsCertificate=/var/jenkins_home/server.crt --httpsPrivateKey=/var/jenkins_home/server.key"
- ---> Using cache
- ---> 69c72facf010
-Step 7/83 : EXPOSE 8083
- ---> Using cache
- ---> f846f4c2f59a
-Step 8/83 : ENV JENKINS_FIRST_ADMIN_USER admin
- ---> Using cache
- ---> dd47f9609338
-Step 9/83 : ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
- ---> Using cache
- ---> 0411be246cf6
-Step 10/83 : COPY kops /usr/local/bin/kops
- ---> Using cache
- ---> 5fc24aefcb60
-Step 11/83 : COPY terraform /usr/local/bin/terraform
- ---> Using cache
- ---> dc305e18d34d
-Step 12/83 : COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
- ---> Using cache
- ---> 86ddbd24a410
-Step 13/83 : RUN mkdir -p /var/tmp/jenkins_config_backup
- ---> Using cache
- ---> 8bd02d7376f0
-Step 14/83 : RUN rm -f /usr/share/jenkins/ref/init.groovy.d/*.groovy
- ---> Using cache
- ---> 84107ae5b35c
-Step 15/83 : COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
- ---> Using cache
- ---> 0db1a7a232e5
-Step 16/83 : COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
- ---> Using cache
- ---> c4f58226602d
-Step 17/83 : COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
- ---> Using cache
- ---> 1fcfc792b322
-Step 18/83 : COPY 03_set_NumExecutors.groovy                   /usr/share/jenkins/ref/init.groovy.d/
- ---> Using cache
- ---> 29fd2dc6158f
-Step 19/83 : RUN /usr/local/bin/install-plugins.sh ant                             # Ant
- ---> Using cache
- ---> 8b45fb2aeb89
-Step 20/83 : RUN /usr/local/bin/install-plugins.sh build-timeout                   # Build Tumeout
- ---> Using cache
- ---> 96eb0df1e3a7
-Step 21/83 : RUN /usr/local/bin/install-plugins.sh credentials-binding             # Credentials Binding
- ---> Using cache
- ---> 32a4de76544e
-Step 22/83 : RUN /usr/local/bin/install-plugins.sh cloudbees-folder                # Folders Plugin
- ---> Using cache
- ---> cbfa57b86e1e
-Step 23/83 : RUN /usr/local/bin/install-plugins.sh git                             # Git
- ---> Using cache
- ---> 912cb0254f1c
-Step 24/83 : RUN /usr/local/bin/install-plugins.sh github-branch-source            # Github Branch Source
- ---> Using cache
- ---> 2b92370c8264
-Step 25/83 : RUN /usr/local/bin/install-plugins.sh gradle                          # Gradle
- ---> Using cache
- ---> d8a09e03f50a
-Step 26/83 : RUN /usr/local/bin/install-plugins.sh email-ext                       # Email Extension
- ---> Using cache
- ---> ca2346661f08
-Step 27/83 : RUN /usr/local/bin/install-plugins.sh cloudbees-folder                # Folders Plugin
- ---> Using cache
- ---> c6ccc2448f9b
-Step 28/83 : RUN /usr/local/bin/install-plugins.sh ldap                            # LDAP Plugin
- ---> Using cache
- ---> 805bb1d6354d
-Step 29/83 : RUN /usr/local/bin/install-plugins.sh mailer                          # Mailer Plugin
- ---> Using cache
- ---> b71031c37c88
-Step 30/83 : RUN /usr/local/bin/install-plugins.sh matrix-auth                     # Matrix Authorization Strategy
- ---> Using cache
- ---> 4275ea345bf9
-Step 31/83 : RUN /usr/local/bin/install-plugins.sh antisamy-markup-formatter       # OWSASP Markup Formatter
- ---> Using cache
- ---> a98579d6a6aa
-Step 32/83 : RUN /usr/local/bin/install-plugins.sh pam-auth                        # PAM Authentication Plugin
- ---> Using cache
- ---> 60817a96d79a
-Step 33/83 : RUN /usr/local/bin/install-plugins.sh workflow-aggregator             # Pipeline
- ---> Using cache
- ---> 7a0217e26bc3
-Step 34/83 : RUN /usr/local/bin/install-plugins.sh pipeline-github-lib             # Pipeline: Github Groovy Libraries
- ---> Using cache
- ---> f3de7070d819
-Step 35/83 : RUN /usr/local/bin/install-plugins.sh workflow-durable-task-step      # Pipeline: Node and Processes
- ---> Using cache
- ---> 73eb555cead1
-Step 36/83 : RUN /usr/local/bin/install-plugins.sh pipeline-stage-view             # Pipeline: Stage View Plugin
- ---> Using cache
- ---> 49a6fd0905cb
-Step 37/83 : RUN /usr/local/bin/install-plugins.sh ssh-credentials                 # SSH Credentials Plugin
- ---> Using cache
- ---> 1f8a18a0f755
-Step 38/83 : RUN /usr/local/bin/install-plugins.sh ssh-slaves                      # SSH Build Agents
- ---> Using cache
- ---> 18aa1ab107eb
-Step 39/83 : RUN /usr/local/bin/install-plugins.sh timestamper                     # Timestamper
- ---> Using cache
- ---> e47bcc51d447
-Step 40/83 : RUN /usr/local/bin/install-plugins.sh trilead-api                     # Trilead API Plugin
- ---> Using cache
- ---> 7e59c885cdf8
-Step 41/83 : RUN /usr/local/bin/install-plugins.sh ws-cleanup                      # Workspace Cleanup
- ---> Using cache
- ---> b77d6c2176d6
-Step 42/83 : RUN /usr/local/bin/install-plugins.sh git-parameter
- ---> Using cache
- ---> a54481aa965f
-Step 43/83 : RUN /usr/local/bin/install-plugins.sh groovy
- ---> Using cache
- ---> b4d06ca29ddd
-Step 44/83 : RUN /usr/local/bin/install-plugins.sh job-dsl
- ---> Using cache
- ---> 2b26b03e0fbf
-Step 45/83 : RUN /usr/local/bin/install-plugins.sh maven-plugin
- ---> Using cache
- ---> ffe3a378b1d4
-Step 46/83 : RUN /usr/local/bin/install-plugins.sh parameterized-trigger
- ---> Using cache
- ---> 36626e64e23a
-Step 47/83 : RUN /usr/local/bin/install-plugins.sh pipeline-utility-steps
- ---> Using cache
- ---> 4c40df25c5f5
-Step 48/83 : RUN /usr/local/bin/install-plugins.sh ssh-agent	# SSH Agent Plugin: provides SSH credentials to builds
- ---> Using cache
- ---> 8feec1802431
-Step 49/83 : RUN /usr/local/bin/install-plugins.sh workflow-multibranch
- ---> Using cache
- ---> 8afb91855f28
-Step 50/83 : RUN /usr/local/bin/install-plugins.sh command-launcher # Command Agent Launcher
- ---> Using cache
- ---> 0edfa2796a04
-Step 51/83 : RUN /usr/local/bin/install-plugins.sh external-monitor-job # External Monitor Job Type
- ---> Using cache
- ---> 6b07881823a9
-Step 52/83 : RUN /usr/local/bin/install-plugins.sh jaxb # JAXB packaging for more transparent Java 9+ compatibility
- ---> Using cache
- ---> c2d96edc869a
-Step 53/83 : RUN /usr/local/bin/install-plugins.sh jdk-tool # Oracle Java SE Development Kit Installer
- ---> Using cache
- ---> 5fbfe5a43399
-Step 54/83 : RUN /usr/local/bin/install-plugins.sh windows-slaves # WMI Windows Agent
- ---> Using cache
- ---> 9e7ee48fdb9e
-Step 55/83 : RUN /usr/local/bin/install-plugins.sh periodicbackup
- ---> Using cache
- ---> fb595502bc6b
-Step 56/83 : RUN /usr/local/bin/install-plugins.sh monitoring
- ---> Using cache
- ---> a7c9c4421c6b
-Step 57/83 : RUN /usr/local/bin/install-plugins.sh authorize-project
- ---> Using cache
- ---> 99c8b6becec8
-Step 58/83 : RUN /usr/local/bin/install-plugins.sh role-strategy
- ---> Using cache
- ---> b94085bebf22
-Step 59/83 : RUN /usr/local/bin/install-plugins.sh nexus-jenkins-plugin
- ---> Using cache
- ---> 26565777d85f
-Step 60/83 : RUN /usr/local/bin/install-plugins.sh mailer
- ---> Using cache
- ---> e1ec17f98589
-Step 61/83 : RUN /usr/local/bin/install-plugins.sh slack
- ---> Using cache
- ---> 339f1ea764e3
-Step 62/83 : RUN /usr/local/bin/install-plugins.sh htmlpublisher
- ---> Using cache
- ---> c826e936ff83
-Step 63/83 : RUN /usr/local/bin/install-plugins.sh oauth-credentials
- ---> Using cache
- ---> f863479b76c6
-Step 64/83 : RUN /usr/local/bin/install-plugins.sh greenballs # Changes Hudson to use green balls instead of blue for successful builds
- ---> Using cache
- ---> 4e19b9bd9fe9
-Step 65/83 : RUN /usr/local/bin/install-plugins.sh simple-theme-plugin # Customize appearance with custom CSS and JavaScript, replace Favicon
- ---> Using cache
- ---> b900f1706371
-Step 66/83 : RUN /usr/local/bin/install-plugins.sh aws-credentials
- ---> Using cache
- ---> c1a5c0860e2c
-Step 67/83 : RUN /usr/local/bin/install-plugins.sh aws-bucket-credentials
- ---> Using cache
- ---> bbb83cd4faec
-Step 68/83 : RUN /usr/local/bin/install-plugins.sh docker-plugin
- ---> Using cache
- ---> fa7f41281bf9
-Step 69/83 : RUN /usr/local/bin/install-plugins.sh docker-build-publish
- ---> Using cache
- ---> 13c4dc6ee4e3
-Step 70/83 : RUN /usr/local/bin/install-plugins.sh docker-compose-build-step
- ---> Using cache
- ---> b67710460ea7
-Step 71/83 : RUN /usr/local/bin/install-plugins.sh kubernetes
- ---> Using cache
- ---> eb7b97e64f36
-Step 72/83 : RUN /usr/local/bin/install-plugins.sh kubernetes-cli
- ---> Using cache
- ---> ed720459e5a7
-Step 73/83 : RUN /usr/local/bin/install-plugins.sh ansible
- ---> Using cache
- ---> 3365a23b5834
-Step 74/83 : RUN /usr/local/bin/install-plugins.sh ansible-tower
- ---> Using cache
- ---> 87b1445e1050
-Step 75/83 : RUN /usr/local/bin/install-plugins.sh terraform
- ---> Using cache
- ---> a06d18db43b9
-Step 76/83 : RUN /usr/local/bin/install-plugins.sh active-directory
- ---> Using cache
- ---> 1e5a564d6a72
-Step 77/83 : RUN /usr/local/bin/install-plugins.sh aqua-security-scanner
- ---> Using cache
- ---> c513dd05321b
-Step 78/83 : RUN /usr/local/bin/install-plugins.sh aqua-microscanner
- ---> Using cache
- ---> 81b13aa1f67c
-Step 79/83 : RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
- ---> Using cache
- ---> cda290d4cc12
-Step 80/83 : USER root
- ---> Using cache
- ---> 30a0060580b0
-Step 81/83 : RUN apt-get update &&   apt-get install -y python3 python3-pip curl git jq maven tree unzip vim wget zip &&   pip3 install ansible==2.9.10 jinja2 dnspython &&   /var/tmp/download_install_awscli_v2.sh
- ---> Running in 4966f174ceb7
-Get:1 http://security.debian.org/debian-security stretch/updates InRelease [53.0 kB]
-Ign:2 http://deb.debian.org/debian stretch InRelease
-Get:3 http://deb.debian.org/debian stretch-updates InRelease [93.6 kB]
-Get:4 http://deb.debian.org/debian stretch Release [118 kB]
-Get:5 http://deb.debian.org/debian stretch Release.gpg [2410 B]
-Get:6 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [534 kB]
-Get:7 http://deb.debian.org/debian stretch-updates/main amd64 Packages [2596 B]
-Get:8 http://deb.debian.org/debian stretch/main amd64 Packages [7080 kB]
-Get:9 https://packagecloud.io/github/git-lfs/debian stretch InRelease [23.2 kB]
-Get:10 https://packagecloud.io/github/git-lfs/debian stretch/main amd64 Packages [4884 B]
-Fetched 7911 kB in 2s (2647 kB/s)
-Reading package lists...
-Reading package lists...
-Building dependency tree...
-Reading state information...
-curl is already the newest version (7.52.1-5+deb9u10).
-git is already the newest version (1:2.11.0-3+deb9u7).
-unzip is already the newest version (6.0-21+deb9u2).
-wget is already the newest version (1.18-5+deb9u3).
-The following additional packages will be installed:
-  ant ant-optional binutils build-essential ca-certificates-java cpp cpp-6
-  dbus default-jre-headless dh-python dpkg-dev fakeroot g++ g++-6 gcc gcc-6
-  gir1.2-glib-2.0 java-common junit junit4 libalgorithm-diff-perl
-  libalgorithm-diff-xs-perl libalgorithm-merge-perl libaopalliance-java
-  libapache-pom-java libapparmor1 libasan3 libasm-java
-  libatinject-jsr330-api-java libatomic1 libavahi-client3 libavahi-common-data
-  libavahi-common3 libbsh-java libc-dev-bin libc6-dev libcc1-0 libcdi-api-java
-  libcglib-java libcilkrts5 libclassworlds-java libcommons-cli-java
-  libcommons-codec-java libcommons-httpclient-java libcommons-io-java
-  libcommons-lang-java libcommons-lang3-java libcommons-logging-java
-  libcommons-net-java libcommons-parent-java libcups2 libdbus-1-3
-  libdbus-glib-1-2 libdom4j-java libdoxia-core-java libdpkg-perl
-  libeasymock-java libeclipse-aether-java libexpat1-dev libfakeroot
-  libfile-fcntllock-perl libgcc-6-dev libgeronimo-interceptor-3.0-spec-java
-  libgirepository-1.0-1 libglib2.0-0 libglib2.0-data libgomp1 libgpm2
-  libguava-java libguice-java libhamcrest-java libhttpclient-java
-  libhttpcore-java libicu57 libisl15 libisorelax-java libitm1 libjaxen-java
-  libjaxp1.3-java libjdom1-java libjetty9-java libjpeg62-turbo libjq1
-  libjsch-java libjsoup-java libjsr305-java libjzlib-java liblcms2-2
-  liblocale-gettext-perl liblog4j1.2-java liblsan0 libmaven-parent-java
-  libmaven2-core-java libmaven3-core-java libmpc3 libmpdec2 libmpfr4 libmpx2
-  libmsv-java libnspr4 libnss3 libobjenesis-java libonig4 libpcsclite1
-  libplexus-ant-factory-java libplexus-archiver-java
-  libplexus-bsh-factory-java libplexus-cipher-java libplexus-classworlds-java
-  libplexus-classworlds2-java libplexus-cli-java
-  libplexus-component-annotations-java libplexus-component-metadata-java
-  libplexus-container-default-java libplexus-container-default1.5-java
-  libplexus-containers-java libplexus-containers1.5-java
-  libplexus-interactivity-api-java libplexus-interpolation-java
-  libplexus-io-java libplexus-sec-dispatcher-java libplexus-utils-java
-  libplexus-utils2-java libpython3-dev libpython3-stdlib libpython3.5
-  libpython3.5-dev libpython3.5-minimal libpython3.5-stdlib libqdox2-java
-  libquadmath0 librelaxng-datatype-java libservlet3.1-java libsisu-inject-java
-  libsisu-plexus-java libslf4j-java libstdc++-6-dev libtsan0 libubsan0
-  libwagon-java libwagon2-java libx11-6 libx11-data libxalan2-java libxau6
-  libxbean-java libxcb1 libxdmcp6 libxerces2-java libxext6 libxi6
-  libxml-commons-external-java libxml-commons-resolver1.1-java libxml2
-  libxom-java libxpp2-java libxpp3-java libxrender1 libxtst6 linux-libc-dev
-  make manpages manpages-dev openjdk-8-jre-headless patch python-pip-whl
-  python3-cffi-backend python3-crypto python3-cryptography python3-dbus
-  python3-dev python3-gi python3-idna python3-keyring python3-keyrings.alt
-  python3-minimal python3-pkg-resources python3-pyasn1 python3-secretstorage
-  python3-setuptools python3-six python3-wheel python3-xdg python3.5
-  python3.5-dev python3.5-minimal sgml-base shared-mime-info vim-common
-  vim-runtime x11-common xdg-user-dirs xml-core xxd
-Suggested packages:
-  ant-doc ant-gcj default-jdk | java-compiler | java-sdk ant-optional-gcj
-  antlr javacc jython libbcel-java libbsf-java libmail-java libjdepend-java
-  liboro-java libregexp-java binutils-doc cpp-doc gcc-6-locales
-  default-dbus-session-bus | dbus-session-bus default-jre debian-keyring
-  g++-multilib g++-6-multilib gcc-6-doc libstdc++6-6-dbg gcc-multilib autoconf
-  automake libtool flex bison gdb gcc-doc gcc-6-multilib libgcc1-dbg
-  libgomp1-dbg libitm1-dbg libatomic1-dbg libasan3-dbg liblsan0-dbg
-  libtsan0-dbg libubsan0-dbg libcilkrts5-dbg libmpx2-dbg libquadmath0-dbg
-  junit-doc libaopalliance-java-doc libatinject-jsr330-api-java-doc glibc-doc
-  libclassworlds-java-doc libcommons-httpclient-java-doc
-  libcommons-io-java-doc libcommons-lang-java-doc libcommons-lang3-java-doc
-  libavalon-framework-java libcommons-logging-java-doc
-  libexcalibur-logkit-java libcommons-net-java-doc cups-common
-  libdom4j-java-doc libeasymock-java-doc gpm libjaxp1.3-java-gcj
-  libjdom1-java-doc jetty9 libjsoup-java-doc libjsr305-java-doc liblcms2-utils
-  liblog4j1.2-java-doc libobjenesis-java-doc pcscd libplexus-cipher-java-doc
-  libplexus-classworlds-java-doc libplexus-classworlds2-java-doc
-  libplexus-cli-java-doc libplexus-container-default-java-doc
-  libplexus-interactivity-api-java-doc libplexus-interpolation-java-doc
-  libplexus-sec-dispatcher-java-doc libplexus-utils-java-doc
-  libplexus-utils2-java-doc libqdox2-java-doc testng libstdc++-6-doc
-  libwagon-java-doc libxalan2-java-doc libxsltc-java groovy
-  libequinox-osgi-java libosgi-compendium-java libosgi-core-java libqdox-java
-  libspring-beans-java libspring-context-java libspring-core-java
-  libspring-web-java libxerces2-java-doc libxerces2-java-gcj
-  libxml-commons-resolver1.1-java-doc libxom-java-doc make-doc man-browser
-  libnss-mdns fonts-dejavu-extra fonts-ipafont-gothic fonts-ipafont-mincho
-  fonts-wqy-microhei fonts-wqy-zenhei fonts-indic ed diffutils-doc python3-doc
-  python3-tk python3-venv python3-crypto-dbg python-crypto-doc
-  python-cryptography-doc python3-cryptography-vectors python-dbus-doc
-  python3-dbus-dbg gnome-keyring libkf5wallet-bin gir1.2-gnomekeyring-1.0
-  python3-pykde4 doc-base python-secretstorage-doc python-setuptools-doc
-  python3.5-venv python3.5-doc binfmt-support sgml-base-doc ctags vim-doc
-  vim-scripts debhelper
-The following NEW packages will be installed:
-  ant ant-optional binutils build-essential ca-certificates-java cpp cpp-6
-  dbus default-jre-headless dh-python dpkg-dev fakeroot g++ g++-6 gcc gcc-6
-  gir1.2-glib-2.0 java-common jq junit junit4 libalgorithm-diff-perl
-  libalgorithm-diff-xs-perl libalgorithm-merge-perl libaopalliance-java
-  libapache-pom-java libapparmor1 libasan3 libasm-java
-  libatinject-jsr330-api-java libatomic1 libavahi-client3 libavahi-common-data
-  libavahi-common3 libbsh-java libc-dev-bin libc6-dev libcc1-0 libcdi-api-java
-  libcglib-java libcilkrts5 libclassworlds-java libcommons-cli-java
-  libcommons-codec-java libcommons-httpclient-java libcommons-io-java
-  libcommons-lang-java libcommons-lang3-java libcommons-logging-java
-  libcommons-net-java libcommons-parent-java libcups2 libdbus-1-3
-  libdbus-glib-1-2 libdom4j-java libdoxia-core-java libdpkg-perl
-  libeasymock-java libeclipse-aether-java libexpat1-dev libfakeroot
-  libfile-fcntllock-perl libgcc-6-dev libgeronimo-interceptor-3.0-spec-java
-  libgirepository-1.0-1 libglib2.0-0 libglib2.0-data libgomp1 libgpm2
-  libguava-java libguice-java libhamcrest-java libhttpclient-java
-  libhttpcore-java libicu57 libisl15 libisorelax-java libitm1 libjaxen-java
-  libjaxp1.3-java libjdom1-java libjetty9-java libjpeg62-turbo libjq1
-  libjsch-java libjsoup-java libjsr305-java libjzlib-java liblcms2-2
-  liblocale-gettext-perl liblog4j1.2-java liblsan0 libmaven-parent-java
-  libmaven2-core-java libmaven3-core-java libmpc3 libmpdec2 libmpfr4 libmpx2
-  libmsv-java libnspr4 libnss3 libobjenesis-java libonig4 libpcsclite1
-  libplexus-ant-factory-java libplexus-archiver-java
-  libplexus-bsh-factory-java libplexus-cipher-java libplexus-classworlds-java
-  libplexus-classworlds2-java libplexus-cli-java
-  libplexus-component-annotations-java libplexus-component-metadata-java
-  libplexus-container-default-java libplexus-container-default1.5-java
-  libplexus-containers-java libplexus-containers1.5-java
-  libplexus-interactivity-api-java libplexus-interpolation-java
-  libplexus-io-java libplexus-sec-dispatcher-java libplexus-utils-java
-  libplexus-utils2-java libpython3-dev libpython3-stdlib libpython3.5
-  libpython3.5-dev libpython3.5-minimal libpython3.5-stdlib libqdox2-java
-  libquadmath0 librelaxng-datatype-java libservlet3.1-java libsisu-inject-java
-  libsisu-plexus-java libslf4j-java libstdc++-6-dev libtsan0 libubsan0
-  libwagon-java libwagon2-java libx11-6 libx11-data libxalan2-java libxau6
-  libxbean-java libxcb1 libxdmcp6 libxerces2-java libxext6 libxi6
-  libxml-commons-external-java libxml-commons-resolver1.1-java libxml2
-  libxom-java libxpp2-java libxpp3-java libxrender1 libxtst6 linux-libc-dev
-  make manpages manpages-dev maven openjdk-8-jre-headless patch python-pip-whl
-  python3 python3-cffi-backend python3-crypto python3-cryptography
-  python3-dbus python3-dev python3-gi python3-idna python3-keyring
-  python3-keyrings.alt python3-minimal python3-pip python3-pkg-resources
-  python3-pyasn1 python3-secretstorage python3-setuptools python3-six
-  python3-wheel python3-xdg python3.5 python3.5-dev python3.5-minimal
-  sgml-base shared-mime-info tree vim vim-common vim-runtime x11-common
-  xdg-user-dirs xml-core xxd zip
-0 upgraded, 201 newly installed, 0 to remove and 7 not upgraded.
-Need to get 173 MB of archives.
-After this operation, 502 MB of additional disk space will be used.
-Get:1 http://security.debian.org/debian-security stretch/updates/main amd64 libpython3.5-minimal amd64 3.5.3-1+deb9u2 [575 kB]
-Get:2 http://deb.debian.org/debian stretch/main amd64 liblocale-gettext-perl amd64 1.07-3+b1 [18.7 kB]
-Get:3 http://deb.debian.org/debian stretch/main amd64 libxau6 amd64 1:1.0.8-1 [20.7 kB]
-Get:4 http://deb.debian.org/debian stretch/main amd64 python3-minimal amd64 3.5.3-1 [35.3 kB]
-Get:5 http://deb.debian.org/debian stretch/main amd64 libmpdec2 amd64 2.4.2-1 [85.2 kB]
-Get:6 http://deb.debian.org/debian stretch/main amd64 libpython3-stdlib amd64 3.5.3-1 [18.6 kB]
-Get:7 http://deb.debian.org/debian stretch/main amd64 dh-python all 2.20170125 [86.8 kB]
-Get:8 http://deb.debian.org/debian stretch/main amd64 python3 amd64 3.5.3-1 [21.6 kB]
-Get:9 http://deb.debian.org/debian stretch/main amd64 sgml-base all 1.29 [14.8 kB]
-Get:10 http://deb.debian.org/debian stretch/main amd64 xxd amd64 2:8.0.0197-4+deb9u3 [132 kB]
-Get:11 http://deb.debian.org/debian stretch/main amd64 vim-common all 2:8.0.0197-4+deb9u3 [159 kB]
-Get:12 http://security.debian.org/debian-security stretch/updates/main amd64 python3.5-minimal amd64 3.5.3-1+deb9u2 [1695 kB]
-Get:13 http://deb.debian.org/debian stretch/main amd64 libapparmor1 amd64 2.11.0-3+deb9u2 [78.9 kB]
-Get:14 http://deb.debian.org/debian stretch/main amd64 libdbus-1-3 amd64 1.10.32-0+deb9u1 [196 kB]
-Get:15 http://deb.debian.org/debian stretch/main amd64 dbus amd64 1.10.32-0+deb9u1 [213 kB]
-Get:16 http://deb.debian.org/debian stretch/main amd64 libgpm2 amd64 1.20.4-6.2+b1 [34.2 kB]
-Get:17 http://deb.debian.org/debian stretch/main amd64 libicu57 amd64 57.1-6+deb9u4 [7699 kB]
-Get:18 http://security.debian.org/debian-security stretch/updates/main amd64 libpython3.5-stdlib amd64 3.5.3-1+deb9u2 [2169 kB]
-Get:19 http://security.debian.org/debian-security stretch/updates/main amd64 python3.5 amd64 3.5.3-1+deb9u2 [230 kB]
-Get:20 http://security.debian.org/debian-security stretch/updates/main amd64 libservlet3.1-java all 8.5.54-0+deb9u2 [403 kB]
-Get:21 http://security.debian.org/debian-security stretch/updates/main amd64 libpython3.5 amd64 3.5.3-1+deb9u2 [1371 kB]
-Get:22 http://security.debian.org/debian-security stretch/updates/main amd64 libpython3.5-dev amd64 3.5.3-1+deb9u2 [37.7 MB]
-Get:23 http://deb.debian.org/debian stretch/main amd64 libxml2 amd64 2.9.4+dfsg1-2.2+deb9u2 [920 kB]
-Get:24 http://deb.debian.org/debian stretch/main amd64 manpages all 4.10-2 [1222 kB]
-Get:25 http://deb.debian.org/debian stretch/main amd64 libnspr4 amd64 2:4.12-6 [117 kB]
-Get:26 http://deb.debian.org/debian stretch/main amd64 libnss3 amd64 2:3.26.2-1.1+deb9u1 [1161 kB]
-Get:27 http://deb.debian.org/debian stretch/main amd64 ca-certificates-java all 20170929~deb9u3 [15.1 kB]
-Get:28 http://deb.debian.org/debian stretch/main amd64 java-common all 0.58+deb9u1 [13.6 kB]
-Get:29 http://deb.debian.org/debian stretch/main amd64 libavahi-common-data amd64 0.6.32-2 [118 kB]
-Get:30 http://deb.debian.org/debian stretch/main amd64 libavahi-common3 amd64 0.6.32-2 [52.0 kB]
-Get:31 http://deb.debian.org/debian stretch/main amd64 libavahi-client3 amd64 0.6.32-2 [55.3 kB]
-Get:32 http://deb.debian.org/debian stretch/main amd64 libcups2 amd64 2.2.1-8+deb9u6 [307 kB]
-Get:33 http://deb.debian.org/debian stretch/main amd64 liblcms2-2 amd64 2.8-4+deb9u1 [143 kB]
-Get:34 http://deb.debian.org/debian stretch/main amd64 libjpeg62-turbo amd64 1:1.5.1-2 [134 kB]
-Get:35 http://deb.debian.org/debian stretch/main amd64 libpcsclite1 amd64 1.8.20-1 [56.5 kB]
-Get:36 http://deb.debian.org/debian stretch/main amd64 libxdmcp6 amd64 1:1.1.2-3 [26.3 kB]
-Get:37 http://deb.debian.org/debian stretch/main amd64 libxcb1 amd64 1.12-1 [133 kB]
-Get:38 http://deb.debian.org/debian stretch/main amd64 libx11-data all 2:1.6.4-3+deb9u1 [287 kB]
-Get:39 http://deb.debian.org/debian stretch/main amd64 libx11-6 amd64 2:1.6.4-3+deb9u1 [748 kB]
-Get:40 http://deb.debian.org/debian stretch/main amd64 libxext6 amd64 2:1.3.3-1+b2 [52.5 kB]
-Get:41 http://deb.debian.org/debian stretch/main amd64 libxi6 amd64 2:1.7.9-1 [82.6 kB]
-Get:42 http://deb.debian.org/debian stretch/main amd64 libxrender1 amd64 1:0.9.10-1 [33.0 kB]
-Get:43 http://deb.debian.org/debian stretch/main amd64 x11-common all 1:7.7+19 [251 kB]
-Get:44 http://deb.debian.org/debian stretch/main amd64 libxtst6 amd64 2:1.2.3-1 [27.8 kB]
-Get:45 http://deb.debian.org/debian stretch/main amd64 openjdk-8-jre-headless amd64 8u252-b09-1~deb9u1 [27.4 MB]
-Get:46 http://deb.debian.org/debian stretch/main amd64 default-jre-headless amd64 2:1.8-58+deb9u1 [10.1 kB]
-Get:47 http://deb.debian.org/debian stretch/main amd64 ant all 1.9.9-1+deb9u1 [1923 kB]
-Get:48 http://deb.debian.org/debian stretch/main amd64 ant-optional all 1.9.9-1+deb9u1 [350 kB]
-Get:49 http://security.debian.org/debian-security stretch/updates/main amd64 python3.5-dev amd64 3.5.3-1+deb9u2 [413 kB]
-Get:50 http://deb.debian.org/debian stretch/main amd64 binutils amd64 2.28-5 [3770 kB]
-Get:51 http://deb.debian.org/debian stretch/main amd64 libc-dev-bin amd64 2.24-11+deb9u4 [259 kB]
-Get:52 http://deb.debian.org/debian stretch/main amd64 linux-libc-dev amd64 4.9.228-1 [1511 kB]
-Get:53 http://deb.debian.org/debian stretch/main amd64 libc6-dev amd64 2.24-11+deb9u4 [2364 kB]
-Get:54 http://deb.debian.org/debian stretch/main amd64 libisl15 amd64 0.18-1 [564 kB]
-Get:55 http://deb.debian.org/debian stretch/main amd64 libmpfr4 amd64 3.1.5-1 [556 kB]
-Get:56 http://deb.debian.org/debian stretch/main amd64 libmpc3 amd64 1.0.3-1+b2 [39.9 kB]
-Get:57 http://deb.debian.org/debian stretch/main amd64 cpp-6 amd64 6.3.0-18+deb9u1 [6584 kB]
-Get:58 http://deb.debian.org/debian stretch/main amd64 cpp amd64 4:6.3.0-4 [18.7 kB]
-Get:59 http://deb.debian.org/debian stretch/main amd64 libcc1-0 amd64 6.3.0-18+deb9u1 [30.6 kB]
-Get:60 http://deb.debian.org/debian stretch/main amd64 libgomp1 amd64 6.3.0-18+deb9u1 [73.3 kB]
-Get:61 http://deb.debian.org/debian stretch/main amd64 libitm1 amd64 6.3.0-18+deb9u1 [27.3 kB]
-Get:62 http://deb.debian.org/debian stretch/main amd64 libatomic1 amd64 6.3.0-18+deb9u1 [8966 B]
-Get:63 http://deb.debian.org/debian stretch/main amd64 libasan3 amd64 6.3.0-18+deb9u1 [311 kB]
-Get:64 http://deb.debian.org/debian stretch/main amd64 liblsan0 amd64 6.3.0-18+deb9u1 [115 kB]
-Get:65 http://deb.debian.org/debian stretch/main amd64 libtsan0 amd64 6.3.0-18+deb9u1 [257 kB]
-Get:66 http://deb.debian.org/debian stretch/main amd64 libubsan0 amd64 6.3.0-18+deb9u1 [107 kB]
-Get:67 http://deb.debian.org/debian stretch/main amd64 libcilkrts5 amd64 6.3.0-18+deb9u1 [40.5 kB]
-Get:68 http://deb.debian.org/debian stretch/main amd64 libmpx2 amd64 6.3.0-18+deb9u1 [11.2 kB]
-Get:69 http://deb.debian.org/debian stretch/main amd64 libquadmath0 amd64 6.3.0-18+deb9u1 [131 kB]
-Get:70 http://deb.debian.org/debian stretch/main amd64 libgcc-6-dev amd64 6.3.0-18+deb9u1 [2296 kB]
-Get:71 http://deb.debian.org/debian stretch/main amd64 gcc-6 amd64 6.3.0-18+deb9u1 [6900 kB]
-Get:72 http://deb.debian.org/debian stretch/main amd64 gcc amd64 4:6.3.0-4 [5196 B]
-Get:73 http://deb.debian.org/debian stretch/main amd64 libstdc++-6-dev amd64 6.3.0-18+deb9u1 [1420 kB]
-Get:74 http://deb.debian.org/debian stretch/main amd64 g++-6 amd64 6.3.0-18+deb9u1 [7094 kB]
-Get:75 http://deb.debian.org/debian stretch/main amd64 g++ amd64 4:6.3.0-4 [1546 B]
-Get:76 http://deb.debian.org/debian stretch/main amd64 make amd64 4.1-9.1 [302 kB]
-Get:77 http://deb.debian.org/debian stretch/main amd64 libdpkg-perl all 1.18.25 [1287 kB]
-Get:78 http://deb.debian.org/debian stretch/main amd64 patch amd64 2.7.5-1+deb9u2 [112 kB]
-Get:79 http://deb.debian.org/debian stretch/main amd64 dpkg-dev all 1.18.25 [1595 kB]
-Get:80 http://deb.debian.org/debian stretch/main amd64 build-essential amd64 12.3 [7346 B]
-Get:81 http://deb.debian.org/debian stretch/main amd64 libfakeroot amd64 1.21-3.1 [45.7 kB]
-Get:82 http://deb.debian.org/debian stretch/main amd64 fakeroot amd64 1.21-3.1 [85.6 kB]
-Get:83 http://deb.debian.org/debian stretch/main amd64 libglib2.0-0 amd64 2.50.3-2+deb9u2 [2692 kB]
-Get:84 http://deb.debian.org/debian stretch/main amd64 libgirepository-1.0-1 amd64 1.50.0-1+b1 [89.0 kB]
-Get:85 http://deb.debian.org/debian stretch/main amd64 gir1.2-glib-2.0 amd64 1.50.0-1+b1 [139 kB]
-Get:86 http://deb.debian.org/debian stretch/main amd64 libonig4 amd64 6.1.3-2 [146 kB]
-Get:87 http://deb.debian.org/debian stretch/main amd64 libjq1 amd64 1.5+dfsg-1.3 [123 kB]
-Get:88 http://deb.debian.org/debian stretch/main amd64 jq amd64 1.5+dfsg-1.3 [58.6 kB]
-Get:89 http://deb.debian.org/debian stretch/main amd64 junit all 3.8.2-8 [107 kB]
-Get:90 http://deb.debian.org/debian stretch/main amd64 libhamcrest-java all 1.3-6 [378 kB]
-Get:91 http://deb.debian.org/debian stretch/main amd64 junit4 all 4.12-4 [286 kB]
-Get:92 http://deb.debian.org/debian stretch/main amd64 libalgorithm-diff-perl all 1.19.03-1 [48.7 kB]
-Get:93 http://deb.debian.org/debian stretch/main amd64 libalgorithm-diff-xs-perl amd64 0.04-4+b2 [11.6 kB]
-Get:94 http://deb.debian.org/debian stretch/main amd64 libalgorithm-merge-perl all 0.08-3 [12.7 kB]
-Get:95 http://deb.debian.org/debian stretch/main amd64 libapache-pom-java all 10-2 [3870 B]
-Get:96 http://deb.debian.org/debian stretch/main amd64 libasm-java all 5.2-2 [596 kB]
-Get:97 http://deb.debian.org/debian stretch/main amd64 libatinject-jsr330-api-java all 1.0+ds1-2 [22.7 kB]
-Get:98 http://deb.debian.org/debian stretch/main amd64 libbsh-java all 2.0b4-18 [266 kB]
-Get:99 http://deb.debian.org/debian stretch/main amd64 libgeronimo-interceptor-3.0-spec-java all 1.0.1-3 [7138 B]
-Get:100 http://deb.debian.org/debian stretch/main amd64 libcdi-api-java all 1.0-2 [31.9 kB]
-Get:101 http://deb.debian.org/debian stretch/main amd64 libcglib-java all 3.2.4-1 [273 kB]
-Get:102 http://deb.debian.org/debian stretch/main amd64 libclassworlds-java all 1.1-final-5 [39.3 kB]
-Get:103 http://deb.debian.org/debian stretch/main amd64 libcommons-cli-java all 1.3.1-3 [55.2 kB]
-Get:104 http://deb.debian.org/debian stretch/main amd64 libcommons-codec-java all 1.10-1 [234 kB]
-Get:105 http://deb.debian.org/debian stretch/main amd64 libcommons-parent-java all 39-3 [9350 B]
-Get:106 http://deb.debian.org/debian stretch/main amd64 libcommons-logging-java all 1.2-1 [62.1 kB]
-Get:107 http://deb.debian.org/debian stretch/main amd64 libcommons-httpclient-java all 3.1-12 [298 kB]
-Get:108 http://deb.debian.org/debian stretch/main amd64 libcommons-io-java all 2.5-1 [206 kB]
-Get:109 http://deb.debian.org/debian stretch/main amd64 libcommons-lang-java all 2.6-6 [269 kB]
-Get:110 http://deb.debian.org/debian stretch/main amd64 libcommons-lang3-java all 3.5-1 [437 kB]
-Get:111 http://deb.debian.org/debian stretch/main amd64 libcommons-net-java all 3.5-1 [281 kB]
-Get:112 http://deb.debian.org/debian stretch/main amd64 libdbus-glib-1-2 amd64 0.108-2 [206 kB]
-Get:113 http://deb.debian.org/debian stretch/main amd64 libjaxen-java all 1.1.6-1+deb9u1 [205 kB]
-Get:114 http://deb.debian.org/debian stretch/main amd64 libisorelax-java all 20041111-9 [62.4 kB]
-Get:115 http://deb.debian.org/debian stretch/main amd64 librelaxng-datatype-java all 1.0+ds1-3 [11.7 kB]
-Get:116 http://deb.debian.org/debian stretch/main amd64 libxml-commons-resolver1.1-java all 1.2-7 [91.9 kB]
-Get:117 http://deb.debian.org/debian stretch/main amd64 libxml-commons-external-java all 1.4.01-2 [245 kB]
-Get:118 http://deb.debian.org/debian stretch/main amd64 libxerces2-java all 2.11.0-7 [1365 kB]
-Get:119 http://deb.debian.org/debian stretch/main amd64 libmsv-java all 2009.1+dfsg1-5 [771 kB]
-Get:120 http://deb.debian.org/debian stretch/main amd64 libxpp2-java all 2.1.10-7 [147 kB]
-Get:121 http://deb.debian.org/debian stretch/main amd64 libxpp3-java all 1.1.4c-2 [349 kB]
-Get:122 http://deb.debian.org/debian stretch/main amd64 libdom4j-java all 1.6.1+dfsg.3-2+deb9u1 [348 kB]
-Get:123 http://deb.debian.org/debian stretch/main amd64 libhttpcore-java all 4.4.6-1 [592 kB]
-Get:124 http://deb.debian.org/debian stretch/main amd64 libhttpclient-java all 4.5.2-2 [705 kB]
-Get:125 http://deb.debian.org/debian stretch/main amd64 libjaxp1.3-java all 1.3.05-2 [450 kB]
-Get:126 http://deb.debian.org/debian stretch/main amd64 libxalan2-java all 2.7.1-9 [3169 kB]
-Get:127 http://deb.debian.org/debian stretch/main amd64 libplexus-interpolation-java all 1.21-1 [61.1 kB]
-Get:128 http://deb.debian.org/debian stretch/main amd64 libplexus-utils-java all 1:1.5.15-4+deb9u1 [209 kB]
-Get:129 http://deb.debian.org/debian stretch/main amd64 libdoxia-core-java all 1.1.4-6 [148 kB]
-Get:130 http://deb.debian.org/debian stretch/main amd64 libobjenesis-java all 2.5.1-1 [46.1 kB]
-Get:131 http://deb.debian.org/debian stretch/main amd64 libeasymock-java all 3.4+ds-1 [113 kB]
-Get:132 http://deb.debian.org/debian stretch/main amd64 libslf4j-java all 1.7.22-1 [134 kB]
-Get:133 http://deb.debian.org/debian stretch/main amd64 libjzlib-java all 1.1.3-1 [69.9 kB]
-Get:134 http://deb.debian.org/debian stretch/main amd64 libjsch-java all 0.1.54-1 [284 kB]
-Get:135 http://deb.debian.org/debian stretch/main amd64 libjsoup-java all 1.10.2-1 [339 kB]
-Get:136 http://deb.debian.org/debian stretch/main amd64 libjsr305-java all 0.1~+svn49-10 [26.5 kB]
-Get:137 http://deb.debian.org/debian stretch/main amd64 libguava-java all 19.0-1 [2028 kB]
-Get:138 http://deb.debian.org/debian stretch/main amd64 libplexus-classworlds-java all 1.5.0-5 [48.2 kB]
-Get:139 http://deb.debian.org/debian stretch/main amd64 libxbean-java all 4.5-4 [814 kB]
-Get:140 http://deb.debian.org/debian stretch/main amd64 libplexus-containers-java all 1.0~beta3.0.7-8 [178 kB]
-Get:141 http://deb.debian.org/debian stretch/main amd64 libplexus-interactivity-api-java all 1.0-alpha-6-7 [14.1 kB]
-Get:142 http://deb.debian.org/debian stretch/main amd64 libwagon-java all 1.0.0-9 [133 kB]
-Get:143 http://deb.debian.org/debian stretch/main amd64 libeclipse-aether-java all 1.0.2-1 [564 kB]
-Get:144 http://deb.debian.org/debian stretch/main amd64 libexpat1-dev amd64 2.2.0-2+deb9u3 [134 kB]
-Get:145 http://deb.debian.org/debian stretch/main amd64 libfile-fcntllock-perl amd64 0.22-3+b2 [35.3 kB]
-Get:146 http://deb.debian.org/debian stretch/main amd64 libglib2.0-data all 2.50.3-2+deb9u2 [2517 kB]
-Get:147 http://deb.debian.org/debian stretch/main amd64 libaopalliance-java all 20070526-5 [9192 B]
-Get:148 http://deb.debian.org/debian stretch/main amd64 libguice-java all 4.0-3 [852 kB]
-Get:149 http://deb.debian.org/debian stretch/main amd64 libjdom1-java all 1.1.3-1 [150 kB]
-Get:150 http://deb.debian.org/debian stretch/main amd64 libjetty9-java all 9.2.21-1+deb9u1 [1806 kB]
-Get:151 http://deb.debian.org/debian stretch/main amd64 liblog4j1.2-java all 1.2.17-7+deb9u1 [431 kB]
-Get:152 http://deb.debian.org/debian stretch/main amd64 libmaven-parent-java all 21-2 [5744 B]
-Get:153 http://deb.debian.org/debian stretch/main amd64 libplexus-container-default-java all 1.0-alpha-9-stable-1-7 [150 kB]
-Get:154 http://deb.debian.org/debian stretch/main amd64 libplexus-ant-factory-java all 1.0~alpha2.1-3 [11.2 kB]
-Get:155 http://deb.debian.org/debian stretch/main amd64 libplexus-io-java all 1.0~alpha5-2 [44.7 kB]
-Get:156 http://deb.debian.org/debian stretch/main amd64 libplexus-archiver-java all 2.2-1+deb9u1 [171 kB]
-Get:157 http://deb.debian.org/debian stretch/main amd64 libplexus-bsh-factory-java all 1.0~alpha7-3.1 [7658 B]
-Get:158 http://deb.debian.org/debian stretch/main amd64 libplexus-cipher-java all 1.7-1 [14.5 kB]
-Get:159 http://deb.debian.org/debian stretch/main amd64 libplexus-sec-dispatcher-java all 1.3.1-6 [27.0 kB]
-Get:160 http://deb.debian.org/debian stretch/main amd64 libmaven2-core-java all 2.2.1-26 [714 kB]
-Get:161 http://deb.debian.org/debian stretch/main amd64 libplexus-classworlds2-java all 2.5.2-1 [46.7 kB]
-Get:162 http://deb.debian.org/debian stretch/main amd64 libplexus-component-annotations-java all 1.6-3 [6650 B]
-Get:163 http://deb.debian.org/debian stretch/main amd64 libplexus-utils2-java all 3.0.22-1 [235 kB]
-Get:164 http://deb.debian.org/debian stretch/main amd64 libplexus-container-default1.5-java all 1.6-3 [185 kB]
-Get:165 http://deb.debian.org/debian stretch/main amd64 libplexus-cli-java all 1.2-5 [9348 B]
-Get:166 http://deb.debian.org/debian stretch/main amd64 libqdox2-java all 2.0~M3-3 [257 kB]
-Get:167 http://deb.debian.org/debian stretch/main amd64 libplexus-component-metadata-java all 1.6-3 [104 kB]
-Get:168 http://deb.debian.org/debian stretch/main amd64 libplexus-containers1.5-java all 1.6-3 [3822 B]
-Get:169 http://deb.debian.org/debian stretch/main amd64 libsisu-inject-java all 0.3.2-2 [346 kB]
-Get:170 http://deb.debian.org/debian stretch/main amd64 libsisu-plexus-java all 0.3.2-1 [182 kB]
-Get:171 http://deb.debian.org/debian stretch/main amd64 libwagon2-java all 2.10-6 [2185 kB]
-Get:172 http://deb.debian.org/debian stretch/main amd64 libmaven3-core-java all 3.3.9-4 [1444 kB]
-Get:173 http://deb.debian.org/debian stretch/main amd64 libpython3-dev amd64 3.5.3-1 [18.7 kB]
-Get:174 http://deb.debian.org/debian stretch/main amd64 libxom-java all 1.2.10-1 [170 kB]
-Get:175 http://deb.debian.org/debian stretch/main amd64 manpages-dev all 4.10-2 [2145 kB]
-Get:176 http://deb.debian.org/debian stretch/main amd64 maven all 3.3.9-4 [20.2 kB]
-Get:177 http://deb.debian.org/debian stretch/main amd64 python-pip-whl all 9.0.1-2+deb9u1 [1399 kB]
-Get:178 http://deb.debian.org/debian stretch/main amd64 python3-cffi-backend amd64 1.9.1-2 [70.1 kB]
-Get:179 http://deb.debian.org/debian stretch/main amd64 python3-crypto amd64 2.6.1-7 [259 kB]
-Get:180 http://deb.debian.org/debian stretch/main amd64 python3-idna all 2.2-1 [32.7 kB]
-Get:181 http://deb.debian.org/debian stretch/main amd64 python3-pyasn1 all 0.1.9-2 [34.5 kB]
-Get:182 http://deb.debian.org/debian stretch/main amd64 python3-pkg-resources all 33.1.1-1 [137 kB]
-Get:183 http://deb.debian.org/debian stretch/main amd64 python3-setuptools all 33.1.1-1 [215 kB]
-Get:184 http://deb.debian.org/debian stretch/main amd64 python3-six all 1.10.0-3 [14.4 kB]
-Get:185 http://deb.debian.org/debian stretch/main amd64 python3-cryptography amd64 1.7.1-3+deb9u2 [211 kB]
-Get:186 http://deb.debian.org/debian stretch/main amd64 python3-dbus amd64 1.2.4-1+b1 [184 kB]
-Get:187 http://deb.debian.org/debian stretch/main amd64 python3-dev amd64 3.5.3-1 [1154 B]
-Get:188 http://deb.debian.org/debian stretch/main amd64 python3-gi amd64 3.22.0-2 [473 kB]
-Get:189 http://deb.debian.org/debian stretch/main amd64 python3-secretstorage all 2.3.1-2 [14.2 kB]
-Get:190 http://deb.debian.org/debian stretch/main amd64 python3-keyring all 10.1-1 [36.8 kB]
-Get:191 http://deb.debian.org/debian stretch/main amd64 python3-keyrings.alt all 1.3-1 [16.2 kB]
-Get:192 http://deb.debian.org/debian stretch/main amd64 python3-pip all 9.0.1-2+deb9u1 [142 kB]
-Get:193 http://deb.debian.org/debian stretch/main amd64 python3-wheel all 0.29.0-2 [51.8 kB]
-Get:194 http://deb.debian.org/debian stretch/main amd64 python3-xdg all 0.25-4 [35.7 kB]
-Get:195 http://deb.debian.org/debian stretch/main amd64 shared-mime-info amd64 1.8-1+deb9u1 [731 kB]
-Get:196 http://deb.debian.org/debian stretch/main amd64 tree amd64 1.7.0-5 [46.1 kB]
-Get:197 http://deb.debian.org/debian stretch/main amd64 vim-runtime all 2:8.0.0197-4+deb9u3 [5409 kB]
-Get:198 http://deb.debian.org/debian stretch/main amd64 vim amd64 2:8.0.0197-4+deb9u3 [1034 kB]
-Get:199 http://deb.debian.org/debian stretch/main amd64 xdg-user-dirs amd64 0.15-2+b1 [52.2 kB]
-Get:200 http://deb.debian.org/debian stretch/main amd64 xml-core all 0.17 [23.2 kB]
-Get:201 http://deb.debian.org/debian stretch/main amd64 zip amd64 3.0-11+b1 [234 kB]
-[91mdebconf: delaying package configuration, since apt-utils is not installed
-[0mFetched 173 MB in 10s (16.4 MB/s)
-Selecting previously unselected package liblocale-gettext-perl.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 12463 files and directories currently installed.)
-Preparing to unpack .../0-liblocale-gettext-perl_1.07-3+b1_amd64.deb ...
-Unpacking liblocale-gettext-perl (1.07-3+b1) ...
-Selecting previously unselected package libxau6:amd64.
-Preparing to unpack .../1-libxau6_1%3a1.0.8-1_amd64.deb ...
-Unpacking libxau6:amd64 (1:1.0.8-1) ...
-Selecting previously unselected package libpython3.5-minimal:amd64.
-Preparing to unpack .../2-libpython3.5-minimal_3.5.3-1+deb9u2_amd64.deb ...
-Unpacking libpython3.5-minimal:amd64 (3.5.3-1+deb9u2) ...
-Selecting previously unselected package python3.5-minimal.
-Preparing to unpack .../3-python3.5-minimal_3.5.3-1+deb9u2_amd64.deb ...
-Unpacking python3.5-minimal (3.5.3-1+deb9u2) ...
-Selecting previously unselected package python3-minimal.
-Preparing to unpack .../4-python3-minimal_3.5.3-1_amd64.deb ...
-Unpacking python3-minimal (3.5.3-1) ...
-Selecting previously unselected package libmpdec2:amd64.
-Preparing to unpack .../5-libmpdec2_2.4.2-1_amd64.deb ...
-Unpacking libmpdec2:amd64 (2.4.2-1) ...
-Selecting previously unselected package libpython3.5-stdlib:amd64.
-Preparing to unpack .../6-libpython3.5-stdlib_3.5.3-1+deb9u2_amd64.deb ...
-Unpacking libpython3.5-stdlib:amd64 (3.5.3-1+deb9u2) ...
-Selecting previously unselected package python3.5.
-Preparing to unpack .../7-python3.5_3.5.3-1+deb9u2_amd64.deb ...
-Unpacking python3.5 (3.5.3-1+deb9u2) ...
-Selecting previously unselected package libpython3-stdlib:amd64.
-Preparing to unpack .../8-libpython3-stdlib_3.5.3-1_amd64.deb ...
-Unpacking libpython3-stdlib:amd64 (3.5.3-1) ...
-Selecting previously unselected package dh-python.
-Preparing to unpack .../9-dh-python_2.20170125_all.deb ...
-Unpacking dh-python (2.20170125) ...
-Setting up libpython3.5-minimal:amd64 (3.5.3-1+deb9u2) ...
-Setting up python3.5-minimal (3.5.3-1+deb9u2) ...
-Setting up python3-minimal (3.5.3-1) ...
-Selecting previously unselected package python3.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 13398 files and directories currently installed.)
-Preparing to unpack .../000-python3_3.5.3-1_amd64.deb ...
-Unpacking python3 (3.5.3-1) ...
-Selecting previously unselected package sgml-base.
-Preparing to unpack .../001-sgml-base_1.29_all.deb ...
-Unpacking sgml-base (1.29) ...
-Selecting previously unselected package xxd.
-Preparing to unpack .../002-xxd_2%3a8.0.0197-4+deb9u3_amd64.deb ...
-Unpacking xxd (2:8.0.0197-4+deb9u3) ...
-Selecting previously unselected package vim-common.
-Preparing to unpack .../003-vim-common_2%3a8.0.0197-4+deb9u3_all.deb ...
-Unpacking vim-common (2:8.0.0197-4+deb9u3) ...
-Selecting previously unselected package libapparmor1:amd64.
-Preparing to unpack .../004-libapparmor1_2.11.0-3+deb9u2_amd64.deb ...
-Unpacking libapparmor1:amd64 (2.11.0-3+deb9u2) ...
-Selecting previously unselected package libdbus-1-3:amd64.
-Preparing to unpack .../005-libdbus-1-3_1.10.32-0+deb9u1_amd64.deb ...
-Unpacking libdbus-1-3:amd64 (1.10.32-0+deb9u1) ...
-Selecting previously unselected package dbus.
-Preparing to unpack .../006-dbus_1.10.32-0+deb9u1_amd64.deb ...
-Unpacking dbus (1.10.32-0+deb9u1) ...
-Selecting previously unselected package libgpm2:amd64.
-Preparing to unpack .../007-libgpm2_1.20.4-6.2+b1_amd64.deb ...
-Unpacking libgpm2:amd64 (1.20.4-6.2+b1) ...
-Selecting previously unselected package libicu57:amd64.
-Preparing to unpack .../008-libicu57_57.1-6+deb9u4_amd64.deb ...
-Unpacking libicu57:amd64 (57.1-6+deb9u4) ...
-Selecting previously unselected package libxml2:amd64.
-Preparing to unpack .../009-libxml2_2.9.4+dfsg1-2.2+deb9u2_amd64.deb ...
-Unpacking libxml2:amd64 (2.9.4+dfsg1-2.2+deb9u2) ...
-Selecting previously unselected package manpages.
-Preparing to unpack .../010-manpages_4.10-2_all.deb ...
-Unpacking manpages (4.10-2) ...
-Selecting previously unselected package libnspr4:amd64.
-Preparing to unpack .../011-libnspr4_2%3a4.12-6_amd64.deb ...
-Unpacking libnspr4:amd64 (2:4.12-6) ...
-Selecting previously unselected package libnss3:amd64.
-Preparing to unpack .../012-libnss3_2%3a3.26.2-1.1+deb9u1_amd64.deb ...
-Unpacking libnss3:amd64 (2:3.26.2-1.1+deb9u1) ...
-Selecting previously unselected package ca-certificates-java.
-Preparing to unpack .../013-ca-certificates-java_20170929~deb9u3_all.deb ...
-Unpacking ca-certificates-java (20170929~deb9u3) ...
-Selecting previously unselected package java-common.
-Preparing to unpack .../014-java-common_0.58+deb9u1_all.deb ...
-Unpacking java-common (0.58+deb9u1) ...
-Selecting previously unselected package libavahi-common-data:amd64.
-Preparing to unpack .../015-libavahi-common-data_0.6.32-2_amd64.deb ...
-Unpacking libavahi-common-data:amd64 (0.6.32-2) ...
-Selecting previously unselected package libavahi-common3:amd64.
-Preparing to unpack .../016-libavahi-common3_0.6.32-2_amd64.deb ...
-Unpacking libavahi-common3:amd64 (0.6.32-2) ...
-Selecting previously unselected package libavahi-client3:amd64.
-Preparing to unpack .../017-libavahi-client3_0.6.32-2_amd64.deb ...
-Unpacking libavahi-client3:amd64 (0.6.32-2) ...
-Selecting previously unselected package libcups2:amd64.
-Preparing to unpack .../018-libcups2_2.2.1-8+deb9u6_amd64.deb ...
-Unpacking libcups2:amd64 (2.2.1-8+deb9u6) ...
-Selecting previously unselected package liblcms2-2:amd64.
-Preparing to unpack .../019-liblcms2-2_2.8-4+deb9u1_amd64.deb ...
-Unpacking liblcms2-2:amd64 (2.8-4+deb9u1) ...
-Selecting previously unselected package libjpeg62-turbo:amd64.
-Preparing to unpack .../020-libjpeg62-turbo_1%3a1.5.1-2_amd64.deb ...
-Unpacking libjpeg62-turbo:amd64 (1:1.5.1-2) ...
-Selecting previously unselected package libpcsclite1:amd64.
-Preparing to unpack .../021-libpcsclite1_1.8.20-1_amd64.deb ...
-Unpacking libpcsclite1:amd64 (1.8.20-1) ...
-Selecting previously unselected package libxdmcp6:amd64.
-Preparing to unpack .../022-libxdmcp6_1%3a1.1.2-3_amd64.deb ...
-Unpacking libxdmcp6:amd64 (1:1.1.2-3) ...
-Selecting previously unselected package libxcb1:amd64.
-Preparing to unpack .../023-libxcb1_1.12-1_amd64.deb ...
-Unpacking libxcb1:amd64 (1.12-1) ...
-Selecting previously unselected package libx11-data.
-Preparing to unpack .../024-libx11-data_2%3a1.6.4-3+deb9u1_all.deb ...
-Unpacking libx11-data (2:1.6.4-3+deb9u1) ...
-Selecting previously unselected package libx11-6:amd64.
-Preparing to unpack .../025-libx11-6_2%3a1.6.4-3+deb9u1_amd64.deb ...
-Unpacking libx11-6:amd64 (2:1.6.4-3+deb9u1) ...
-Selecting previously unselected package libxext6:amd64.
-Preparing to unpack .../026-libxext6_2%3a1.3.3-1+b2_amd64.deb ...
-Unpacking libxext6:amd64 (2:1.3.3-1+b2) ...
-Selecting previously unselected package libxi6:amd64.
-Preparing to unpack .../027-libxi6_2%3a1.7.9-1_amd64.deb ...
-Unpacking libxi6:amd64 (2:1.7.9-1) ...
-Selecting previously unselected package libxrender1:amd64.
-Preparing to unpack .../028-libxrender1_1%3a0.9.10-1_amd64.deb ...
-Unpacking libxrender1:amd64 (1:0.9.10-1) ...
-Selecting previously unselected package x11-common.
-Preparing to unpack .../029-x11-common_1%3a7.7+19_all.deb ...
-Unpacking x11-common (1:7.7+19) ...
-Selecting previously unselected package libxtst6:amd64.
-Preparing to unpack .../030-libxtst6_2%3a1.2.3-1_amd64.deb ...
-Unpacking libxtst6:amd64 (2:1.2.3-1) ...
-Selecting previously unselected package openjdk-8-jre-headless:amd64.
-Preparing to unpack .../031-openjdk-8-jre-headless_8u252-b09-1~deb9u1_amd64.deb ...
-Unpacking openjdk-8-jre-headless:amd64 (8u252-b09-1~deb9u1) ...
-Selecting previously unselected package default-jre-headless.
-Preparing to unpack .../032-default-jre-headless_2%3a1.8-58+deb9u1_amd64.deb ...
-Unpacking default-jre-headless (2:1.8-58+deb9u1) ...
-Selecting previously unselected package ant.
-Preparing to unpack .../033-ant_1.9.9-1+deb9u1_all.deb ...
-Unpacking ant (1.9.9-1+deb9u1) ...
-Selecting previously unselected package ant-optional.
-Preparing to unpack .../034-ant-optional_1.9.9-1+deb9u1_all.deb ...
-Unpacking ant-optional (1.9.9-1+deb9u1) ...
-Selecting previously unselected package binutils.
-Preparing to unpack .../035-binutils_2.28-5_amd64.deb ...
-Unpacking binutils (2.28-5) ...
-Selecting previously unselected package libc-dev-bin.
-Preparing to unpack .../036-libc-dev-bin_2.24-11+deb9u4_amd64.deb ...
-Unpacking libc-dev-bin (2.24-11+deb9u4) ...
-Selecting previously unselected package linux-libc-dev:amd64.
-Preparing to unpack .../037-linux-libc-dev_4.9.228-1_amd64.deb ...
-Unpacking linux-libc-dev:amd64 (4.9.228-1) ...
-Selecting previously unselected package libc6-dev:amd64.
-Preparing to unpack .../038-libc6-dev_2.24-11+deb9u4_amd64.deb ...
-Unpacking libc6-dev:amd64 (2.24-11+deb9u4) ...
-Selecting previously unselected package libisl15:amd64.
-Preparing to unpack .../039-libisl15_0.18-1_amd64.deb ...
-Unpacking libisl15:amd64 (0.18-1) ...
-Selecting previously unselected package libmpfr4:amd64.
-Preparing to unpack .../040-libmpfr4_3.1.5-1_amd64.deb ...
-Unpacking libmpfr4:amd64 (3.1.5-1) ...
-Selecting previously unselected package libmpc3:amd64.
-Preparing to unpack .../041-libmpc3_1.0.3-1+b2_amd64.deb ...
-Unpacking libmpc3:amd64 (1.0.3-1+b2) ...
-Selecting previously unselected package cpp-6.
-Preparing to unpack .../042-cpp-6_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking cpp-6 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package cpp.
-Preparing to unpack .../043-cpp_4%3a6.3.0-4_amd64.deb ...
-Unpacking cpp (4:6.3.0-4) ...
-Selecting previously unselected package libcc1-0:amd64.
-Preparing to unpack .../044-libcc1-0_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libcc1-0:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package libgomp1:amd64.
-Preparing to unpack .../045-libgomp1_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libgomp1:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package libitm1:amd64.
-Preparing to unpack .../046-libitm1_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libitm1:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package libatomic1:amd64.
-Preparing to unpack .../047-libatomic1_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libatomic1:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package libasan3:amd64.
-Preparing to unpack .../048-libasan3_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libasan3:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package liblsan0:amd64.
-Preparing to unpack .../049-liblsan0_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking liblsan0:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package libtsan0:amd64.
-Preparing to unpack .../050-libtsan0_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libtsan0:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package libubsan0:amd64.
-Preparing to unpack .../051-libubsan0_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libubsan0:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package libcilkrts5:amd64.
-Preparing to unpack .../052-libcilkrts5_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libcilkrts5:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package libmpx2:amd64.
-Preparing to unpack .../053-libmpx2_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libmpx2:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package libquadmath0:amd64.
-Preparing to unpack .../054-libquadmath0_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libquadmath0:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package libgcc-6-dev:amd64.
-Preparing to unpack .../055-libgcc-6-dev_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libgcc-6-dev:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package gcc-6.
-Preparing to unpack .../056-gcc-6_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking gcc-6 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package gcc.
-Preparing to unpack .../057-gcc_4%3a6.3.0-4_amd64.deb ...
-Unpacking gcc (4:6.3.0-4) ...
-Selecting previously unselected package libstdc++-6-dev:amd64.
-Preparing to unpack .../058-libstdc++-6-dev_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking libstdc++-6-dev:amd64 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package g++-6.
-Preparing to unpack .../059-g++-6_6.3.0-18+deb9u1_amd64.deb ...
-Unpacking g++-6 (6.3.0-18+deb9u1) ...
-Selecting previously unselected package g++.
-Preparing to unpack .../060-g++_4%3a6.3.0-4_amd64.deb ...
-Unpacking g++ (4:6.3.0-4) ...
-Selecting previously unselected package make.
-Preparing to unpack .../061-make_4.1-9.1_amd64.deb ...
-Unpacking make (4.1-9.1) ...
-Selecting previously unselected package libdpkg-perl.
-Preparing to unpack .../062-libdpkg-perl_1.18.25_all.deb ...
-Unpacking libdpkg-perl (1.18.25) ...
-Selecting previously unselected package patch.
-Preparing to unpack .../063-patch_2.7.5-1+deb9u2_amd64.deb ...
-Unpacking patch (2.7.5-1+deb9u2) ...
-Selecting previously unselected package dpkg-dev.
-Preparing to unpack .../064-dpkg-dev_1.18.25_all.deb ...
-Unpacking dpkg-dev (1.18.25) ...
-Selecting previously unselected package build-essential.
-Preparing to unpack .../065-build-essential_12.3_amd64.deb ...
-Unpacking build-essential (12.3) ...
-Selecting previously unselected package libfakeroot:amd64.
-Preparing to unpack .../066-libfakeroot_1.21-3.1_amd64.deb ...
-Unpacking libfakeroot:amd64 (1.21-3.1) ...
-Selecting previously unselected package fakeroot.
-Preparing to unpack .../067-fakeroot_1.21-3.1_amd64.deb ...
-Unpacking fakeroot (1.21-3.1) ...
-Selecting previously unselected package libglib2.0-0:amd64.
-Preparing to unpack .../068-libglib2.0-0_2.50.3-2+deb9u2_amd64.deb ...
-Unpacking libglib2.0-0:amd64 (2.50.3-2+deb9u2) ...
-Selecting previously unselected package libgirepository-1.0-1:amd64.
-Preparing to unpack .../069-libgirepository-1.0-1_1.50.0-1+b1_amd64.deb ...
-Unpacking libgirepository-1.0-1:amd64 (1.50.0-1+b1) ...
-Selecting previously unselected package gir1.2-glib-2.0:amd64.
-Preparing to unpack .../070-gir1.2-glib-2.0_1.50.0-1+b1_amd64.deb ...
-Unpacking gir1.2-glib-2.0:amd64 (1.50.0-1+b1) ...
-Selecting previously unselected package libonig4:amd64.
-Preparing to unpack .../071-libonig4_6.1.3-2_amd64.deb ...
-Unpacking libonig4:amd64 (6.1.3-2) ...
-Selecting previously unselected package libjq1:amd64.
-Preparing to unpack .../072-libjq1_1.5+dfsg-1.3_amd64.deb ...
-Unpacking libjq1:amd64 (1.5+dfsg-1.3) ...
-Selecting previously unselected package jq.
-Preparing to unpack .../073-jq_1.5+dfsg-1.3_amd64.deb ...
-Unpacking jq (1.5+dfsg-1.3) ...
-Selecting previously unselected package junit.
-Preparing to unpack .../074-junit_3.8.2-8_all.deb ...
-Unpacking junit (3.8.2-8) ...
-Selecting previously unselected package libhamcrest-java.
-Preparing to unpack .../075-libhamcrest-java_1.3-6_all.deb ...
-Unpacking libhamcrest-java (1.3-6) ...
-Selecting previously unselected package junit4.
-Preparing to unpack .../076-junit4_4.12-4_all.deb ...
-Unpacking junit4 (4.12-4) ...
-Selecting previously unselected package libalgorithm-diff-perl.
-Preparing to unpack .../077-libalgorithm-diff-perl_1.19.03-1_all.deb ...
-Unpacking libalgorithm-diff-perl (1.19.03-1) ...
-Selecting previously unselected package libalgorithm-diff-xs-perl.
-Preparing to unpack .../078-libalgorithm-diff-xs-perl_0.04-4+b2_amd64.deb ...
-Unpacking libalgorithm-diff-xs-perl (0.04-4+b2) ...
-Selecting previously unselected package libalgorithm-merge-perl.
-Preparing to unpack .../079-libalgorithm-merge-perl_0.08-3_all.deb ...
-Unpacking libalgorithm-merge-perl (0.08-3) ...
-Selecting previously unselected package libapache-pom-java.
-Preparing to unpack .../080-libapache-pom-java_10-2_all.deb ...
-Unpacking libapache-pom-java (10-2) ...
-Selecting previously unselected package libasm-java.
-Preparing to unpack .../081-libasm-java_5.2-2_all.deb ...
-Unpacking libasm-java (5.2-2) ...
-Selecting previously unselected package libatinject-jsr330-api-java.
-Preparing to unpack .../082-libatinject-jsr330-api-java_1.0+ds1-2_all.deb ...
-Unpacking libatinject-jsr330-api-java (1.0+ds1-2) ...
-Selecting previously unselected package libbsh-java.
-Preparing to unpack .../083-libbsh-java_2.0b4-18_all.deb ...
-Unpacking libbsh-java (2.0b4-18) ...
-Selecting previously unselected package libgeronimo-interceptor-3.0-spec-java.
-Preparing to unpack .../084-libgeronimo-interceptor-3.0-spec-java_1.0.1-3_all.deb ...
-Unpacking libgeronimo-interceptor-3.0-spec-java (1.0.1-3) ...
-Selecting previously unselected package libservlet3.1-java.
-Preparing to unpack .../085-libservlet3.1-java_8.5.54-0+deb9u2_all.deb ...
-Unpacking libservlet3.1-java (8.5.54-0+deb9u2) ...
-Selecting previously unselected package libcdi-api-java.
-Preparing to unpack .../086-libcdi-api-java_1.0-2_all.deb ...
-Unpacking libcdi-api-java (1.0-2) ...
-Selecting previously unselected package libcglib-java.
-Preparing to unpack .../087-libcglib-java_3.2.4-1_all.deb ...
-Unpacking libcglib-java (3.2.4-1) ...
-Selecting previously unselected package libclassworlds-java.
-Preparing to unpack .../088-libclassworlds-java_1.1-final-5_all.deb ...
-Unpacking libclassworlds-java (1.1-final-5) ...
-Selecting previously unselected package libcommons-cli-java.
-Preparing to unpack .../089-libcommons-cli-java_1.3.1-3_all.deb ...
-Unpacking libcommons-cli-java (1.3.1-3) ...
-Selecting previously unselected package libcommons-codec-java.
-Preparing to unpack .../090-libcommons-codec-java_1.10-1_all.deb ...
-Unpacking libcommons-codec-java (1.10-1) ...
-Selecting previously unselected package libcommons-parent-java.
-Preparing to unpack .../091-libcommons-parent-java_39-3_all.deb ...
-Unpacking libcommons-parent-java (39-3) ...
-Selecting previously unselected package libcommons-logging-java.
-Preparing to unpack .../092-libcommons-logging-java_1.2-1_all.deb ...
-Unpacking libcommons-logging-java (1.2-1) ...
-Selecting previously unselected package libcommons-httpclient-java.
-Preparing to unpack .../093-libcommons-httpclient-java_3.1-12_all.deb ...
-Unpacking libcommons-httpclient-java (3.1-12) ...
-Selecting previously unselected package libcommons-io-java.
-Preparing to unpack .../094-libcommons-io-java_2.5-1_all.deb ...
-Unpacking libcommons-io-java (2.5-1) ...
-Selecting previously unselected package libcommons-lang-java.
-Preparing to unpack .../095-libcommons-lang-java_2.6-6_all.deb ...
-Unpacking libcommons-lang-java (2.6-6) ...
-Selecting previously unselected package libcommons-lang3-java.
-Preparing to unpack .../096-libcommons-lang3-java_3.5-1_all.deb ...
-Unpacking libcommons-lang3-java (3.5-1) ...
-Selecting previously unselected package libcommons-net-java.
-Preparing to unpack .../097-libcommons-net-java_3.5-1_all.deb ...
-Unpacking libcommons-net-java (3.5-1) ...
-Selecting previously unselected package libdbus-glib-1-2:amd64.
-Preparing to unpack .../098-libdbus-glib-1-2_0.108-2_amd64.deb ...
-Unpacking libdbus-glib-1-2:amd64 (0.108-2) ...
-Selecting previously unselected package libjaxen-java.
-Preparing to unpack .../099-libjaxen-java_1.1.6-1+deb9u1_all.deb ...
-Unpacking libjaxen-java (1.1.6-1+deb9u1) ...
-Selecting previously unselected package libisorelax-java.
-Preparing to unpack .../100-libisorelax-java_20041111-9_all.deb ...
-Unpacking libisorelax-java (20041111-9) ...
-Selecting previously unselected package librelaxng-datatype-java.
-Preparing to unpack .../101-librelaxng-datatype-java_1.0+ds1-3_all.deb ...
-Unpacking librelaxng-datatype-java (1.0+ds1-3) ...
-Selecting previously unselected package libxml-commons-resolver1.1-java.
-Preparing to unpack .../102-libxml-commons-resolver1.1-java_1.2-7_all.deb ...
-Unpacking libxml-commons-resolver1.1-java (1.2-7) ...
-Selecting previously unselected package libxml-commons-external-java.
-Preparing to unpack .../103-libxml-commons-external-java_1.4.01-2_all.deb ...
-Unpacking libxml-commons-external-java (1.4.01-2) ...
-Selecting previously unselected package libxerces2-java.
-Preparing to unpack .../104-libxerces2-java_2.11.0-7_all.deb ...
-Unpacking libxerces2-java (2.11.0-7) ...
-Selecting previously unselected package libmsv-java.
-Preparing to unpack .../105-libmsv-java_2009.1+dfsg1-5_all.deb ...
-Unpacking libmsv-java (2009.1+dfsg1-5) ...
-Selecting previously unselected package libxpp2-java.
-Preparing to unpack .../106-libxpp2-java_2.1.10-7_all.deb ...
-Unpacking libxpp2-java (2.1.10-7) ...
-Selecting previously unselected package libxpp3-java.
-Preparing to unpack .../107-libxpp3-java_1.1.4c-2_all.deb ...
-Unpacking libxpp3-java (1.1.4c-2) ...
-Selecting previously unselected package libdom4j-java.
-Preparing to unpack .../108-libdom4j-java_1.6.1+dfsg.3-2+deb9u1_all.deb ...
-Unpacking libdom4j-java (1.6.1+dfsg.3-2+deb9u1) ...
-Selecting previously unselected package libhttpcore-java.
-Preparing to unpack .../109-libhttpcore-java_4.4.6-1_all.deb ...
-Unpacking libhttpcore-java (4.4.6-1) ...
-Selecting previously unselected package libhttpclient-java.
-Preparing to unpack .../110-libhttpclient-java_4.5.2-2_all.deb ...
-Unpacking libhttpclient-java (4.5.2-2) ...
-Selecting previously unselected package libjaxp1.3-java.
-Preparing to unpack .../111-libjaxp1.3-java_1.3.05-2_all.deb ...
-Unpacking libjaxp1.3-java (1.3.05-2) ...
-Selecting previously unselected package libxalan2-java.
-Preparing to unpack .../112-libxalan2-java_2.7.1-9_all.deb ...
-Unpacking libxalan2-java (2.7.1-9) ...
-Selecting previously unselected package libplexus-interpolation-java.
-Preparing to unpack .../113-libplexus-interpolation-java_1.21-1_all.deb ...
-Unpacking libplexus-interpolation-java (1.21-1) ...
-Selecting previously unselected package libplexus-utils-java.
-Preparing to unpack .../114-libplexus-utils-java_1%3a1.5.15-4+deb9u1_all.deb ...
-Unpacking libplexus-utils-java (1:1.5.15-4+deb9u1) ...
-Selecting previously unselected package libdoxia-core-java.
-Preparing to unpack .../115-libdoxia-core-java_1.1.4-6_all.deb ...
-Unpacking libdoxia-core-java (1.1.4-6) ...
-Selecting previously unselected package libobjenesis-java.
-Preparing to unpack .../116-libobjenesis-java_2.5.1-1_all.deb ...
-Unpacking libobjenesis-java (2.5.1-1) ...
-Selecting previously unselected package libeasymock-java.
-Preparing to unpack .../117-libeasymock-java_3.4+ds-1_all.deb ...
-Unpacking libeasymock-java (3.4+ds-1) ...
-Selecting previously unselected package libslf4j-java.
-Preparing to unpack .../118-libslf4j-java_1.7.22-1_all.deb ...
-Unpacking libslf4j-java (1.7.22-1) ...
-Selecting previously unselected package libjzlib-java.
-Preparing to unpack .../119-libjzlib-java_1.1.3-1_all.deb ...
-Unpacking libjzlib-java (1.1.3-1) ...
-Selecting previously unselected package libjsch-java.
-Preparing to unpack .../120-libjsch-java_0.1.54-1_all.deb ...
-Unpacking libjsch-java (0.1.54-1) ...
-Selecting previously unselected package libjsoup-java.
-Preparing to unpack .../121-libjsoup-java_1.10.2-1_all.deb ...
-Unpacking libjsoup-java (1.10.2-1) ...
-Selecting previously unselected package libjsr305-java.
-Preparing to unpack .../122-libjsr305-java_0.1~+svn49-10_all.deb ...
-Unpacking libjsr305-java (0.1~+svn49-10) ...
-Selecting previously unselected package libguava-java.
-Preparing to unpack .../123-libguava-java_19.0-1_all.deb ...
-Unpacking libguava-java (19.0-1) ...
-Selecting previously unselected package libplexus-classworlds-java.
-Preparing to unpack .../124-libplexus-classworlds-java_1.5.0-5_all.deb ...
-Unpacking libplexus-classworlds-java (1.5.0-5) ...
-Selecting previously unselected package libxbean-java.
-Preparing to unpack .../125-libxbean-java_4.5-4_all.deb ...
-Unpacking libxbean-java (4.5-4) ...
-Selecting previously unselected package libplexus-containers-java.
-Preparing to unpack .../126-libplexus-containers-java_1.0~beta3.0.7-8_all.deb ...
-Unpacking libplexus-containers-java (1.0~beta3.0.7-8) ...
-Selecting previously unselected package libplexus-interactivity-api-java.
-Preparing to unpack .../127-libplexus-interactivity-api-java_1.0-alpha-6-7_all.deb ...
-Unpacking libplexus-interactivity-api-java (1.0-alpha-6-7) ...
-Selecting previously unselected package libwagon-java.
-Preparing to unpack .../128-libwagon-java_1.0.0-9_all.deb ...
-Unpacking libwagon-java (1.0.0-9) ...
-Selecting previously unselected package libeclipse-aether-java.
-Preparing to unpack .../129-libeclipse-aether-java_1.0.2-1_all.deb ...
-Unpacking libeclipse-aether-java (1.0.2-1) ...
-Selecting previously unselected package libexpat1-dev:amd64.
-Preparing to unpack .../130-libexpat1-dev_2.2.0-2+deb9u3_amd64.deb ...
-Unpacking libexpat1-dev:amd64 (2.2.0-2+deb9u3) ...
-Selecting previously unselected package libfile-fcntllock-perl.
-Preparing to unpack .../131-libfile-fcntllock-perl_0.22-3+b2_amd64.deb ...
-Unpacking libfile-fcntllock-perl (0.22-3+b2) ...
-Selecting previously unselected package libglib2.0-data.
-Preparing to unpack .../132-libglib2.0-data_2.50.3-2+deb9u2_all.deb ...
-Unpacking libglib2.0-data (2.50.3-2+deb9u2) ...
-Selecting previously unselected package libaopalliance-java.
-Preparing to unpack .../133-libaopalliance-java_20070526-5_all.deb ...
-Unpacking libaopalliance-java (20070526-5) ...
-Selecting previously unselected package libguice-java.
-Preparing to unpack .../134-libguice-java_4.0-3_all.deb ...
-Unpacking libguice-java (4.0-3) ...
-Selecting previously unselected package libjdom1-java.
-Preparing to unpack .../135-libjdom1-java_1.1.3-1_all.deb ...
-Unpacking libjdom1-java (1.1.3-1) ...
-Selecting previously unselected package libjetty9-java.
-Preparing to unpack .../136-libjetty9-java_9.2.21-1+deb9u1_all.deb ...
-Unpacking libjetty9-java (9.2.21-1+deb9u1) ...
-Selecting previously unselected package liblog4j1.2-java.
-Preparing to unpack .../137-liblog4j1.2-java_1.2.17-7+deb9u1_all.deb ...
-Unpacking liblog4j1.2-java (1.2.17-7+deb9u1) ...
-Selecting previously unselected package libmaven-parent-java.
-Preparing to unpack .../138-libmaven-parent-java_21-2_all.deb ...
-Unpacking libmaven-parent-java (21-2) ...
-Selecting previously unselected package libplexus-container-default-java.
-Preparing to unpack .../139-libplexus-container-default-java_1.0-alpha-9-stable-1-7_all.deb ...
-Unpacking libplexus-container-default-java (1.0-alpha-9-stable-1-7) ...
-Selecting previously unselected package libplexus-ant-factory-java.
-Preparing to unpack .../140-libplexus-ant-factory-java_1.0~alpha2.1-3_all.deb ...
-Unpacking libplexus-ant-factory-java (1.0~alpha2.1-3) ...
-Selecting previously unselected package libplexus-io-java.
-Preparing to unpack .../141-libplexus-io-java_1.0~alpha5-2_all.deb ...
-Unpacking libplexus-io-java (1.0~alpha5-2) ...
-Selecting previously unselected package libplexus-archiver-java.
-Preparing to unpack .../142-libplexus-archiver-java_2.2-1+deb9u1_all.deb ...
-Unpacking libplexus-archiver-java (2.2-1+deb9u1) ...
-Selecting previously unselected package libplexus-bsh-factory-java.
-Preparing to unpack .../143-libplexus-bsh-factory-java_1.0~alpha7-3.1_all.deb ...
-Unpacking libplexus-bsh-factory-java (1.0~alpha7-3.1) ...
-Selecting previously unselected package libplexus-cipher-java.
-Preparing to unpack .../144-libplexus-cipher-java_1.7-1_all.deb ...
-Unpacking libplexus-cipher-java (1.7-1) ...
-Selecting previously unselected package libplexus-sec-dispatcher-java.
-Preparing to unpack .../145-libplexus-sec-dispatcher-java_1.3.1-6_all.deb ...
-Unpacking libplexus-sec-dispatcher-java (1.3.1-6) ...
-Selecting previously unselected package libmaven2-core-java.
-Preparing to unpack .../146-libmaven2-core-java_2.2.1-26_all.deb ...
-Unpacking libmaven2-core-java (2.2.1-26) ...
-Selecting previously unselected package libplexus-classworlds2-java.
-Preparing to unpack .../147-libplexus-classworlds2-java_2.5.2-1_all.deb ...
-Unpacking libplexus-classworlds2-java (2.5.2-1) ...
-Selecting previously unselected package libplexus-component-annotations-java.
-Preparing to unpack .../148-libplexus-component-annotations-java_1.6-3_all.deb ...
-Unpacking libplexus-component-annotations-java (1.6-3) ...
-Selecting previously unselected package libplexus-utils2-java.
-Preparing to unpack .../149-libplexus-utils2-java_3.0.22-1_all.deb ...
-Unpacking libplexus-utils2-java (3.0.22-1) ...
-Selecting previously unselected package libplexus-container-default1.5-java.
-Preparing to unpack .../150-libplexus-container-default1.5-java_1.6-3_all.deb ...
-Unpacking libplexus-container-default1.5-java (1.6-3) ...
-Selecting previously unselected package libplexus-cli-java.
-Preparing to unpack .../151-libplexus-cli-java_1.2-5_all.deb ...
-Unpacking libplexus-cli-java (1.2-5) ...
-Selecting previously unselected package libqdox2-java.
-Preparing to unpack .../152-libqdox2-java_2.0~M3-3_all.deb ...
-Unpacking libqdox2-java (2.0~M3-3) ...
-Selecting previously unselected package libplexus-component-metadata-java.
-Preparing to unpack .../153-libplexus-component-metadata-java_1.6-3_all.deb ...
-Unpacking libplexus-component-metadata-java (1.6-3) ...
-Selecting previously unselected package libplexus-containers1.5-java.
-Preparing to unpack .../154-libplexus-containers1.5-java_1.6-3_all.deb ...
-Unpacking libplexus-containers1.5-java (1.6-3) ...
-Selecting previously unselected package libsisu-inject-java.
-Preparing to unpack .../155-libsisu-inject-java_0.3.2-2_all.deb ...
-Unpacking libsisu-inject-java (0.3.2-2) ...
-Selecting previously unselected package libsisu-plexus-java.
-Preparing to unpack .../156-libsisu-plexus-java_0.3.2-1_all.deb ...
-Unpacking libsisu-plexus-java (0.3.2-1) ...
-Selecting previously unselected package libwagon2-java.
-Preparing to unpack .../157-libwagon2-java_2.10-6_all.deb ...
-Unpacking libwagon2-java (2.10-6) ...
-Selecting previously unselected package libmaven3-core-java.
-Preparing to unpack .../158-libmaven3-core-java_3.3.9-4_all.deb ...
-Unpacking libmaven3-core-java (3.3.9-4) ...
-Selecting previously unselected package libpython3.5:amd64.
-Preparing to unpack .../159-libpython3.5_3.5.3-1+deb9u2_amd64.deb ...
-Unpacking libpython3.5:amd64 (3.5.3-1+deb9u2) ...
-Selecting previously unselected package libpython3.5-dev:amd64.
-Preparing to unpack .../160-libpython3.5-dev_3.5.3-1+deb9u2_amd64.deb ...
-Unpacking libpython3.5-dev:amd64 (3.5.3-1+deb9u2) ...
-Selecting previously unselected package libpython3-dev:amd64.
-Preparing to unpack .../161-libpython3-dev_3.5.3-1_amd64.deb ...
-Unpacking libpython3-dev:amd64 (3.5.3-1) ...
-Selecting previously unselected package libxom-java.
-Preparing to unpack .../162-libxom-java_1.2.10-1_all.deb ...
-Unpacking libxom-java (1.2.10-1) ...
-Selecting previously unselected package manpages-dev.
-Preparing to unpack .../163-manpages-dev_4.10-2_all.deb ...
-Unpacking manpages-dev (4.10-2) ...
-Selecting previously unselected package maven.
-Preparing to unpack .../164-maven_3.3.9-4_all.deb ...
-Unpacking maven (3.3.9-4) ...
-Selecting previously unselected package python-pip-whl.
-Preparing to unpack .../165-python-pip-whl_9.0.1-2+deb9u1_all.deb ...
-Unpacking python-pip-whl (9.0.1-2+deb9u1) ...
-Selecting previously unselected package python3-cffi-backend.
-Preparing to unpack .../166-python3-cffi-backend_1.9.1-2_amd64.deb ...
-Unpacking python3-cffi-backend (1.9.1-2) ...
-Selecting previously unselected package python3-crypto.
-Preparing to unpack .../167-python3-crypto_2.6.1-7_amd64.deb ...
-Unpacking python3-crypto (2.6.1-7) ...
-Selecting previously unselected package python3-idna.
-Preparing to unpack .../168-python3-idna_2.2-1_all.deb ...
-Unpacking python3-idna (2.2-1) ...
-Selecting previously unselected package python3-pyasn1.
-Preparing to unpack .../169-python3-pyasn1_0.1.9-2_all.deb ...
-Unpacking python3-pyasn1 (0.1.9-2) ...
-Selecting previously unselected package python3-pkg-resources.
-Preparing to unpack .../170-python3-pkg-resources_33.1.1-1_all.deb ...
-Unpacking python3-pkg-resources (33.1.1-1) ...
-Selecting previously unselected package python3-setuptools.
-Preparing to unpack .../171-python3-setuptools_33.1.1-1_all.deb ...
-Unpacking python3-setuptools (33.1.1-1) ...
-Selecting previously unselected package python3-six.
-Preparing to unpack .../172-python3-six_1.10.0-3_all.deb ...
-Unpacking python3-six (1.10.0-3) ...
-Selecting previously unselected package python3-cryptography.
-Preparing to unpack .../173-python3-cryptography_1.7.1-3+deb9u2_amd64.deb ...
-Unpacking python3-cryptography (1.7.1-3+deb9u2) ...
-Selecting previously unselected package python3-dbus.
-Preparing to unpack .../174-python3-dbus_1.2.4-1+b1_amd64.deb ...
-Unpacking python3-dbus (1.2.4-1+b1) ...
-Selecting previously unselected package python3.5-dev.
-Preparing to unpack .../175-python3.5-dev_3.5.3-1+deb9u2_amd64.deb ...
-Unpacking python3.5-dev (3.5.3-1+deb9u2) ...
-Selecting previously unselected package python3-dev.
-Preparing to unpack .../176-python3-dev_3.5.3-1_amd64.deb ...
-Unpacking python3-dev (3.5.3-1) ...
-Selecting previously unselected package python3-gi.
-Preparing to unpack .../177-python3-gi_3.22.0-2_amd64.deb ...
-Unpacking python3-gi (3.22.0-2) ...
-Selecting previously unselected package python3-secretstorage.
-Preparing to unpack .../178-python3-secretstorage_2.3.1-2_all.deb ...
-Unpacking python3-secretstorage (2.3.1-2) ...
-Selecting previously unselected package python3-keyring.
-Preparing to unpack .../179-python3-keyring_10.1-1_all.deb ...
-Unpacking python3-keyring (10.1-1) ...
-Selecting previously unselected package python3-keyrings.alt.
-Preparing to unpack .../180-python3-keyrings.alt_1.3-1_all.deb ...
-Unpacking python3-keyrings.alt (1.3-1) ...
-Selecting previously unselected package python3-pip.
-Preparing to unpack .../181-python3-pip_9.0.1-2+deb9u1_all.deb ...
-Unpacking python3-pip (9.0.1-2+deb9u1) ...
-Selecting previously unselected package python3-wheel.
-Preparing to unpack .../182-python3-wheel_0.29.0-2_all.deb ...
-Unpacking python3-wheel (0.29.0-2) ...
-Selecting previously unselected package python3-xdg.
-Preparing to unpack .../183-python3-xdg_0.25-4_all.deb ...
-Unpacking python3-xdg (0.25-4) ...
-Selecting previously unselected package shared-mime-info.
-Preparing to unpack .../184-shared-mime-info_1.8-1+deb9u1_amd64.deb ...
-Unpacking shared-mime-info (1.8-1+deb9u1) ...
-Selecting previously unselected package tree.
-Preparing to unpack .../185-tree_1.7.0-5_amd64.deb ...
-Unpacking tree (1.7.0-5) ...
-Selecting previously unselected package vim-runtime.
-Preparing to unpack .../186-vim-runtime_2%3a8.0.0197-4+deb9u3_all.deb ...
-Adding 'diversion of /usr/share/vim/vim80/doc/help.txt to /usr/share/vim/vim80/doc/help.txt.vim-tiny by vim-runtime'
-Adding 'diversion of /usr/share/vim/vim80/doc/tags to /usr/share/vim/vim80/doc/tags.vim-tiny by vim-runtime'
-Unpacking vim-runtime (2:8.0.0197-4+deb9u3) ...
-Selecting previously unselected package vim.
-Preparing to unpack .../187-vim_2%3a8.0.0197-4+deb9u3_amd64.deb ...
-Unpacking vim (2:8.0.0197-4+deb9u3) ...
-Selecting previously unselected package xdg-user-dirs.
-Preparing to unpack .../188-xdg-user-dirs_0.15-2+b1_amd64.deb ...
-Unpacking xdg-user-dirs (0.15-2+b1) ...
-Selecting previously unselected package xml-core.
-Preparing to unpack .../189-xml-core_0.17_all.deb ...
-Unpacking xml-core (0.17) ...
-Selecting previously unselected package zip.
-Preparing to unpack .../190-zip_3.0-11+b1_amd64.deb ...
-Unpacking zip (3.0-11+b1) ...
-Setting up libquadmath0:amd64 (6.3.0-18+deb9u1) ...
-Setting up libgomp1:amd64 (6.3.0-18+deb9u1) ...
-Setting up libatomic1:amd64 (6.3.0-18+deb9u1) ...
-Setting up python-pip-whl (9.0.1-2+deb9u1) ...
-Setting up libslf4j-java (1.7.22-1) ...
-Setting up tree (1.7.0-5) ...
-Setting up manpages (4.10-2) ...
-Setting up libplexus-classworlds-java (1.5.0-5) ...
-Setting up libcc1-0:amd64 (6.3.0-18+deb9u1) ...
-Setting up libjaxp1.3-java (1.3.05-2) ...
-Setting up make (4.1-9.1) ...
-Setting up libasan3:amd64 (6.3.0-18+deb9u1) ...
-Setting up libjpeg62-turbo:amd64 (1:1.5.1-2) ...
-Setting up libhttpcore-java (4.4.6-1) ...
-Processing triggers for mime-support (3.60) ...
-Setting up xxd (2:8.0.0197-4+deb9u3) ...
-Setting up libisorelax-java (20041111-9) ...
-Setting up liblcms2-2:amd64 (2.8-4+deb9u1) ...
-Setting up libpcsclite1:amd64 (1.8.20-1) ...
-Setting up libgpm2:amd64 (1.20.4-6.2+b1) ...
-Setting up libjsoup-java (1.10.2-1) ...
-Setting up libcilkrts5:amd64 (6.3.0-18+deb9u1) ...
-Setting up libxml-commons-external-java (1.4.01-2) ...
-Setting up libubsan0:amd64 (6.3.0-18+deb9u1) ...
-Setting up libtsan0:amd64 (6.3.0-18+deb9u1) ...
-Setting up libplexus-classworlds2-java (2.5.2-1) ...
-Setting up libglib2.0-0:amd64 (2.50.3-2+deb9u2) ...
-No schema files found: doing nothing.
-Setting up libonig4:amd64 (6.1.3-2) ...
-Setting up linux-libc-dev:amd64 (4.9.228-1) ...
-Setting up libclassworlds-java (1.1-final-5) ...
-Setting up java-common (0.58+deb9u1) ...
-Setting up libdpkg-perl (1.18.25) ...
-Setting up libcommons-net-java (3.5-1) ...
-Setting up libplexus-interpolation-java (1.21-1) ...
-Setting up sgml-base (1.29) ...
-Setting up libplexus-component-annotations-java (1.6-3) ...
-Setting up libicu57:amd64 (57.1-6+deb9u4) ...
-Setting up libnspr4:amd64 (2:4.12-6) ...
-Setting up libgirepository-1.0-1:amd64 (1.50.0-1+b1) ...
-Setting up libxml2:amd64 (2.9.4+dfsg1-2.2+deb9u2) ...
-Setting up zip (3.0-11+b1) ...
-Setting up libplexus-utils2-java (3.0.22-1) ...
-Setting up liblsan0:amd64 (6.3.0-18+deb9u1) ...
-Setting up libjsr305-java (0.1~+svn49-10) ...
-Setting up libfile-fcntllock-perl (0.22-3+b2) ...
-Setting up libjq1:amd64 (1.5+dfsg-1.3) ...
-Setting up liblog4j1.2-java (1.2.17-7+deb9u1) ...
-Setting up libxml-commons-resolver1.1-java (1.2-7) ...
-Setting up libmpx2:amd64 (6.3.0-18+deb9u1) ...
-Setting up libisl15:amd64 (0.18-1) ...
-Setting up libservlet3.1-java (8.5.54-0+deb9u2) ...
-Setting up gir1.2-glib-2.0:amd64 (1.50.0-1+b1) ...
-Setting up patch (2.7.5-1+deb9u2) ...
-Setting up libglib2.0-data (2.50.3-2+deb9u2) ...
-Processing triggers for libc-bin (2.24-11+deb9u4) ...
-Setting up libgeronimo-interceptor-3.0-spec-java (1.0.1-3) ...
-Setting up libapparmor1:amd64 (2.11.0-3+deb9u2) ...
-Setting up libjaxen-java (1.1.6-1+deb9u1) ...
-Setting up libfakeroot:amd64 (1.21-3.1) ...
-Setting up libapache-pom-java (10-2) ...
-Setting up vim-common (2:8.0.0197-4+deb9u3) ...
-Setting up junit (3.8.2-8) ...
-Setting up libasm-java (5.2-2) ...
-Setting up libalgorithm-diff-perl (1.19.03-1) ...
-Setting up libobjenesis-java (2.5.1-1) ...
-Setting up liblocale-gettext-perl (1.07-3+b1) ...
-Setting up libmpfr4:amd64 (3.1.5-1) ...
-Setting up shared-mime-info (1.8-1+deb9u1) ...
-Setting up libatinject-jsr330-api-java (1.0+ds1-2) ...
-Setting up vim-runtime (2:8.0.0197-4+deb9u3) ...
-Setting up libmaven-parent-java (21-2) ...
-Setting up libmpc3:amd64 (1.0.3-1+b2) ...
-Setting up binutils (2.28-5) ...
-Setting up cpp-6 (6.3.0-18+deb9u1) ...
-Setting up libc-dev-bin (2.24-11+deb9u4) ...
-Setting up libjzlib-java (1.1.3-1) ...
-Setting up libjsch-java (0.1.54-1) ...
-Setting up libxdmcp6:amd64 (1:1.1.2-3) ...
-Setting up xml-core (0.17) ...
-Setting up libbsh-java (2.0b4-18) ...
-Setting up libcommons-codec-java (1.10-1) ...
-Setting up x11-common (1:7.7+19) ...
-debconf: unable to initialize frontend: Dialog
-debconf: (TERM is not set, so the dialog frontend is not usable.)
-debconf: falling back to frontend: Readline
-update-rc.d: warning: start and stop actions are no longer supported; falling back to defaults
-invoke-rc.d: could not determine current runlevel
-invoke-rc.d: policy-rc.d denied execution of start.
-Processing triggers for ca-certificates (20200601~deb9u1) ...
-Updating certificates in /etc/ssl/certs...
-0 added, 0 removed; done.
-Running hooks in /etc/ca-certificates/update.d...
-done.
-Setting up manpages-dev (4.10-2) ...
-Setting up libc6-dev:amd64 (2.24-11+deb9u4) ...
-Setting up libxpp3-java (1.1.4c-2) ...
-Setting up xdg-user-dirs (0.15-2+b1) ...
-Setting up libaopalliance-java (20070526-5) ...
-Setting up libxpp2-java (2.1.10-7) ...
-Setting up libitm1:amd64 (6.3.0-18+deb9u1) ...
-Setting up libx11-data (2:1.6.4-3+deb9u1) ...
-Setting up libhamcrest-java (1.3-6) ...
-Setting up libxau6:amd64 (1:1.0.8-1) ...
-Setting up libmpdec2:amd64 (2.4.2-1) ...
-Setting up libdbus-1-3:amd64 (1.10.32-0+deb9u1) ...
-Setting up librelaxng-datatype-java (1.0+ds1-3) ...
-Setting up libcommons-cli-java (1.3.1-3) ...
-Setting up libavahi-common-data:amd64 (0.6.32-2) ...
-Setting up libqdox2-java (2.0~M3-3) ...
-Setting up cpp (4:6.3.0-4) ...
-Setting up jq (1.5+dfsg-1.3) ...
-Setting up libgcc-6-dev:amd64 (6.3.0-18+deb9u1) ...
-Setting up libstdc++-6-dev:amd64 (6.3.0-18+deb9u1) ...
-Setting up libcglib-java (3.2.4-1) ...
-Setting up vim (2:8.0.0197-4+deb9u3) ...
-update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vim (vim) in auto mode
-update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vimdiff (vimdiff) in auto mode
-update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/rvim (rvim) in auto mode
-update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/rview (rview) in auto mode
-update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/vi (vi) in auto mode
-update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/view (view) in auto mode
-update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/ex (ex) in auto mode
-update-alternatives: using /usr/bin/vim.basic to provide /usr/bin/editor (editor) in auto mode
-Setting up libdbus-glib-1-2:amd64 (0.108-2) ...
-Setting up libplexus-cipher-java (1.7-1) ...
-Setting up libjetty9-java (9.2.21-1+deb9u1) ...
-Setting up libpython3.5-stdlib:amd64 (3.5.3-1+deb9u2) ...
-Setting up libguava-java (19.0-1) ...
-Setting up libnss3:amd64 (2:3.26.2-1.1+deb9u1) ...
-Setting up fakeroot (1.21-3.1) ...
-update-alternatives: using /usr/bin/fakeroot-sysv to provide /usr/bin/fakeroot (fakeroot) in auto mode
-Setting up gcc-6 (6.3.0-18+deb9u1) ...
-Setting up g++-6 (6.3.0-18+deb9u1) ...
-Setting up libcommons-parent-java (39-3) ...
-Setting up libxerces2-java (2.11.0-7) ...
-Setting up libalgorithm-merge-perl (0.08-3) ...
-Setting up libcdi-api-java (1.0-2) ...
-Setting up libeasymock-java (3.4+ds-1) ...
-Setting up dpkg-dev (1.18.25) ...
-Setting up libxalan2-java (2.7.1-9) ...
-Setting up libalgorithm-diff-xs-perl (0.04-4+b2) ...
-Setting up libxom-java (1.2.10-1) ...
-Setting up libplexus-utils-java (1:1.5.15-4+deb9u1) ...
-Setting up libjdom1-java (1.1.3-1) ...
-Setting up libcommons-lang3-java (3.5-1) ...
-Setting up libexpat1-dev:amd64 (2.2.0-2+deb9u3) ...
-Setting up libavahi-common3:amd64 (0.6.32-2) ...
-Setting up dbus (1.10.32-0+deb9u1) ...
-invoke-rc.d: could not determine current runlevel
-invoke-rc.d: policy-rc.d denied execution of start.
-Setting up libcommons-lang-java (2.6-6) ...
-Setting up libxcb1:amd64 (1.12-1) ...
-Setting up python3.5 (3.5.3-1+deb9u2) ...
-Setting up libpython3-stdlib:amd64 (3.5.3-1) ...
-Setting up libcommons-io-java (2.5-1) ...
-Setting up libguice-java (4.0-3) ...
-Setting up libpython3.5:amd64 (3.5.3-1+deb9u2) ...
-Setting up libx11-6:amd64 (2:1.6.4-3+deb9u1) ...
-Setting up libcommons-logging-java (1.2-1) ...
-Setting up gcc (4:6.3.0-4) ...
-Setting up libpython3.5-dev:amd64 (3.5.3-1+deb9u2) ...
-Setting up libplexus-container-default-java (1.0-alpha-9-stable-1-7) ...
-Setting up libsisu-inject-java (0.3.2-2) ...
-Setting up libhttpclient-java (4.5.2-2) ...
-Setting up libxrender1:amd64 (1:0.9.10-1) ...
-Setting up g++ (4:6.3.0-4) ...
-update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
-Setting up libavahi-client3:amd64 (0.6.32-2) ...
-Setting up python3.5-dev (3.5.3-1+deb9u2) ...
-Setting up libcommons-httpclient-java (3.1-12) ...
-Setting up libplexus-ant-factory-java (1.0~alpha2.1-3) ...
-Setting up libplexus-sec-dispatcher-java (1.3.1-6) ...
-Setting up libcups2:amd64 (2.2.1-8+deb9u6) ...
-Setting up libpython3-dev:amd64 (3.5.3-1) ...
-Setting up libxext6:amd64 (2:1.3.3-1+b2) ...
-Setting up libdoxia-core-java (1.1.4-6) ...
-Setting up build-essential (12.3) ...
-Setting up libplexus-bsh-factory-java (1.0~alpha7-3.1) ...
-Setting up libxi6:amd64 (2:1.7.9-1) ...
-Setting up libxtst6:amd64 (2:1.2.3-1) ...
-Setting up openjdk-8-jre-headless:amd64 (8u252-b09-1~deb9u1) ...
-update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/rmid to provide /usr/bin/rmid (rmid) in auto mode
-update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java to provide /usr/bin/java (java) in auto mode
-update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/keytool to provide /usr/bin/keytool (keytool) in auto mode
-update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/jjs to provide /usr/bin/jjs (jjs) in auto mode
-update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/pack200 to provide /usr/bin/pack200 (pack200) in auto mode
-update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/rmiregistry to provide /usr/bin/rmiregistry (rmiregistry) in auto mode
-update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/unpack200 to provide /usr/bin/unpack200 (unpack200) in auto mode
-update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/orbd to provide /usr/bin/orbd (orbd) in auto mode
-update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/servertool to provide /usr/bin/servertool (servertool) in auto mode
-update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/tnameserv to provide /usr/bin/tnameserv (tnameserv) in auto mode
-update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jexec to provide /usr/bin/jexec (jexec) in auto mode
-Setting up ca-certificates-java (20170929~deb9u3) ...
-Adding debian:Buypass_Class_2_Root_CA.pem
-Adding debian:Microsec_e-Szigno_Root_CA_2009.pem
-Adding debian:XRamp_Global_CA_Root.pem
-Adding debian:LuxTrust_Global_Root_2.pem
-Adding debian:TrustCor_RootCert_CA-2.pem
-Adding debian:Network_Solutions_Certificate_Authority.pem
-Adding debian:EE_Certification_Centre_Root_CA.pem
-Adding debian:Staat_der_Nederlanden_Root_CA_-_G3.pem
-Adding debian:T-TeleSec_GlobalRoot_Class_3.pem
-Adding debian:QuoVadis_Root_CA_1_G3.pem
-Adding debian:Global_Chambersign_Root_-_2008.pem
-Adding debian:Cybertrust_Global_Root.pem
-Adding debian:AC_RAIZ_FNMT-RCM.pem
-Adding debian:USERTrust_RSA_Certification_Authority.pem
-Adding debian:SSL.com_EV_Root_Certification_Authority_RSA_R2.pem
-Adding debian:CFCA_EV_ROOT.pem
-Adding debian:D-TRUST_Root_Class_3_CA_2_EV_2009.pem
-Adding debian:DigiCert_High_Assurance_EV_Root_CA.pem
-Adding debian:DigiCert_Assured_ID_Root_CA.pem
-Adding debian:Go_Daddy_Root_Certificate_Authority_-_G2.pem
-Adding debian:Actalis_Authentication_Root_CA.pem
-Adding debian:GlobalSign_Root_CA_-_R3.pem
-Adding debian:Security_Communication_Root_CA.pem
-Adding debian:TrustCor_ECA-1.pem
-Adding debian:GlobalSign_ECC_Root_CA_-_R5.pem
-Adding debian:Amazon_Root_CA_2.pem
-Adding debian:Certigna.pem
-Adding debian:GlobalSign_Root_CA.pem
-Adding debian:GlobalSign_ECC_Root_CA_-_R4.pem
-Adding debian:COMODO_RSA_Certification_Authority.pem
-Adding debian:DigiCert_Global_Root_G2.pem
-Adding debian:SecureSign_RootCA11.pem
-Adding debian:SZAFIR_ROOT_CA2.pem
-Adding debian:Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem
-Adding debian:GeoTrust_Universal_CA_2.pem
-Adding debian:AffirmTrust_Premium_ECC.pem
-Adding debian:SSL.com_Root_Certification_Authority_ECC.pem
-Adding debian:DigiCert_Trusted_Root_G4.pem
-Adding debian:Baltimore_CyberTrust_Root.pem
-Adding debian:E-Tugra_Certification_Authority.pem
-Adding debian:T-TeleSec_GlobalRoot_Class_2.pem
-Adding debian:Certum_Trusted_Network_CA.pem
-Adding debian:SwissSign_Gold_CA_-_G2.pem
-Adding debian:Hongkong_Post_Root_CA_1.pem
-Adding debian:Entrust_Root_Certification_Authority.pem
-Adding debian:USERTrust_ECC_Certification_Authority.pem
-Adding debian:DigiCert_Global_Root_G3.pem
-Adding debian:ISRG_Root_X1.pem
-Adding debian:SSL.com_EV_Root_Certification_Authority_ECC.pem
-Adding debian:GDCA_TrustAUTH_R5_ROOT.pem
-Adding debian:Go_Daddy_Class_2_CA.pem
-Adding debian:COMODO_ECC_Certification_Authority.pem
-Adding debian:NetLock_Arany_=Class_Gold=_Főtanúsítvány.pem
-Adding debian:QuoVadis_Root_CA_2_G3.pem
-Adding debian:Certum_Trusted_Network_CA_2.pem
-Adding debian:IdenTrust_Public_Sector_Root_CA_1.pem
-Adding debian:Entrust.net_Premium_2048_Secure_Server_CA.pem
-Adding debian:QuoVadis_Root_CA_2.pem
-Adding debian:ACCVRAIZ1.pem
-Adding debian:TeliaSonera_Root_CA_v1.pem
-Adding debian:SecureTrust_CA.pem
-Adding debian:OISTE_WISeKey_Global_Root_GB_CA.pem
-Adding debian:ePKI_Root_Certification_Authority.pem
-Adding debian:AffirmTrust_Networking.pem
-Adding debian:TWCA_Global_Root_CA.pem
-Adding debian:Verisign_Class_3_Public_Primary_Certification_Authority_-_G3.pem
-Adding debian:Hellenic_Academic_and_Research_Institutions_ECC_RootCA_2015.pem
-Adding debian:Staat_der_Nederlanden_EV_Root_CA.pem
-Adding debian:QuoVadis_Root_CA_3_G3.pem
-Adding debian:TUBITAK_Kamu_SM_SSL_Kok_Sertifikasi_-_Surum_1.pem
-Adding debian:D-TRUST_Root_Class_3_CA_2_2009.pem
-Adding debian:Chambers_of_Commerce_Root_-_2008.pem
-Adding debian:certSIGN_ROOT_CA.pem
-Adding debian:Staat_der_Nederlanden_Root_CA_-_G2.pem
-Adding debian:QuoVadis_Root_CA.pem
-Adding debian:Amazon_Root_CA_1.pem
-Adding debian:Trustis_FPS_Root_CA.pem
-Adding debian:DST_Root_CA_X3.pem
-Adding debian:TWCA_Root_Certification_Authority.pem
-Adding debian:IdenTrust_Commercial_Root_CA_1.pem
-Adding debian:Starfield_Root_Certificate_Authority_-_G2.pem
-Adding debian:SwissSign_Silver_CA_-_G2.pem
-Adding debian:OISTE_WISeKey_Global_Root_GA_CA.pem
-Adding debian:DigiCert_Assured_ID_Root_G3.pem
-Adding debian:COMODO_Certification_Authority.pem
-Adding debian:Buypass_Class_3_Root_CA.pem
-Adding debian:AffirmTrust_Premium.pem
-Adding debian:CA_Disig_Root_R2.pem
-Adding debian:QuoVadis_Root_CA_3.pem
-Adding debian:Amazon_Root_CA_3.pem
-Adding debian:Secure_Global_CA.pem
-Adding debian:Amazon_Root_CA_4.pem
-Adding debian:Comodo_AAA_Services_root.pem
-Adding debian:DigiCert_Assured_ID_Root_G2.pem
-Adding debian:Starfield_Services_Root_Certificate_Authority_-_G2.pem
-Adding debian:AffirmTrust_Commercial.pem
-Adding debian:Starfield_Class_2_CA.pem
-Adding debian:Sonera_Class_2_Root_CA.pem
-Adding debian:EC-ACC.pem
-Adding debian:TrustCor_RootCert_CA-1.pem
-Adding debian:Security_Communication_RootCA2.pem
-Adding debian:Taiwan_GRCA.pem
-Adding debian:Entrust_Root_Certification_Authority_-_EC1.pem
-Adding debian:DigiCert_Global_Root_CA.pem
-Adding debian:Hellenic_Academic_and_Research_Institutions_RootCA_2011.pem
-Adding debian:GlobalSign_Root_CA_-_R2.pem
-Adding debian:Hellenic_Academic_and_Research_Institutions_RootCA_2015.pem
-Adding debian:SSL.com_Root_Certification_Authority_RSA.pem
-Adding debian:Izenpe.com.pem
-Adding debian:Entrust_Root_Certification_Authority_-_G2.pem
-Adding debian:Atos_TrustedRoot_2011.pem
-Adding debian:Certigna_Root_CA.pem
-Adding debian:Entrust_Root_Certification_Authority_-_G4.pem
-Adding debian:GTS_Root_R4.pem
-Adding debian:Hongkong_Post_Root_CA_3.pem
-Adding debian:GTS_Root_R3.pem
-Adding debian:GTS_Root_R2.pem
-Adding debian:emSign_ECC_Root_CA_-_G3.pem
-Adding debian:GTS_Root_R1.pem
-Adding debian:emSign_Root_CA_-_G1.pem
-Adding debian:UCA_Global_G2_Root.pem
-Adding debian:emSign_Root_CA_-_C1.pem
-Adding debian:GlobalSign_Root_CA_-_R6.pem
-Adding debian:UCA_Extended_Validation_Root.pem
-Adding debian:emSign_ECC_Root_CA_-_C3.pem
-Adding debian:OISTE_WISeKey_Global_Root_GC_CA.pem
-done.
-Setting up python3 (3.5.3-1) ...
-running python rtupdate hooks for python3.5...
-running python post-rtupdate hooks for python3.5...
-Setting up python3-cffi-backend (1.9.1-2) ...
-Setting up python3-crypto (2.6.1-7) ...
-Setting up python3-idna (2.2-1) ...
-Setting up python3-xdg (0.25-4) ...
-Setting up python3-keyrings.alt (1.3-1) ...
-Setting up python3-six (1.10.0-3) ...
-Setting up python3-dev (3.5.3-1) ...
-Setting up python3-wheel (0.29.0-2) ...
-Setting up python3-pkg-resources (33.1.1-1) ...
-Setting up python3-gi (3.22.0-2) ...
-Setting up python3-pyasn1 (0.1.9-2) ...
-Setting up ant (1.9.9-1+deb9u1) ...
-Setting up junit4 (4.12-4) ...
-Setting up python3-pip (9.0.1-2+deb9u1) ...
-Setting up python3-setuptools (33.1.1-1) ...
-Setting up dh-python (2.20170125) ...
-Setting up default-jre-headless (2:1.8-58+deb9u1) ...
-Setting up python3-cryptography (1.7.1-3+deb9u2) ...
-Setting up python3-dbus (1.2.4-1+b1) ...
-Setting up ant-optional (1.9.9-1+deb9u1) ...
-Setting up libmsv-java (2009.1+dfsg1-5) ...
-Setting up libxbean-java (4.5-4) ...
-Setting up python3-secretstorage (2.3.1-2) ...
-Setting up libplexus-containers-java (1.0~beta3.0.7-8) ...
-Setting up libdom4j-java (1.6.1+dfsg.3-2+deb9u1) ...
-Setting up libplexus-io-java (1.0~alpha5-2) ...
-Setting up libplexus-interactivity-api-java (1.0-alpha-6-7) ...
-Setting up python3-keyring (10.1-1) ...
-Setting up libplexus-container-default1.5-java (1.6-3) ...
-Setting up libwagon-java (1.0.0-9) ...
-Setting up libplexus-cli-java (1.2-5) ...
-Setting up libwagon2-java (2.10-6) ...
-Setting up libplexus-archiver-java (2.2-1+deb9u1) ...
-Setting up libmaven2-core-java (2.2.1-26) ...
-Setting up libeclipse-aether-java (1.0.2-1) ...
-Setting up libplexus-component-metadata-java (1.6-3) ...
-Setting up libplexus-containers1.5-java (1.6-3) ...
-Setting up libsisu-plexus-java (0.3.2-1) ...
-Setting up libmaven3-core-java (3.3.9-4) ...
-Setting up maven (3.3.9-4) ...
-update-alternatives: using /usr/share/maven/bin/mvn to provide /usr/bin/mvn (mvn) in auto mode
-Processing triggers for libc-bin (2.24-11+deb9u4) ...
-Processing triggers for sgml-base (1.29) ...
-Processing triggers for ca-certificates (20200601~deb9u1) ...
-Updating certificates in /etc/ssl/certs...
-0 added, 0 removed; done.
-Running hooks in /etc/ca-certificates/update.d...
+Step 4/80 : COPY selfsigned.jks /var/jenkins_home
+ ---> a6c5e824e5a8
+Step 5/80 : ENV JENKINS_OPTS "--prefix=/ --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
+ ---> Running in 5bf46b6c9545
+Removing intermediate container 5bf46b6c9545
+ ---> 27e4bbaa6ba6
+Step 6/80 : EXPOSE 8083
+ ---> Running in 2378b87dbfc8
+Removing intermediate container 2378b87dbfc8
+ ---> a3971170bf8f
+Step 7/80 : ENV JENKINS_FIRST_ADMIN_USER admin
+ ---> Running in ebbbbea43c97
+Removing intermediate container ebbbbea43c97
+ ---> 973516a8f3ff
+Step 8/80 : ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
+ ---> Running in a87768dcfa77
+Removing intermediate container a87768dcfa77
+ ---> 887921f60fc0
+Step 9/80 : COPY kops /usr/local/bin/kops
+ ---> d392487f74c3
+Step 10/80 : COPY terraform /usr/local/bin/terraform
+ ---> 3de92762a9d2
+Step 11/80 : COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
+ ---> 9435036b00c9
+Step 12/80 : RUN mkdir -p /var/tmp/jenkins_config_backup
+ ---> Running in 9c2d857fad17
+Removing intermediate container 9c2d857fad17
+ ---> e6f67bf10ce8
+Step 13/80 : COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
+ ---> 1f65799748b5
+Step 14/80 : COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
+ ---> d65b37ff1a23
+Step 15/80 : COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
+ ---> c687474f9c9d
+Step 16/80 : COPY 03_set_NumExecutors.groovy                   /usr/share/jenkins/ref/init.groovy.d/
+ ---> ee2b6c1677b0
+Step 17/80 : RUN /usr/local/bin/install-plugins.sh ant                             # Ant
+ ---> Running in 99571211f5c0
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: ant from https://updates.jenkins.io/2.235/latest/ant.hpi
+ > ant depends on structs:1.17
+Downloading plugin: structs from https://updates.jenkins.io/2.235/latest/structs.hpi
 
-done.
-done.
-Collecting ansible==2.9.10
-  Downloading https://files.pythonhosted.org/packages/03/4f/cccab1ec2e0ecb05120184088e00404b38854809cf35aa76889406fbcbad/ansible-2.9.10.tar.gz (14.2MB)
-Collecting jinja2
-  Downloading https://files.pythonhosted.org/packages/30/9e/f663a2aa66a09d838042ae1a2c5659828bb9b41ea3a6efa20a20fd92b121/Jinja2-2.11.2-py2.py3-none-any.whl (125kB)
-Collecting dnspython
-  Downloading https://files.pythonhosted.org/packages/ec/d3/3aa0e7213ef72b8585747aa0e271a9523e713813b9a20177ebe1e939deb0/dnspython-1.16.0-py2.py3-none-any.whl (188kB)
-Collecting PyYAML (from ansible==2.9.10)
-  Downloading https://files.pythonhosted.org/packages/64/c2/b80047c7ac2478f9501676c988a5411ed5572f35d1beff9cae07d321512c/PyYAML-5.3.1.tar.gz (269kB)
-Requirement already satisfied: cryptography in /usr/lib/python3/dist-packages (from ansible==2.9.10)
-Collecting MarkupSafe>=0.23 (from jinja2)
-  Downloading https://files.pythonhosted.org/packages/6e/57/d40124076756c19ff2269678de7ae25a14ebbb3f6314eb5ce9477f191350/MarkupSafe-1.1.1-cp35-cp35m-manylinux1_x86_64.whl
-Building wheels for collected packages: ansible, PyYAML
-  Running setup.py bdist_wheel for ansible: started
-  Running setup.py bdist_wheel for ansible: finished with status 'done'
-  Stored in directory: /root/.cache/pip/wheels/8a/60/dd/7fadf86fcbf2b9507d6fc5cf2ad57e3bd513111002d0701ba3
-  Running setup.py bdist_wheel for PyYAML: started
-  Running setup.py bdist_wheel for PyYAML: finished with status 'done'
-  Stored in directory: /root/.cache/pip/wheels/a7/c1/ea/cf5bd31012e735dc1dfea3131a2d5eae7978b251083d6247bd
-Successfully built ansible PyYAML
-Installing collected packages: PyYAML, MarkupSafe, jinja2, ansible, dnspython
-Successfully installed MarkupSafe-1.1.1 PyYAML-5.3.1 ansible-2.9.10 dnspython-1.16.0 jinja2-2.11.2
-[91m  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:[0m[91m-- --:--:--     0[0m[91m[0m[91m [0m[91m3[0m[91m6[0m[91m 31.5M   36 11.4M    0     0  [0m[91m14[0m[91m.0M      0  0:0[0m[91m0:02 --:--:--  0:00:0[0m[91m2 14[0m[91m.0M[0m[91m 87 31.5[0m[91mM   87 27.6M    0     0  15.2M      0  0:00:02  0:00:01  0:00:01 15.2M[0m[91m100 31.5M  100 31.5M    0     0  15.3M      0  0:00:02  0:00:02 --:--:-- 15.3M
-[0mUn-zipping awscli v2 files...
-Compiling and installing awscli v2 files...
-You can now run: /usr/local/bin/aws --version
-Removing intermediate container 4966f174ceb7
- ---> 075be88d2dc7
-Step 82/83 : USER jenkins
- ---> Running in b01e325571bb
-Removing intermediate container b01e325571bb
- ---> 31508a0dea24
-Step 83/83 : HEALTHCHECK --interval=5s --timeout=3s --retries=3 --start-period=2m CMD "curl --head http://localhost:8080 && exit 0 || exit 1"
- ---> Running in 8b4b6f2e0d5c
-Removing intermediate container 8b4b6f2e0d5c
- ---> 5e2d0da3dda0
-Successfully built 5e2d0da3dda0
-Successfully tagged garyttt8/jenkins:1.0.1
+WAR bundled plugins:
+
+
+Installed plugins:
+ant:1.11
+structs:1.20
+Cleaning up locks
+Removing intermediate container 99571211f5c0
+ ---> e247c5cd199a
+Step 18/80 : RUN /usr/local/bin/install-plugins.sh build-timeout                   # Build Tumeout
+ ---> Running in a0593fee437d
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: build-timeout from https://updates.jenkins.io/2.235/latest/build-timeout.hpi
+ > build-timeout depends on naginator:1.16;resolution:=optional,token-macro:1.5.1
+Skipping optional dependency naginator
+Downloading plugin: token-macro from https://updates.jenkins.io/2.235/latest/token-macro.hpi
+ > token-macro depends on workflow-step-api:2.14,structs:1.14
+Downloading plugin: workflow-step-api from https://updates.jenkins.io/2.235/latest/workflow-step-api.hpi
+Skipping already installed dependency structs:1.14 (1.14 <= 1.20)
+ > workflow-step-api depends on structs:1.20
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ant:1.11
+build-timeout:1.20
+structs:1.20
+token-macro:2.12
+workflow-step-api:2.22
+Cleaning up locks
+Removing intermediate container a0593fee437d
+ ---> a1943a902402
+Step 19/80 : RUN /usr/local/bin/install-plugins.sh credentials-binding             # Credentials Binding
+ ---> Running in d4b81c18f4bb
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: credentials-binding from https://updates.jenkins.io/2.235/latest/credentials-binding.hpi
+ > credentials-binding depends on workflow-step-api:2.22,credentials:2.3.5,plain-credentials:1.6,ssh-credentials:1.17.3,structs:1.20
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Downloading plugin: credentials from https://updates.jenkins.io/2.235/latest/credentials.hpi
+Downloading plugin: plain-credentials from https://updates.jenkins.io/2.235/latest/plain-credentials.hpi
+Downloading plugin: ssh-credentials from https://updates.jenkins.io/2.235/latest/ssh-credentials.hpi
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+ > plain-credentials depends on credentials:2.2.0
+ > ssh-credentials depends on credentials:2.2.0,trilead-api:1.0.5
+Downloading plugin: trilead-api from https://updates.jenkins.io/2.235/latest/trilead-api.hpi
+ > credentials depends on configuration-as-code:1.35;resolution:=optional,structs:1.20
+Skipping optional dependency configuration-as-code
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ant:1.11
+build-timeout:1.20
+credentials-binding:1.23
+credentials:2.3.12
+plain-credentials:1.7
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-step-api:2.22
+Cleaning up locks
+Removing intermediate container d4b81c18f4bb
+ ---> 2a4616b2997e
+Step 20/80 : RUN /usr/local/bin/install-plugins.sh cloudbees-folder                # Folders Plugin
+ ---> Running in 96484edb9c2e
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: cloudbees-folder from https://updates.jenkins.io/2.235/latest/cloudbees-folder.hpi
+ > cloudbees-folder depends on credentials:2.3.5;resolution:=optional
+Skipping optional dependency credentials
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ant:1.11
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+plain-credentials:1.7
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-step-api:2.22
+Cleaning up locks
+Removing intermediate container 96484edb9c2e
+ ---> 62c19ff8e738
+Step 21/80 : RUN /usr/local/bin/install-plugins.sh git                             # Git
+ ---> Running in 3ee4087e0ddc
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: git from https://updates.jenkins.io/2.235/latest/git.hpi
+ > git depends on configuration-as-code:1.36;resolution:=optional,workflow-scm-step:2.11,workflow-step-api:2.22,credentials:2.3.7,git-client:3.2.1,mailer:1.32,matrix-project:1.14;resolution:=optional,parameterized-trigger:2.33;resolution:=optional,promoted-builds:3.2;resolution:=optional,scm-api:2.6.3,script-security:1.73,ssh-credentials:1.18.1,structs:1.20,token-macro:2.12;resolution:=optional
+Skipping optional dependency configuration-as-code
+Downloading plugin: workflow-scm-step from https://updates.jenkins.io/2.235/latest/workflow-scm-step.hpi
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency credentials:2.3.7 (2.3.7 <= 2.3.12)
+Downloading plugin: git-client from https://updates.jenkins.io/2.235/latest/git-client.hpi
+Downloading plugin: mailer from https://updates.jenkins.io/2.235/latest/mailer.hpi
+Skipping optional dependency matrix-project
+Skipping optional dependency parameterized-trigger
+Skipping optional dependency promoted-builds
+Downloading plugin: scm-api from https://updates.jenkins.io/2.235/latest/scm-api.hpi
+Downloading plugin: script-security from https://updates.jenkins.io/2.235/latest/script-security.hpi
+Skipping already installed dependency ssh-credentials:1.18.1 (1.18.1 <= 1.18.1)
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+Skipping optional dependency token-macro
+ > workflow-scm-step depends on workflow-step-api:2.9
+Skipping already installed dependency workflow-step-api:2.9 (2.9 <= 2.22)
+ > mailer depends on display-url-api:2.3.1
+ > scm-api depends on structs:1.9
+Downloading plugin: display-url-api from https://updates.jenkins.io/2.235/latest/display-url-api.hpi
+Skipping already installed dependency structs:1.9 (1.9 <= 1.20)
+ > git-client depends on configuration-as-code:1.36;resolution:=optional,apache-httpcomponents-client-4-api:4.5.10-2.0,credentials:2.3.9,jsch:0.1.55.2,script-security:1.73,ssh-credentials:1.18.1,structs:1.20,trilead-api:1.0.8
+Skipping optional dependency configuration-as-code
+Downloading plugin: apache-httpcomponents-client-4-api from https://updates.jenkins.io/2.235/latest/apache-httpcomponents-client-4-api.hpi
+Skipping already installed dependency credentials:2.3.9 (2.3.9 <= 2.3.12)
+Downloading plugin: jsch from https://updates.jenkins.io/2.235/latest/jsch.hpi
+Skipping already installed dependency ssh-credentials:1.18.1 (1.18.1 <= 1.18.1)
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+Skipping already installed dependency trilead-api:1.0.8 (1.0.8 <= 1.0.8)
+ > jsch depends on ssh-credentials:1.14,trilead-api:1.0.5
+Skipping already installed dependency ssh-credentials:1.14 (1.14 <= 1.18.1)
+Skipping already installed dependency trilead-api:1.0.5 (1.0.5 <= 1.0.8)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ant:1.11
+apache-httpcomponents-client-4-api:4.5.10-2.0
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+git-client:3.3.1
+git:4.3.0
+jsch:0.1.55.2
+mailer:1.32
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-scm-step:2.11
+workflow-step-api:2.22
+Cleaning up locks
+Removing intermediate container 3ee4087e0ddc
+ ---> be412f021d50
+Step 22/80 : RUN /usr/local/bin/install-plugins.sh github-branch-source            # Github Branch Source
+ ---> Running in 3f33bda38eda
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: github-branch-source from https://updates.jenkins.io/2.235/latest/github-branch-source.hpi
+ > github-branch-source depends on github:1.29.3,github-api:1.111.4,jackson2-api:2.10.2
+Downloading plugin: github from https://updates.jenkins.io/2.235/latest/github.hpi
+Downloading plugin: github-api from https://updates.jenkins.io/2.235/latest/github-api.hpi
+Downloading plugin: jackson2-api from https://updates.jenkins.io/2.235/latest/jackson2-api.hpi
+ > github depends on credentials:2.1.13,display-url-api:2.0,git:3.4.0,github-api:1.114.2,plain-credentials:1.1,scm-api:2.2.0,structs:1.17,token-macro:1.12.1
+Skipping already installed dependency credentials:2.1.13 (2.1.13 <= 2.3.12)
+Skipping already installed dependency display-url-api:2.0 (2.0 <= 2.3.3)
+Skipping already installed dependency git:3.4.0 (3.4.0 <= 4.3.0)
+Skipping already installed dependency plain-credentials:1.1 (1.1 <= 1.7)
+Skipping already installed dependency scm-api:2.2.0 (2.2.0 <= 2.6.3)
+ > github-api depends on okhttp-api:3.14.9,jackson2-api:2.10.2
+Skipping already installed dependency structs:1.17 (1.17 <= 1.20)
+Downloading plugin: okhttp-api from https://updates.jenkins.io/2.235/latest/okhttp-api.hpi
+Skipping already installed dependency token-macro:1.12.1 (1.12.1 <= 2.12)
+ > jackson2-api depends on snakeyaml-api:1.26.3
+Downloading plugin: snakeyaml-api from https://updates.jenkins.io/2.235/latest/snakeyaml-api.hpi
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ant:1.11
+apache-httpcomponents-client-4-api:4.5.10-2.0
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+git-client:3.3.1
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+jackson2-api:2.11.1
+jsch:0.1.55.2
+mailer:1.32
+okhttp-api:3.14.9
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-scm-step:2.11
+workflow-step-api:2.22
+Cleaning up locks
+Removing intermediate container 3f33bda38eda
+ ---> abb4606ce20a
+Step 23/80 : RUN /usr/local/bin/install-plugins.sh gradle                          # Gradle
+ ---> Running in 0648def8c795
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: gradle from https://updates.jenkins.io/2.235/latest/gradle.hpi
+ > gradle depends on structs:1.20,workflow-api:2.37,workflow-cps:2.74,workflow-job:2.35,workflow-basic-steps:2.16.1,workflow-durable-task-step:2.28,workflow-step-api:2.20
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+Downloading plugin: workflow-api from https://updates.jenkins.io/2.235/latest/workflow-api.hpi
+Downloading plugin: workflow-cps from https://updates.jenkins.io/2.235/latest/workflow-cps.hpi
+Downloading plugin: workflow-job from https://updates.jenkins.io/2.235/latest/workflow-job.hpi
+Downloading plugin: workflow-basic-steps from https://updates.jenkins.io/2.235/latest/workflow-basic-steps.hpi
+Downloading plugin: workflow-durable-task-step from https://updates.jenkins.io/2.235/latest/workflow-durable-task-step.hpi
+Skipping already installed dependency workflow-step-api:2.20 (2.20 <= 2.22)
+ > workflow-durable-task-step depends on workflow-api:2.33,workflow-step-api:2.20,workflow-support:3.3,durable-task:1.33,scm-api:2.2.6,script-security:1.58,structs:1.18
+Skipping already installed dependency workflow-step-api:2.20 (2.20 <= 2.22)
+Downloading plugin: workflow-support from https://updates.jenkins.io/2.235/latest/workflow-support.hpi
+Downloading plugin: durable-task from https://updates.jenkins.io/2.235/latest/durable-task.hpi
+Skipping already installed dependency scm-api:2.2.6 (2.2.6 <= 2.6.3)
+Skipping already installed dependency script-security:1.58 (1.58 <= 1.74)
+Skipping already installed dependency structs:1.18 (1.18 <= 1.20)
+ > workflow-api depends on workflow-step-api:2.16,scm-api:2.2.6,structs:1.17
+Skipping already installed dependency workflow-step-api:2.16 (2.16 <= 2.22)
+Skipping already installed dependency scm-api:2.2.6 (2.2.6 <= 2.6.3)
+Skipping already installed dependency structs:1.17 (1.17 <= 1.20)
+ > workflow-basic-steps depends on workflow-api:2.40,workflow-durable-task-step:2.31,workflow-step-api:2.22,apache-httpcomponents-client-4-api:4.5.10-2.0,mailer:1.32,structs:1.20
+ > workflow-job depends on workflow-api:2.36,workflow-step-api:2.20,workflow-support:3.3
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency workflow-step-api:2.20 (2.20 <= 2.22)
+Skipping already installed dependency apache-httpcomponents-client-4-api:4.5.10-2.0 (4.5.10-2.0 <= 4.5.10-2.0)
+Skipping already installed dependency mailer:1.32 (1.32 <= 1.32)
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+ > workflow-cps depends on workflow-api:2.40,workflow-scm-step:2.9,workflow-step-api:2.22,workflow-support:3.4,scm-api:2.6.3,script-security:1.71,structs:1.20,support-core:2.43;resolution:=optional,ace-editor:1.1,jquery-detached:1.2.1
+Skipping already installed dependency workflow-scm-step:2.9 (2.9 <= 2.11)
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency scm-api:2.6.3 (2.6.3 <= 2.6.3)
+Skipping already installed dependency script-security:1.71 (1.71 <= 1.74)
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+Skipping optional dependency support-core
+Downloading plugin: ace-editor from https://updates.jenkins.io/2.235/latest/ace-editor.hpi
+Downloading plugin: jquery-detached from https://updates.jenkins.io/2.235/latest/jquery-detached.hpi
+ > workflow-support depends on workflow-api:2.40,workflow-step-api:2.22,scm-api:2.6.3,script-security:1.71
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency scm-api:2.6.3 (2.6.3 <= 2.6.3)
+Skipping already installed dependency script-security:1.71 (1.71 <= 1.74)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+apache-httpcomponents-client-4-api:4.5.10-2.0
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+git-client:3.3.1
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+mailer:1.32
+okhttp-api:3.14.9
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container 0648def8c795
+ ---> b335476ada15
+Step 24/80 : RUN /usr/local/bin/install-plugins.sh email-ext                       # Email Extension
+ ---> Running in 64d1a66fb9ea
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: email-ext from https://updates.jenkins.io/2.235/latest/email-ext.hpi
+ > email-ext depends on workflow-job:2.12;resolution:=optional,workflow-step-api:2.19;resolution:=optional,config-file-provider:2.15.6;resolution:=optional,junit:1.2,mailer:1.13,matrix-project:1.4,script-security:1.54,structs:1.17,token-macro:2.3,analysis-core:1.54;resolution:=optional
+Skipping optional dependency workflow-job
+Skipping optional dependency workflow-step-api
+Skipping optional dependency config-file-provider
+Downloading plugin: junit from https://updates.jenkins.io/2.235/latest/junit.hpi
+Skipping already installed dependency mailer:1.13 (1.13 <= 1.32)
+Downloading plugin: matrix-project from https://updates.jenkins.io/2.235/latest/matrix-project.hpi
+Skipping already installed dependency script-security:1.54 (1.54 <= 1.74)
+Skipping already installed dependency structs:1.17 (1.17 <= 1.20)
+Skipping already installed dependency token-macro:2.3 (2.3 <= 2.12)
+Skipping optional dependency analysis-core
+ > matrix-project depends on junit:1.29,script-security:1.71
+Skipping already installed dependency script-security:1.71 (1.71 <= 1.74)
+ > junit depends on workflow-api:2.40,workflow-step-api:2.22,script-security:1.71,structs:1.20
+Skipping already installed dependency workflow-api:2.40 (2.40 <= 2.40)
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency script-security:1.71 (1.71 <= 1.74)
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+apache-httpcomponents-client-4-api:4.5.10-2.0
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+mailer:1.32
+matrix-project:1.17
+okhttp-api:3.14.9
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container 64d1a66fb9ea
+ ---> 6b1960f89b38
+Step 25/80 : RUN /usr/local/bin/install-plugins.sh ldap                            # LDAP Plugin
+ ---> Running in 9a198e2e5c2f
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: ldap from https://updates.jenkins.io/2.235/latest/ldap.hpi
+ > ldap depends on mailer:1.20
+Skipping already installed dependency mailer:1.20 (1.20 <= 1.32)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+apache-httpcomponents-client-4-api:4.5.10-2.0
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+mailer:1.32
+matrix-project:1.17
+okhttp-api:3.14.9
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container 9a198e2e5c2f
+ ---> f0fdec0517e4
+Step 26/80 : RUN /usr/local/bin/install-plugins.sh mailer                          # Mailer Plugin
+ ---> Running in 5b1306c543d4
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: mailer from https://updates.jenkins.io/2.235/latest/mailer.hpi
+ > mailer depends on display-url-api:2.3.1
+Skipping already installed dependency display-url-api:2.3.1 (2.3.1 <= 2.3.3)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+apache-httpcomponents-client-4-api:4.5.10-2.0
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+mailer:1.32
+matrix-project:1.17
+okhttp-api:3.14.9
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container 5b1306c543d4
+ ---> 560c6279ae8b
+Step 27/80 : RUN /usr/local/bin/install-plugins.sh matrix-auth                     # Matrix Authorization Strategy
+ ---> Running in f30a6929efdd
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: matrix-auth from https://updates.jenkins.io/2.235/latest/matrix-auth.hpi
+ > matrix-auth depends on configuration-as-code:1.35;resolution:=optional,cloudbees-folder:6.1.0;resolution:=optional
+Skipping optional dependency configuration-as-code
+Skipping optional dependency cloudbees-folder
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+apache-httpcomponents-client-4-api:4.5.10-2.0
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+okhttp-api:3.14.9
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container f30a6929efdd
+ ---> 695494cf9b98
+Step 28/80 : RUN /usr/local/bin/install-plugins.sh antisamy-markup-formatter       # OWSASP Markup Formatter
+ ---> Running in e9d8c639ce00
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: antisamy-markup-formatter from https://updates.jenkins.io/2.235/latest/antisamy-markup-formatter.hpi
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+okhttp-api:3.14.9
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container e9d8c639ce00
+ ---> 74dbebfcde47
+Step 29/80 : RUN /usr/local/bin/install-plugins.sh pam-auth                        # PAM Authentication Plugin
+ ---> Running in d8a321c98096
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: pam-auth from https://updates.jenkins.io/2.235/latest/pam-auth.hpi
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+okhttp-api:3.14.9
+pam-auth:1.6
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container d8a321c98096
+ ---> 47e688a29696
+Step 30/80 : RUN /usr/local/bin/install-plugins.sh workflow-aggregator             # Pipeline
+ ---> Running in e453691d9d26
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: workflow-aggregator from https://updates.jenkins.io/2.235/latest/workflow-aggregator.hpi
+ > workflow-aggregator depends on lockable-resources:2.3,pipeline-stage-view:2.10,workflow-api:2.29,workflow-basic-steps:2.11,workflow-cps-global-lib:2.11,workflow-cps:2.56,workflow-durable-task-step:2.22,workflow-job:2.25,workflow-multibranch:2.20,workflow-scm-step:2.6,workflow-step-api:2.16,workflow-support:2.20,cloudbees-folder:6.6,credentials:2.1.18,git-client:2.7.3,jackson2-api:2.8.11.3,pipeline-build-step:2.7,pipeline-input-step:2.8,pipeline-milestone-step:1.3.1,pipeline-stage-step:2.3,scm-api:2.2.8,structs:1.15,pipeline-model-definition:1.3.2
+Downloading plugin: lockable-resources from https://updates.jenkins.io/2.235/latest/lockable-resources.hpi
+Downloading plugin: pipeline-stage-view from https://updates.jenkins.io/2.235/latest/pipeline-stage-view.hpi
+Skipping already installed dependency workflow-api:2.29 (2.29 <= 2.40)
+Skipping already installed dependency workflow-basic-steps:2.11 (2.11 <= 2.20)
+Downloading plugin: workflow-cps-global-lib from https://updates.jenkins.io/2.235/latest/workflow-cps-global-lib.hpi
+Skipping already installed dependency workflow-cps:2.56 (2.56 <= 2.81)
+Skipping already installed dependency workflow-durable-task-step:2.22 (2.22 <= 2.35)
+Skipping already installed dependency workflow-job:2.25 (2.25 <= 2.39)
+Downloading plugin: workflow-multibranch from https://updates.jenkins.io/2.235/latest/workflow-multibranch.hpi
+Skipping already installed dependency workflow-scm-step:2.6 (2.6 <= 2.11)
+Skipping already installed dependency workflow-step-api:2.16 (2.16 <= 2.22)
+Skipping already installed dependency workflow-support:2.20 (2.20 <= 3.5)
+Skipping already installed dependency cloudbees-folder:6.6 (6.6 <= 6.14)
+Skipping already installed dependency credentials:2.1.18 (2.1.18 <= 2.3.12)
+Skipping already installed dependency git-client:2.7.3 (2.7.3 <= 3.3.1)
+Skipping already installed dependency jackson2-api:2.8.11.3 (2.8.11.3 <= 2.11.1)
+Downloading plugin: pipeline-build-step from https://updates.jenkins.io/2.235/latest/pipeline-build-step.hpi
+Downloading plugin: pipeline-input-step from https://updates.jenkins.io/2.235/latest/pipeline-input-step.hpi
+Downloading plugin: pipeline-milestone-step from https://updates.jenkins.io/2.235/latest/pipeline-milestone-step.hpi
+Downloading plugin: pipeline-stage-step from https://updates.jenkins.io/2.235/latest/pipeline-stage-step.hpi
+Skipping already installed dependency scm-api:2.2.8 (2.2.8 <= 2.6.3)
+Skipping already installed dependency structs:1.15 (1.15 <= 1.20)
+Downloading plugin: pipeline-model-definition from https://updates.jenkins.io/2.235/latest/pipeline-model-definition.hpi
+ > lockable-resources depends on workflow-support:3.4,mailer:1.18,matrix-project:1.14,script-security:1.62,structs:1.20
+Skipping already installed dependency workflow-support:3.4 (3.4 <= 3.5)
+Skipping already installed dependency mailer:1.18 (1.18 <= 1.32)
+Skipping already installed dependency matrix-project:1.14 (1.14 <= 1.17)
+Skipping already installed dependency script-security:1.62 (1.62 <= 1.74)
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+ > workflow-multibranch depends on workflow-api:2.27,workflow-cps:2.53,workflow-job:2.21,workflow-scm-step:2.4,workflow-step-api:2.13,workflow-support:2.17,branch-api:2.0.21,cloudbees-folder:6.1.2,scm-api:2.2.7,script-security:1.42,structs:1.17
+ > pipeline-build-step depends on workflow-api:2.33,workflow-step-api:2.22,workflow-support:3.1,script-security:1.50
+ > pipeline-stage-step depends on workflow-api:2.40,workflow-step-api:2.22
+ > pipeline-milestone-step depends on workflow-api:2.11,workflow-step-api:2.9
+Skipping already installed dependency workflow-api:2.27 (2.27 <= 2.40)
+Skipping already installed dependency workflow-api:2.40 (2.40 <= 2.40)
+Skipping already installed dependency workflow-api:2.33 (2.33 <= 2.40)
+Skipping already installed dependency workflow-api:2.11 (2.11 <= 2.40)
+ > pipeline-stage-view depends on pipeline-rest-api:2.13,workflow-api:2.24,workflow-job:2.12,handlebars:1.1.1,jquery-detached:1.2.1,momentjs:1.1
+Skipping already installed dependency workflow-cps:2.53 (2.53 <= 2.81)
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Downloading plugin: pipeline-rest-api from https://updates.jenkins.io/2.235/latest/pipeline-rest-api.hpi
+Skipping already installed dependency workflow-step-api:2.9 (2.9 <= 2.22)
+Skipping already installed dependency workflow-job:2.21 (2.21 <= 2.39)
+ > pipeline-input-step depends on workflow-api:2.35,workflow-step-api:2.20,workflow-support:3.3,credentials:2.3.0
+Skipping already installed dependency workflow-api:2.24 (2.24 <= 2.40)
+Skipping already installed dependency workflow-support:3.1 (3.1 <= 3.5)
+Skipping already installed dependency workflow-scm-step:2.4 (2.4 <= 2.11)
+Skipping already installed dependency workflow-api:2.35 (2.35 <= 2.40)
+Skipping already installed dependency workflow-job:2.12 (2.12 <= 2.39)
+Skipping already installed dependency script-security:1.50 (1.50 <= 1.74)
+Downloading plugin: handlebars from https://updates.jenkins.io/2.235/latest/handlebars.hpi
+Skipping already installed dependency workflow-step-api:2.13 (2.13 <= 2.22)
+Skipping already installed dependency jquery-detached:1.2.1 (1.2.1 <= 1.2.1)
+Skipping already installed dependency workflow-step-api:2.20 (2.20 <= 2.22)
+Skipping already installed dependency workflow-support:2.17 (2.17 <= 3.5)
+Downloading plugin: momentjs from https://updates.jenkins.io/2.235/latest/momentjs.hpi
+Downloading plugin: branch-api from https://updates.jenkins.io/2.235/latest/branch-api.hpi
+Skipping already installed dependency workflow-support:3.3 (3.3 <= 3.5)
+Skipping already installed dependency cloudbees-folder:6.1.2 (6.1.2 <= 6.14)
+Skipping already installed dependency credentials:2.3.0 (2.3.0 <= 2.3.12)
+Skipping already installed dependency scm-api:2.2.7 (2.2.7 <= 2.6.3)
+Skipping already installed dependency script-security:1.42 (1.42 <= 1.74)
+Skipping already installed dependency structs:1.17 (1.17 <= 1.20)
+ > workflow-cps-global-lib depends on workflow-api:2.33,workflow-cps:2.71,workflow-scm-step:2.7,workflow-step-api:2.20,workflow-support:3.3,cloudbees-folder:6.1.2,credentials:2.1.18,git-server:1.7,scm-api:2.6.3,script-security:1.70,structs:1.19
+Skipping already installed dependency workflow-api:2.33 (2.33 <= 2.40)
+Skipping already installed dependency workflow-cps:2.71 (2.71 <= 2.81)
+Skipping already installed dependency workflow-scm-step:2.7 (2.7 <= 2.11)
+Skipping already installed dependency workflow-step-api:2.20 (2.20 <= 2.22)
+Skipping already installed dependency workflow-support:3.3 (3.3 <= 3.5)
+Skipping already installed dependency cloudbees-folder:6.1.2 (6.1.2 <= 6.14)
+ > pipeline-model-definition depends on workflow-api:2.40,workflow-basic-steps:2.20,workflow-cps-global-lib:2.16,workflow-cps:2.80,workflow-durable-task-step:2.35,workflow-multibranch:2.16,workflow-scm-step:2.11,workflow-support:3.4,credentials-binding:1.23,credentials:2.3.7,docker-workflow:1.22;resolution:=optional,git-client:3.2.1,mailer:1.32,pipeline-input-step:2.11,pipeline-stage-step:2.3,scm-api:2.6.3,pipeline-model-api:1.7.1,pipeline-model-extensions:1.7.1,pipeline-stage-tags-metadata:1.7.1
+Skipping already installed dependency credentials:2.1.18 (2.1.18 <= 2.3.12)
+Downloading plugin: git-server from https://updates.jenkins.io/2.235/latest/git-server.hpi
+Skipping already installed dependency workflow-api:2.40 (2.40 <= 2.40)
+Skipping already installed dependency scm-api:2.6.3 (2.6.3 <= 2.6.3)
+Skipping already installed dependency workflow-basic-steps:2.20 (2.20 <= 2.20)
+Skipping already installed dependency script-security:1.70 (1.70 <= 1.74)
+Skipping already installed dependency workflow-cps:2.80 (2.80 <= 2.81)
+Skipping already installed dependency structs:1.19 (1.19 <= 1.20)
+Skipping already installed dependency workflow-durable-task-step:2.35 (2.35 <= 2.35)
+Skipping already installed dependency workflow-scm-step:2.11 (2.11 <= 2.11)
+Skipping already installed dependency workflow-support:3.4 (3.4 <= 3.5)
+Skipping already installed dependency credentials-binding:1.23 (1.23 <= 1.23)
+Skipping already installed dependency credentials:2.3.7 (2.3.7 <= 2.3.12)
+Skipping optional dependency docker-workflow
+Skipping already installed dependency git-client:3.2.1 (3.2.1 <= 3.3.1)
+Skipping already installed dependency mailer:1.32 (1.32 <= 1.32)
+Skipping already installed dependency scm-api:2.6.3 (2.6.3 <= 2.6.3)
+Downloading plugin: pipeline-model-api from https://updates.jenkins.io/2.235/latest/pipeline-model-api.hpi
+Downloading plugin: pipeline-model-extensions from https://updates.jenkins.io/2.235/latest/pipeline-model-extensions.hpi
+Downloading plugin: pipeline-stage-tags-metadata from https://updates.jenkins.io/2.235/latest/pipeline-stage-tags-metadata.hpi
+ > pipeline-rest-api depends on workflow-api:2.24,workflow-job:2.12,workflow-step-api:2.14,workflow-support:2.14,jackson2-api:2.9.9.1,pipeline-graph-analysis:1.4,pipeline-input-step:2.8,pipeline-stage-step:2.3
+Skipping already installed dependency workflow-api:2.24 (2.24 <= 2.40)
+Skipping already installed dependency workflow-job:2.12 (2.12 <= 2.39)
+Skipping already installed dependency workflow-step-api:2.14 (2.14 <= 2.22)
+Skipping already installed dependency workflow-support:2.14 (2.14 <= 3.5)
+Skipping already installed dependency jackson2-api:2.9.9.1 (2.9.9.1 <= 2.11.1)
+Downloading plugin: pipeline-graph-analysis from https://updates.jenkins.io/2.235/latest/pipeline-graph-analysis.hpi
+ > branch-api depends on cloudbees-folder:6.12,scm-api:2.6.3
+Skipping already installed dependency cloudbees-folder:6.12 (6.12 <= 6.14)
+Skipping already installed dependency scm-api:2.6.3 (2.6.3 <= 2.6.3)
+ > git-server depends on git-client:2.7.6
+Skipping already installed dependency git-client:2.7.6 (2.7.6 <= 3.3.1)
+ > pipeline-stage-tags-metadata depends on workflow-api:2.40
+Skipping already installed dependency workflow-api:2.40 (2.40 <= 2.40)
+ > pipeline-model-extensions depends on workflow-cps:2.80,workflow-job:2.39,credentials-binding:1.23,credentials:2.3.7,pipeline-stage-step:2.3,pipeline-model-api:1.7.1
+Skipping already installed dependency workflow-cps:2.80 (2.80 <= 2.81)
+Skipping already installed dependency workflow-job:2.39 (2.39 <= 2.39)
+Skipping already installed dependency credentials-binding:1.23 (1.23 <= 1.23)
+Skipping already installed dependency credentials:2.3.7 (2.3.7 <= 2.3.12)
+ > pipeline-graph-analysis depends on workflow-api:2.34,workflow-cps:2.65,workflow-job:2.32,workflow-step-api:2.19,workflow-support:3.2,pipeline-input-step:2.8,pipeline-stage-step:2.3,scm-api:2.2.7,structs:1.17
+Skipping already installed dependency workflow-api:2.34 (2.34 <= 2.40)
+Skipping already installed dependency workflow-cps:2.65 (2.65 <= 2.81)
+Skipping already installed dependency workflow-job:2.32 (2.32 <= 2.39)
+Skipping already installed dependency workflow-step-api:2.19 (2.19 <= 2.22)
+Skipping already installed dependency workflow-support:3.2 (3.2 <= 3.5)
+Skipping already installed dependency scm-api:2.2.7 (2.2.7 <= 2.6.3)
+Skipping already installed dependency structs:1.17 (1.17 <= 1.20)
+ > pipeline-model-api depends on workflow-step-api:2.22,jackson2-api:2.9.8,structs:1.20
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency jackson2-api:2.9.8 (2.9.8 <= 2.11.1)
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+handlebars:1.1.1
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container e453691d9d26
+ ---> 4b933bb5877f
+Step 31/80 : RUN /usr/local/bin/install-plugins.sh pipeline-github-lib             # Pipeline: Github Groovy Libraries
+ ---> Running in 67041e34d15f
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: pipeline-github-lib from https://updates.jenkins.io/2.235/latest/pipeline-github-lib.hpi
+ > pipeline-github-lib depends on workflow-cps-global-lib:2.5,git:3.0.2
+Skipping already installed dependency workflow-cps-global-lib:2.5 (2.5 <= 2.16)
+Skipping already installed dependency git:3.0.2 (3.0.2 <= 4.3.0)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+handlebars:1.1.1
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-github-lib:1.0
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container 67041e34d15f
+ ---> 2d73f3be0693
+Step 32/80 : RUN /usr/local/bin/install-plugins.sh workflow-durable-task-step      # Pipeline: Node and Processes
+ ---> Running in 3224cb10fd31
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: workflow-durable-task-step from https://updates.jenkins.io/2.235/latest/workflow-durable-task-step.hpi
+ > workflow-durable-task-step depends on workflow-api:2.33,workflow-step-api:2.20,workflow-support:3.3,durable-task:1.33,scm-api:2.2.6,script-security:1.58,structs:1.18
+Skipping already installed dependency workflow-api:2.33 (2.33 <= 2.40)
+Skipping already installed dependency workflow-step-api:2.20 (2.20 <= 2.22)
+Skipping already installed dependency workflow-support:3.3 (3.3 <= 3.5)
+Skipping already installed dependency durable-task:1.33 (1.33 <= 1.34)
+Skipping already installed dependency scm-api:2.2.6 (2.2.6 <= 2.6.3)
+Skipping already installed dependency script-security:1.58 (1.58 <= 1.74)
+Skipping already installed dependency structs:1.18 (1.18 <= 1.20)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+handlebars:1.1.1
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-github-lib:1.0
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container 3224cb10fd31
+ ---> ae11841a13ed
+Step 33/80 : RUN /usr/local/bin/install-plugins.sh pipeline-stage-view             # Pipeline: Stage View Plugin
+ ---> Running in 8b871c988277
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: pipeline-stage-view from https://updates.jenkins.io/2.235/latest/pipeline-stage-view.hpi
+ > pipeline-stage-view depends on pipeline-rest-api:2.13,workflow-api:2.24,workflow-job:2.12,handlebars:1.1.1,jquery-detached:1.2.1,momentjs:1.1
+Skipping already installed dependency pipeline-rest-api:2.13 (2.13 <= 2.13)
+Skipping already installed dependency workflow-api:2.24 (2.24 <= 2.40)
+Skipping already installed dependency workflow-job:2.12 (2.12 <= 2.39)
+Skipping already installed dependency handlebars:1.1.1 (1.1.1 <= 1.1.1)
+Skipping already installed dependency jquery-detached:1.2.1 (1.2.1 <= 1.2.1)
+Skipping already installed dependency momentjs:1.1 (1.1 <= 1.1.1)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+handlebars:1.1.1
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-github-lib:1.0
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container 8b871c988277
+ ---> 77fc85130061
+Step 34/80 : RUN /usr/local/bin/install-plugins.sh ssh-credentials                 # SSH Credentials Plugin
+ ---> Running in 0c7a051ff17c
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: ssh-credentials from https://updates.jenkins.io/2.235/latest/ssh-credentials.hpi
+ > ssh-credentials depends on credentials:2.2.0,trilead-api:1.0.5
+Skipping already installed dependency credentials:2.2.0 (2.2.0 <= 2.3.12)
+Skipping already installed dependency trilead-api:1.0.5 (1.0.5 <= 1.0.8)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+handlebars:1.1.1
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-github-lib:1.0
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container 0c7a051ff17c
+ ---> f0e688f3db4b
+Step 35/80 : RUN /usr/local/bin/install-plugins.sh ssh-slaves                      # SSH Build Agents
+ ---> Running in f56cc8dcafcc
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: ssh-slaves from https://updates.jenkins.io/2.235/latest/ssh-slaves.hpi
+ > ssh-slaves depends on credentials:2.3.0,ssh-credentials:1.18,trilead-api:1.0.5
+Skipping already installed dependency credentials:2.3.0 (2.3.0 <= 2.3.12)
+Skipping already installed dependency ssh-credentials:1.18 (1.18 <= 1.18.1)
+Skipping already installed dependency trilead-api:1.0.5 (1.0.5 <= 1.0.8)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+handlebars:1.1.1
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-github-lib:1.0
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+ssh-slaves:1.31.2
+structs:1.20
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container f56cc8dcafcc
+ ---> ea6a6ef8afa6
+Step 36/80 : RUN /usr/local/bin/install-plugins.sh timestamper                     # Timestamper
+ ---> Running in d2b9a06bd55a
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: timestamper from https://updates.jenkins.io/2.235/latest/timestamper.hpi
+ > timestamper depends on workflow-api:2.39,workflow-step-api:2.19
+Skipping already installed dependency workflow-api:2.39 (2.39 <= 2.40)
+Skipping already installed dependency workflow-step-api:2.19 (2.19 <= 2.22)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+handlebars:1.1.1
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-github-lib:1.0
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+ssh-slaves:1.31.2
+structs:1.20
+timestamper:1.11.3
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container d2b9a06bd55a
+ ---> 4f305184297a
+Step 37/80 : RUN /usr/local/bin/install-plugins.sh trilead-api                     # Trilead API Plugin
+ ---> Running in a6b0824ed544
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: trilead-api from https://updates.jenkins.io/2.235/latest/trilead-api.hpi
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+handlebars:1.1.1
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-github-lib:1.0
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+ssh-slaves:1.31.2
+structs:1.20
+timestamper:1.11.3
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+Cleaning up locks
+Removing intermediate container a6b0824ed544
+ ---> 653654cc74b3
+Step 38/80 : RUN /usr/local/bin/install-plugins.sh ws-cleanup                      # Workspace Cleanup
+ ---> Running in 368b92b3ea73
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: ws-cleanup from https://updates.jenkins.io/2.235/latest/ws-cleanup.hpi
+ > ws-cleanup depends on workflow-durable-task-step:2.4,matrix-project:1.7.1,resource-disposer:0.3,script-security:1.54,structs:1.19
+Skipping already installed dependency workflow-durable-task-step:2.4 (2.4 <= 2.35)
+Skipping already installed dependency matrix-project:1.7.1 (1.7.1 <= 1.17)
+Downloading plugin: resource-disposer from https://updates.jenkins.io/2.235/latest/resource-disposer.hpi
+Skipping already installed dependency script-security:1.54 (1.54 <= 1.74)
+Skipping already installed dependency structs:1.19 (1.19 <= 1.20)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+handlebars:1.1.1
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-github-lib:1.0
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+resource-disposer:0.14
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+ssh-slaves:1.31.2
+structs:1.20
+timestamper:1.11.3
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+ws-cleanup:0.38
+Cleaning up locks
+Removing intermediate container 368b92b3ea73
+ ---> b300961b809b
+Step 39/80 : RUN /usr/local/bin/install-plugins.sh git-parameter
+ ---> Running in 6796ad4208cb
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: git-parameter from https://updates.jenkins.io/2.235/latest/git-parameter.hpi
+ > git-parameter depends on rebuild:1.25;resolution:=optional,git:3.10.0,jquery:1.11.2-1,junit:1.3
+Skipping optional dependency rebuild
+Skipping already installed dependency git:3.10.0 (3.10.0 <= 4.3.0)
+Downloading plugin: jquery from https://updates.jenkins.io/2.235/latest/jquery.hpi
+Skipping already installed dependency junit:1.3 (1.3 <= 1.29)
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-parameter:0.9.12
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+handlebars:1.1.1
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jquery:1.12.4-1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-github-lib:1.0
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+resource-disposer:0.14
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+ssh-slaves:1.31.2
+structs:1.20
+timestamper:1.11.3
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+ws-cleanup:0.38
+Cleaning up locks
+Removing intermediate container 6796ad4208cb
+ ---> b1019520504a
+Step 40/80 : RUN /usr/local/bin/install-plugins.sh groovy
+ ---> Running in c21809802182
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: groovy from https://updates.jenkins.io/2.235/latest/groovy.hpi
+ > groovy depends on script-security:1.54,token-macro:1.4;resolution:=optional
+Skipping already installed dependency script-security:1.54 (1.54 <= 1.74)
+Skipping optional dependency token-macro
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-parameter:0.9.12
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+groovy:2.2
+handlebars:1.1.1
+jackson2-api:2.11.1
+jquery-detached:1.2.1
+jquery:1.12.4-1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-github-lib:1.0
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+resource-disposer:0.14
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+ssh-slaves:1.31.2
+structs:1.20
+timestamper:1.11.3
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+ws-cleanup:0.38
+Cleaning up locks
+Removing intermediate container c21809802182
+ ---> 051616a9145d
+Step 41/80 : RUN /usr/local/bin/install-plugins.sh job-dsl
+ ---> Running in cf86ade980df
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: job-dsl from https://updates.jenkins.io/2.235/latest/job-dsl.hpi
+ > job-dsl depends on structs:1.19,script-security:1.54,vsphere-cloud:1.1.11;resolution:=optional,config-file-provider:2.15.4;resolution:=optional,managed-scripts:1.3;resolution:=optional,configuration-as-code:1.15;resolution:=optional
+Skipping already installed dependency structs:1.19 (1.19 <= 1.20)
+Skipping already installed dependency script-security:1.54 (1.54 <= 1.74)
+Skipping optional dependency vsphere-cloud
+Skipping optional dependency config-file-provider
+Skipping optional dependency managed-scripts
+Skipping optional dependency configuration-as-code
+
+WAR bundled plugins:
+
+
+Installed plugins:
+ace-editor:1.1
+ant:1.11
+antisamy-markup-formatter:2.1
+apache-httpcomponents-client-4-api:4.5.10-2.0
+branch-api:2.5.8
+build-timeout:1.20
+cloudbees-folder:6.14
+credentials-binding:1.23
+credentials:2.3.12
+display-url-api:2.3.3
+durable-task:1.34
+email-ext:2.69
+git-client:3.3.1
+git-parameter:0.9.12
+git-server:1.9
+git:4.3.0
+github-api:1.115
+github-branch-source:2.8.2
+github:1.31.0
+gradle:1.36
+groovy:2.2
+handlebars:1.1.1
+jackson2-api:2.11.1
+job-dsl:1.77
+jquery-detached:1.2.1
+jquery:1.12.4-1
+jsch:0.1.55.2
+junit:1.29
+ldap:1.24
+lockable-resources:2.8
+mailer:1.32
+matrix-auth:2.6.2
+matrix-project:1.17
+momentjs:1.1.1
+okhttp-api:3.14.9
+pam-auth:1.6
+pipeline-build-step:2.12
+pipeline-github-lib:1.0
+pipeline-graph-analysis:1.10
+pipeline-input-step:2.11
+pipeline-milestone-step:1.3.1
+pipeline-model-api:1.7.1
+pipeline-model-definition:1.7.1
+pipeline-model-extensions:1.7.1
+pipeline-rest-api:2.13
+pipeline-stage-step:2.5
+pipeline-stage-tags-metadata:1.7.1
+pipeline-stage-view:2.13
+plain-credentials:1.7
+resource-disposer:0.14
+scm-api:2.6.3
+script-security:1.74
+snakeyaml-api:1.26.4
+ssh-credentials:1.18.1
+ssh-slaves:1.31.2
+structs:1.20
+timestamper:1.11.3
+token-macro:2.12
+trilead-api:1.0.8
+workflow-aggregator:2.6
+workflow-api:2.40
+workflow-basic-steps:2.20
+workflow-cps-global-lib:2.16
+workflow-cps:2.81
+workflow-durable-task-step:2.35
+workflow-job:2.39
+workflow-multibranch:2.21
+workflow-scm-step:2.11
+workflow-step-api:2.22
+workflow-support:3.5
+ws-cleanup:0.38
+Cleaning up locks
+Removing intermediate container cf86ade980df
+ ---> 21307da0196b
+Step 42/80 : RUN /usr/local/bin/install-plugins.sh maven-plugin
+ ---> Running in 728c9947c34a
+Creating initial locks...
+Analyzing war /usr/share/jenkins/jenkins.war...
+Registering preinstalled plugins...
+Using version-specific update center: https://updates.jenkins.io/2.235...
+Downloading plugins...
+Downloading plugin: maven-plugin from https://updates.jenkins.io/2.235/latest/maven-plugin.hpi
