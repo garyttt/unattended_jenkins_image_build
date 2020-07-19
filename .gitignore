@@ -7,3 +7,4 @@ ngproxy/*
 samples/*
 kops
 terraform
+server.key

@@ -1,8 +1,12 @@
-# jenkins_image_build.dockerfile v1.0.0
+# jenkins_image_build.dockerfile v1.0.1
 FROM jenkins/jenkins:2.235.2-lts-jdk11
 WORKDIR /var/jenkins_home
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
-ENV JENKINS_OPTS --prefix=/
+# Force use of HTTPS
+COPY server.crt /var/jenkins_home/server.crt
+COPY server.key /var/jenkins_home/server.key
+ENV JENKINS_OPTS "--prefix=/ --httpPort=-1 --httpsPort=8083 --httpsCertificate=/var/jenkins_home/server.crt --httpsPrivateKey=/var/jenkins_home/server.key"
+EXPOSE 8083
 # Define fisrt admin user/pass
 ENV JENKINS_FIRST_ADMIN_USER admin
 ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
@@ -17,6 +21,7 @@ RUN rm -f /usr/share/jenkins/ref/init.groovy.d/*.groovy
 COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
 COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
 COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY 03_set_NumExecutors.groovy                   /usr/share/jenkins/ref/init.groovy.d/
 # Install the same list as the suggested plugsins during default interactive initial login screen
 # Sorted by plugin description
 RUN /usr/local/bin/install-plugins.sh ant                             # Ant
