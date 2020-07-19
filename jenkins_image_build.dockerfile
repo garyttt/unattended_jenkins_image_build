@@ -30,7 +30,6 @@ RUN /usr/local/bin/install-plugins.sh git                             # Git
 RUN /usr/local/bin/install-plugins.sh github-branch-source            # Github Branch Source
 RUN /usr/local/bin/install-plugins.sh gradle                          # Gradle
 RUN /usr/local/bin/install-plugins.sh email-ext                       # Email Extension
-RUN /usr/local/bin/install-plugins.sh cloudbees-folder                # Folders Plugin
 RUN /usr/local/bin/install-plugins.sh ldap                            # LDAP Plugin
 RUN /usr/local/bin/install-plugins.sh mailer                          # Mailer Plugin
 RUN /usr/local/bin/install-plugins.sh matrix-auth                     # Matrix Authorization Strategy
