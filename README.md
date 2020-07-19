@@ -33,4 +33,4 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 18. if you even re-build the image and need the previous config. perform a restore
 
 # How to enable HTTPS
-19. first run 'generate_self_signed_jks.sh', then un-comment the related lines in dockerfile, as well as copy/paste the right lines in jenkins_run.sh
+19. first run 'jenkins_generate_selfsigned_jks.sh', then un-comment the related lines in dockerfile, as well as copy/paste the right lines in jenkins_run.sh
