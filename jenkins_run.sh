@@ -19,7 +19,7 @@ docker run \
 --mount type=bind,src=$PWD/jenkins_config_backup,dst=/var/tmp/jenkins_config_backup \
 --env JAVA_OPTS="-Djenkins.install.runSetupWizard=false -Djava.util.logging.config.file=/var/jenkins_home/logging.properties" \
 --env JENKINS_OPTS="--prefix=/ --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret" \
---health-cmd "curl --insecure --head http://localhost:8080 && exit 0 || exit 1" \
+--health-cmd "curl --insecure --head https://localhost:8083 && exit 0 || exit 1" \
 --health-interval 5s \
 --health-timeout 3s \
 --health-retries 3 \
