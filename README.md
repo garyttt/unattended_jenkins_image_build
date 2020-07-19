@@ -30,3 +30,6 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 16. refer to 'Jenkins_Period_Backup_Config_Example.pdf' to quickly configure it, do not forget to validate cron syntax and existence of backup folder
 17. take a on-demand config backup whenever you have made changes and note down the timestamp (drop list of recent timestamps is shown when you click 'restore')
 18. if you even re-build the image and need the previous config. perform a restore
+
+# How to enable HTTPS
+19. first run 'generate_self_signed_jks.sh', then uncomment the related lines in dockerfile, as well as copy/paste the right lines in jenkins_run.sh
