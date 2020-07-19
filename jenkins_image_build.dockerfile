@@ -2,10 +2,9 @@
 FROM jenkins/jenkins:2.235.2-lts-jdk11
 WORKDIR /var/jenkins_home
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
-# Force use of HTTPS
-COPY server.crt /var/jenkins_home/server.crt
-COPY server.key /var/jenkins_home/server.key
-ENV JENKINS_OPTS "--prefix=/ --httpPort=-1 --httpsPort=8083 --httpsCertificate=/var/jenkins_home/server.crt --httpsPrivateKey=/var/jenkins_home/server.key"
+# Uncommet the next 3 lines to Force use of HTTPS, also edit 01_set_baseURL.groovy to https://hostname:8083, and health-check url 
+COPY selfsigned.jks /var/jenkins_home
+ENV JENKINS_OPTS "--prefix=/ --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
 EXPOSE 8083
 # Define fisrt admin user/pass
 ENV JENKINS_FIRST_ADMIN_USER admin
@@ -17,7 +16,7 @@ COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
 # Pre-Create folder for periodicbackup plugin to backup ConfigOnly data
 RUN mkdir -p /var/tmp/jenkins_config_backup
 # Jenkins init.groovy.d scripts
-RUN rm -f /usr/share/jenkins/ref/init.groovy.d/*.groovy
+# RUN rm -f /usr/share/jenkins/ref/init.groovy.d/*.groovy
 COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
 COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
 COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
@@ -100,14 +99,14 @@ RUN /usr/local/bin/install-plugins.sh active-directory
 RUN /usr/local/bin/install-plugins.sh aqua-security-scanner
 RUN /usr/local/bin/install-plugins.sh aqua-microscanner
 RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
-# Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, vi, wget, zip, ansible/jinja2/dnspythonn... 
-# Group all packages on same command line to reduce image size
+# Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, vim, wget, zip, ansible/jinja2/dnspythonn... 
+# Group all packages on same command line to reduce image size`
 USER root
 RUN apt-get update && \
-  apt-get install -y python3 python3-pip curl git jq maven tree unzip vi wget zip && \
+  apt-get install -y python3 python3-pip curl git jq maven tree unzip vim wget zip && \
   pip3 install ansible==2.9.10 jinja2 dnspython && \
   /var/tmp/download_install_awscli_v2.sh
 USER jenkins
 # Set the $HOME of jenkins user
 # Health Check got to use --head (Show document info only), otherwise it may throw 'anonymousi' access permission denied 
-HEALTHCHECK --interval=5s --timeout=3s --retries=3 --start-period=2m CMD "curl --head http://localhost:8080 && exit 0 || exit 1"
+HEALTHCHECK --interval=5s --timeout=3s --retries=3 --start-period=2m CMD "curl --insecure --head https://localhost:8083 && exit 0 || exit 1"

@@ -130,6 +130,16 @@ find_all_text_files() {
   find $DIR -type f -exec grep -Iq . {} \; -print 
 }
 
+# Generate self-signed java keystore
+generate_self_signed_jks() {
+  keytool -genkey -keyalg RSA -alias selfsigned -keystore selfsigned.jks -validity 365 -keysize 4096
+  keytool -export -alias selfsigned -keystore selfsigned.jks -rfc -file selfsigned.cer
+  keytool -list -v -keystore selfsigned.jks
+  # Warning: The JKS keystore uses a proprietary format. 
+  # It is recommended to migrate to PKCS12 which is an industry standard format using
+  # keytool -importkeystore -srckeystore selfsigned.jks -destkeystore selfsigned.pkcs12 -deststoretype pkcs12
+}
+
 # A version of generating self-signed SSL Cert and Key: one-liner
 generate_ssl_cert() {
   openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -keyout server.key -out server.crt
