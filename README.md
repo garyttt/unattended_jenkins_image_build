@@ -12,7 +12,7 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 5. The jenkins docker image also includes typical tools including curl, git, jq, maven, tree, wget, zip, python3, pip3, ansible 2.9.10, jinja2, dnspython
 
 # How to build the image
-6. git clone https://github.com/garyttt/unattended_jenkins_image_build.git
+6. git clone https://github.com/garyttt/unattended_jenkins_image_build.git using an account with uidNumber=1000 (jenkins)
 7. cd unattended_jenkins_image_build
 8. edit all .sh scripts, replace 'REPO=garyttt8' (my Docker Hub account) with your Docker Hub account 'REPO=yourdockerhubaccount'
 9. edit 01_set_baseURL.groovy, replace hostname in 'localtion.url' with your actual docker hostname
