@@ -2,7 +2,7 @@
 FROM jenkins/jenkins:2.235.2-lts-jdk11
 WORKDIR /var/jenkins_home
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
-# Uncommet the next 3 lines to Force use of HTTPS, also edit 01_set_baseURL.groovy to https://hostname:8083, and health-check url 
+# Un-comment the next 3 lines to force use of HTTPS, please also edit 01_set_baseURL.groovy and health-check to reflect https://hostname:8083
 COPY selfsigned.jks /var/jenkins_home
 ENV JENKINS_OPTS "--prefix=/ --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
 EXPOSE 8083
