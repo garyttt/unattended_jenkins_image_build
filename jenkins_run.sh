@@ -6,6 +6,7 @@ UIDNUMBER=`id -u`
 [ $UIDNUMBER -ne 1000 ] && echo "Current user must be 1000 (jenkins) to avoid permission issue" && exit 1
 cp -p [0-9][0-9]_*.groovy $PWD/jenkins_home/init.groovy.d >/dev/null 2>&1  # copy changes
 ./jenkins_stop.sh
+./jenkins_config_logging.sh
 
 REPO=garyttt8
 IMAGE=jenkins
