@@ -137,7 +137,7 @@ generate_self_signed_jks() {
   keytool -list -v -keystore selfsigned.jks
   # Warning: The JKS keystore uses a proprietary format. 
   # It is recommended to migrate to PKCS12 which is an industry standard format using
-  # keytool -importkeystore -srckeystore selfsigned.jks -destkeystore selfsigned.pkcs12 -deststoretype pkcs12
+  keytool -importkeystore -srckeystore selfsigned.jks -destkeystore selfsigned.p12 -deststoretype pkcs12
 }
 
 # A version of generating self-signed SSL Cert and Key: one-liner
@@ -403,6 +403,26 @@ k8s_get_ext_svc_url() {
   local NODE_IP=`k8s_get_node_ip $NAMESPACE`
   local NODE_PORT=`k8s_get_node_port $NAMESPACE $SERVICE`
   echo http://$NODE_IP:$NODE_PORT
+}
+
+# OpenSSL View Cert - x509
+ossl_view_cert_x509() {
+  if [ $# -le 0 ]; then
+    echo "Usage: ossl_view_cert_x509 <cert_filename>"
+    return 1
+  fi
+  local CERTFILE="$1"
+  openssl x509 -in $CERTFILE -text -noout
+}
+
+# OpenSSL View Cert - PKCS12
+ossl_view_cert_p12() {
+  if [ $# -le 0 ]; then
+    echo "Usage: ossl_view_cert_p12 <keystore_filename>"
+    return 1
+  fi
+  local CERTFILE="$1"
+  openssl pkcs12 -info -in $CERTFILE
 }
 
 # Remove Jenkins plugins, must be at the Jenkins server
