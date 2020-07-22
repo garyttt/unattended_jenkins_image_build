@@ -7,7 +7,7 @@
 # Assumptions:
 # 1. these packages have already been installed: curl, dos2unix, golang, jq, openssl, unzip, wget
 # 2. default install path for install tools: /usr/local/bin
-# 3. default version for the download/install tools are hard-coded, search for VERSION and change it as required
+# 3. default version for the download/install tools might be hard-coded, search for VERSION= and change it as required
 
 # Display shell function
 # Ref: https://unix.stackexchange.com/questions/175018/search-for-a-string-and-print-everything-before-and-after-within-a-range
