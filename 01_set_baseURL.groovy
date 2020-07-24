@@ -5,7 +5,7 @@ import jenkins.model.Jenkins
 JenkinsLocationConfiguration location = Jenkins.instance.getExtensionList('jenkins.model.JenkinsLocationConfiguration')[0]
 // Assumption: 'jenkins' is the docker-compose service name for jenkins master and thus will resolve to its runtime IP
 // HTTP
-location.url = 'http://jenkins:8080/'
+location.url = 'http://jenkins:8080/jenkins'
 // HTTPS
 // location.url = 'https://jenkins:8083/'
 location.save()
