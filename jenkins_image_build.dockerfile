@@ -1,10 +1,10 @@
-# jenkins_image_build.dockerfile v1.0.1
+# jenkins_image_build.dockerfile v1.0.2
 FROM jenkins/jenkins:2.235.2-lts-jdk11
 WORKDIR /var/jenkins_home
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
 # Un-comment the next 3 lines to force use of HTTPS, please also edit 01_set_baseURL.groovy and health-check to reflect https://hostname:8083
 COPY selfsigned.jks /var/jenkins_home
-ENV JENKINS_OPTS "--prefix=/ --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
+ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=8080 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
 EXPOSE 8083
 # Define fisrt admin user/pass
 ENV JENKINS_FIRST_ADMIN_USER admin
@@ -98,10 +98,11 @@ RUN /usr/local/bin/install-plugins.sh aqua-security-scanner
 RUN /usr/local/bin/install-plugins.sh aqua-microscanner
 RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
 # Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, vim, wget, zip, ansible/jinja2/dnspythonn... 
+# HTTPS SSL Ciphers suppoet: apt-transport-https ca-certificates gnupg2 software-properties-common 
 # Group all packages on same command line to reduce image size`
 USER root
 RUN apt-get update && \
-  apt-get install -y python3 python3-pip curl git jq maven tree unzip vim wget zip && \
+  apt-get install -y apt-transport-https ca-certificates python3 python3-pip curl git gnupg2 jq maven tree software-properties-common unzip vim wget zip && \
   pip3 install ansible==2.9.10 jinja2 dnspython && \
   /var/tmp/download_install_awscli_v2.sh
 USER jenkins
