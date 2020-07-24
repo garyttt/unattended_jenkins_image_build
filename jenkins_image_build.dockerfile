@@ -2,7 +2,7 @@
 FROM jenkins/jenkins:2.235.2-lts-jdk11
 WORKDIR /var/jenkins_home
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
-# Un-comment the next 3 lines to force use of HTTPS, please also edit 01_set_baseURL.groovy and health-check to reflect https://hostname:8083
+# Un-comment the next 3 lines to enable HTTPS
 COPY selfsigned.jks /var/jenkins_home
 ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=8080 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
 EXPOSE 8083
@@ -13,7 +13,7 @@ ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
 COPY kops /usr/local/bin/kops
 COPY terraform /usr/local/bin/terraform
 COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
-# Pre-Create folder for periodicbackup plugin to backup ConfigOnly data
+# Pre-Create folder for periodicbackup plugin to backup ConfigOnly data, please 'enable' it in GUI
 RUN mkdir -p /var/tmp/jenkins_config_backup
 # Jenkins init.groovy.d scripts, if you make changes, please also copy the changed one to $DOCKER_HOST:$PWD/jenkins_home/init.groovy.d/
 COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
@@ -106,6 +106,5 @@ RUN apt-get update && \
   pip3 install ansible==2.9.10 jinja2 dnspython && \
   /var/tmp/download_install_awscli_v2.sh
 USER jenkins
-# Set the $HOME of jenkins user
-# Health Check got to use --head (Show document info only), otherwise it may throw 'anonymousi' access permission denied 
-HEALTHCHECK --interval=5s --timeout=3s --retries=3 --start-period=2m CMD "curl --insecure --head https://localhost:8083 && exit 0 || exit 1"
+# Health Check got to use --head (Show document info only), otherwise it may throw 'anonymous' access permission denied 
+HEALTHCHECK --interval=5s --timeout=3s --retries=3 --start-period=2m CMD "curl --insecure --head http://localhost:8080 && exit 0 || exit 1"
