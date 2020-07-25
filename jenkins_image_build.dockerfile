@@ -103,6 +103,7 @@ RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
 USER root
 RUN apt-get update && \
   apt-get install -y apt-transport-https ca-certificates python3 python3-pip curl git gnupg2 jq maven tree software-properties-common unzip vim wget zip && \
+  rm -rf /var/lib/apt/lists/* && \
   pip3 install ansible==2.9.10 jinja2 dnspython && \
   /var/tmp/download_install_awscli_v2.sh
 USER jenkins
