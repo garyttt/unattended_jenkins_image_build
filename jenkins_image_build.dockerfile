@@ -1,11 +1,14 @@
-# jenkins_image_build.dockerfile v1.0.2
-FROM jenkins/jenkins:2.235.2-lts-jdk11
+# jenkins_image_build.dockerfile v1.0.3
+FROM jenkins/jenkins:lts
 WORKDIR /var/jenkins_home
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
 # Un-comment the next 3 lines to enable HTTPS
 COPY selfsigned.jks /var/jenkins_home
+COPY selfsigned.p12 /var/jenkins_home
 ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=8080 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
+EXPOSE 8080
 EXPOSE 8083
+EXPOSE 50000
 # Define fisrt admin user/pass
 ENV JENKINS_FIRST_ADMIN_USER admin
 ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
@@ -58,6 +61,8 @@ RUN /usr/local/bin/install-plugins.sh external-monitor-job # External Monitor Jo
 RUN /usr/local/bin/install-plugins.sh jaxb # JAXB packaging for more transparent Java 9+ compatibility 
 RUN /usr/local/bin/install-plugins.sh jdk-tool # Oracle Java SE Development Kit Installer
 RUN /usr/local/bin/install-plugins.sh windows-slaves # WMI Windows Agent
+# Strict Crumb Issuer Plugin to help with Web Security (CSRF Cross Site Request Forging attacks and External Reverse Proxy)
+RUN /usr/local/bin/install-plugins.sh strict-crumb-issuer
 # Backup Jenkins Configuration
 RUN /usr/local/bin/install-plugins.sh periodicbackup
 # Java Memory Monitoring (JavaMelody)

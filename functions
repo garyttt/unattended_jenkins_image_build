@@ -17,6 +17,21 @@ display_shell_function() {
   set | sed -n -e "/^$BEGIN/,/^$END/ p"
 }
 
+# Docker-Compose re-up
+docker_compose_re_up() {
+  if [ $# -le 0 ]; then
+    echo "Usage: docker_compose_re_up <docker_container_name or docker_compose_service_name>"
+    echo "Assumption: container_name is the same as sercvice_name>"
+    return 1
+  fi
+  local CONTAINER_NAME="$1"
+  local SERVICE_NAME="$1"
+  echo y | docker system prune
+  docker stop ${CONTAINER_NAME}
+  docker rm ${CONTAINER_NAME}
+  docker-compose up -d ${SERVICE_NAME}
+}
+
 # Docker_publish wrapper
 docker_publish() {
   if [ $# -le 2 ]; then
@@ -127,7 +142,7 @@ dos2unix_all_text_files() {
 find_all_text_files() {
   local DIR
   [ -n "$1" ] && DIR="$1" || DIR="." 
-  find $DIR -type f -exec grep -Iq . {} \; -print 
+  find $DIR -type f -exec grep -Iq . {} \; -print | grep -v "\.git"
 }
 
 # Generate self-signed java keystore
