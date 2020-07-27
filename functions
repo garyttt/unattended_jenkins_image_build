@@ -145,6 +145,22 @@ find_all_text_files() {
   find $DIR -type f -exec grep -Iq . {} \; -print | grep -v "\.git"
 }
 
+# Generate Jenkins Crumb 
+generate_jenkins_crumb() {
+  local URL USER PASS
+  echo "Enter Jenkins URL (format is http://hostname_or_IP:port/prefix, prefix is optional"
+  read URL
+  echo "Enter user name:"
+  read USER
+  echo "Enter password:"
+  stty -echo
+  read PASS
+  stty echo
+  curl -v -X GET $URL/crumbIssuer/api/json --user $USER:$PASS
+  echo "Crumb generated, to use add the following to REST API call on top of userid and password"
+  echo "-H 'Jenkins-Crumb: <value>'"
+}
+
 # Generate self-signed java keystore
 generate_self_signed_jks() {
   keytool -genkey -keyalg RSA -alias selfsigned -keystore selfsigned.jks -validity 365 -keysize 4096

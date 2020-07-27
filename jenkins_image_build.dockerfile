@@ -1,5 +1,5 @@
 # jenkins_image_build.dockerfile v1.0.3
-FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:2.235.3-lts-jdk11
 WORKDIR /var/jenkins_home
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
 # Un-comment the next 3 lines to enable HTTPS
@@ -12,7 +12,7 @@ EXPOSE 50000
 # Define fisrt admin user/pass
 ENV JENKINS_FIRST_ADMIN_USER admin
 ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
-# Docker build script will download kops, terraform (>0.12)and create download/install scriot for awscli v2
+# Docker build script will download kops, terraform (>0.12) and create download/install scriot for awscli v2
 COPY kops /usr/local/bin/kops
 COPY terraform /usr/local/bin/terraform
 COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
