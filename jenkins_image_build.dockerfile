@@ -1,5 +1,5 @@
 # jenkins_image_build.dockerfile v1.0.3
-FROM jenkins/jenkins:2.235.3-lts-jdk11
+FROM jenkins/jenkins:2.235.2-lts-jdk11
 WORKDIR /var/jenkins_home
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
 # Un-comment the next 3 lines to enable HTTPS
