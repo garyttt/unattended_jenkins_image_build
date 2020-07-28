@@ -4,6 +4,5 @@ docker_build.log
 jenkins_home/*
 jenkins_config_backup/*
 kops
-selfsigned.jks*
-selfsigned.p12*
+selfsigned.???
 terraform

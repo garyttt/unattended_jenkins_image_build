@@ -1,14 +1,13 @@
 # jenkins_image_build.dockerfile v1.0.3
-FROM jenkins/jenkins:2.235.2-lts-jdk11
+# Ref: https://github.com/jenkinsci/docker/blob/master/README.md
+FROM jenkins/jenkins:2.235.3-lts-jdk11
 WORKDIR /var/jenkins_home
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
+# Prior to running docker build, run the ONE-TIME generate_self_signed_jks.sh manually to generate the selfsigned.jks
 # Un-comment the next 3 lines to enable HTTPS
 COPY selfsigned.jks /var/jenkins_home
-COPY selfsigned.p12 /var/jenkins_home
-ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=8080 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
-EXPOSE 8080
+ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
 EXPOSE 8083
-EXPOSE 50000
 # Define fisrt admin user/pass
 ENV JENKINS_FIRST_ADMIN_USER admin
 ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
