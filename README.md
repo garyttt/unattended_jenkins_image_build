@@ -21,7 +21,7 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 12. you may inspect the docker_build.log post build for errors, note that warnings could usaully be ignored
 
 # How to run the image 
-13. ./jenkins_run.sh 1.0.0   # it is actually restarting jenkins, i.e. it calls ./jenkins_stop.sh first
+13. ./jenkins_run.sh 1.0.3   # it is actually restarting jenkins, i.e. it calls ./jenkins_stop.sh first
 14. docker run log file will be fetched continuously, you may Ctrl-C to break it
 
 # How to access Jenkins
