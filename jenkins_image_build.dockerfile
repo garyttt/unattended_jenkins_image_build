@@ -1,12 +1,12 @@
-# jenkins_image_build.dockerfile v1.0.3
+# jenkins_image_build.dockerfile v1.0.4
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
 FROM jenkins/jenkins:2.235.3-lts-jdk11
 WORKDIR /var/jenkins_home
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
 # Prior to running docker build, run the ONE-TIME generate_self_signed_jks.sh manually to generate the selfsigned.jks
-# Un-comment the next 3 lines to enable HTTPS
+# Un-comment the next 3 lines to enable HTTPS, do not set httpPort to -1 just in case we need it
 COPY selfsigned.jks /var/jenkins_home
-ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
+ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=8080 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
 EXPOSE 8083
 # Define fisrt admin user/pass
 ENV JENKINS_FIRST_ADMIN_USER admin
@@ -22,6 +22,7 @@ COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.gr
 COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
 COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
 COPY 03_set_NumExecutors.groovy                   /usr/share/jenkins/ref/init.groovy.d/
+COPY 04_enable_proxy_compatbility.groovy          /usr/share/jenkins/ref/init.groovy.d/
 # Install the same list as the suggested plugsins during default interactive initial login screen
 # Sorted by plugin description
 RUN /usr/local/bin/install-plugins.sh ant                             # Ant

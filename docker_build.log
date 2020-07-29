@@ -1,52 +1,50 @@
-Sending build context to Docker daemon   1.14GB
-Step 1/82 : FROM jenkins/jenkins:2.235.3-lts-jdk11
+Sending build context to Docker daemon  1.143GB
+Step 1/81 : FROM jenkins/jenkins:2.235.3-lts-jdk11
  ---> 3854c6dde112
-Step 2/82 : WORKDIR /var/jenkins_home
+Step 2/81 : WORKDIR /var/jenkins_home
  ---> Using cache
  ---> 801ff54b5798
-Step 3/82 : ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
+Step 3/81 : ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
  ---> Using cache
  ---> 2aed42cf85ce
-Step 4/82 : COPY server.crt /var/jenkins_home
- ---> f33b1bc705a6
-Step 5/82 : COPY server.key /var/jenkins_home
- ---> 040555a82da7
-Step 6/82 : ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=-1 --httpsPort=8083 --httpsCertificate=/var/jenkins_home/server.crt --httpsPrivateKey=/var/jenkins_home/server.key"
- ---> Running in 8ca6a411d355
-Removing intermediate container 8ca6a411d355
- ---> d1e7ed56dd18
-Step 7/82 : EXPOSE 8083
- ---> Running in 0f997ff75cfe
-Removing intermediate container 0f997ff75cfe
- ---> 783d6fbeda82
-Step 8/82 : ENV JENKINS_FIRST_ADMIN_USER admin
- ---> Running in def314426710
-Removing intermediate container def314426710
- ---> f66b7c6782cd
-Step 9/82 : ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
- ---> Running in 3b8a5fa81dfd
-Removing intermediate container 3b8a5fa81dfd
- ---> b60634e430bd
-Step 10/82 : COPY kops /usr/local/bin/kops
- ---> d7374491e741
-Step 11/82 : COPY terraform /usr/local/bin/terraform
- ---> 3d512a0062ea
-Step 12/82 : COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
- ---> 8bc18aa6a4f4
-Step 13/82 : RUN mkdir -p /var/tmp/jenkins_config_backup
- ---> Running in 1c1fccfa9a64
-Removing intermediate container 1c1fccfa9a64
- ---> 5ba2f9f8c3f5
-Step 14/82 : COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
- ---> b061c10d894e
-Step 15/82 : COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
- ---> 6f675270e92e
-Step 16/82 : COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
- ---> 1d84a44c5f61
-Step 17/82 : COPY 03_set_NumExecutors.groovy                   /usr/share/jenkins/ref/init.groovy.d/
- ---> 255a7551bc72
-Step 18/82 : RUN /usr/local/bin/install-plugins.sh ant                             # Ant
- ---> Running in 8bcc54968434
+Step 4/81 : COPY selfsigned.jks /var/jenkins_home
+ ---> 4d1d79a282d2
+Step 5/81 : ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=8080 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
+ ---> Running in e6cf86ba4308
+Removing intermediate container e6cf86ba4308
+ ---> 524df7cf9c0a
+Step 6/81 : EXPOSE 8083
+ ---> Running in b656182c7c3b
+Removing intermediate container b656182c7c3b
+ ---> beb54838e3a5
+Step 7/81 : ENV JENKINS_FIRST_ADMIN_USER admin
+ ---> Running in 988fd0976355
+Removing intermediate container 988fd0976355
+ ---> b8b137d082e6
+Step 8/81 : ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
+ ---> Running in 359c71285de0
+Removing intermediate container 359c71285de0
+ ---> 2f1e341c1667
+Step 9/81 : COPY kops /usr/local/bin/kops
+ ---> 44cb246bf7c7
+Step 10/81 : COPY terraform /usr/local/bin/terraform
+ ---> 58aaedb411d6
+Step 11/81 : COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
+ ---> 6f63d4859414
+Step 12/81 : RUN mkdir -p /var/tmp/jenkins_config_backup
+ ---> Running in 011a92f6dc60
+Removing intermediate container 011a92f6dc60
+ ---> a652dec4557a
+Step 13/81 : COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
+ ---> 88cf98445c04
+Step 14/81 : COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
+ ---> 7c757648fdb8
+Step 15/81 : COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
+ ---> da57a11473b6
+Step 16/81 : COPY 03_set_NumExecutors.groovy                   /usr/share/jenkins/ref/init.groovy.d/
+ ---> 028e083df99f
+Step 17/81 : RUN /usr/local/bin/install-plugins.sh ant                             # Ant
+ ---> Running in 324908523c75
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -63,10 +61,10 @@ Installed plugins:
 ant:1.11
 structs:1.20
 Cleaning up locks
-Removing intermediate container 8bcc54968434
- ---> 5bd827607f06
-Step 19/82 : RUN /usr/local/bin/install-plugins.sh build-timeout                   # Build Tumeout
- ---> Running in a88fa5a5b313
+Removing intermediate container 324908523c75
+ ---> c9eccbe7dcb8
+Step 18/81 : RUN /usr/local/bin/install-plugins.sh build-timeout                   # Build Tumeout
+ ---> Running in 99656c84ee43
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -92,10 +90,10 @@ structs:1.20
 token-macro:2.12
 workflow-step-api:2.22
 Cleaning up locks
-Removing intermediate container a88fa5a5b313
- ---> 352182c19ded
-Step 20/82 : RUN /usr/local/bin/install-plugins.sh credentials-binding             # Credentials Binding
- ---> Running in e97826df9924
+Removing intermediate container 99656c84ee43
+ ---> 3da04b6f9835
+Step 19/81 : RUN /usr/local/bin/install-plugins.sh credentials-binding             # Credentials Binding
+ ---> Running in 6ae6be1c6b95
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -130,10 +128,10 @@ token-macro:2.12
 trilead-api:1.0.8
 workflow-step-api:2.22
 Cleaning up locks
-Removing intermediate container e97826df9924
- ---> 952c6d15fd50
-Step 21/82 : RUN /usr/local/bin/install-plugins.sh cloudbees-folder                # Folders Plugin
- ---> Running in 9006b8401d3d
+Removing intermediate container 6ae6be1c6b95
+ ---> ce5c2692c148
+Step 20/81 : RUN /usr/local/bin/install-plugins.sh cloudbees-folder                # Folders Plugin
+ ---> Running in bda5271d7f8f
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -159,10 +157,10 @@ token-macro:2.12
 trilead-api:1.0.8
 workflow-step-api:2.22
 Cleaning up locks
-Removing intermediate container 9006b8401d3d
- ---> 7c54ac4f4574
-Step 22/82 : RUN /usr/local/bin/install-plugins.sh git                             # Git
- ---> Running in 96f554e87e57
+Removing intermediate container bda5271d7f8f
+ ---> 41611ce745f3
+Step 21/81 : RUN /usr/local/bin/install-plugins.sh git                             # Git
+ ---> Running in 35f11f9b3617
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -176,9 +174,9 @@ Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
 Skipping already installed dependency credentials:2.3.7 (2.3.7 <= 2.3.12)
 Downloading plugin: git-client from https://updates.jenkins.io/2.235/latest/git-client.hpi
 Skipping optional dependency matrix-project
-Downloading plugin: mailer from https://updates.jenkins.io/2.235/latest/mailer.hpi
 Skipping optional dependency parameterized-trigger
 Skipping optional dependency promoted-builds
+Downloading plugin: mailer from https://updates.jenkins.io/2.235/latest/mailer.hpi
 Downloading plugin: scm-api from https://updates.jenkins.io/2.235/latest/scm-api.hpi
 Downloading plugin: script-security from https://updates.jenkins.io/2.235/latest/script-security.hpi
 Skipping already installed dependency ssh-credentials:1.18.1 (1.18.1 <= 1.18.1)
@@ -187,8 +185,8 @@ Skipping optional dependency token-macro
  > workflow-scm-step depends on workflow-step-api:2.9
 Skipping already installed dependency workflow-step-api:2.9 (2.9 <= 2.22)
  > mailer depends on display-url-api:2.3.1
-Downloading plugin: display-url-api from https://updates.jenkins.io/2.235/latest/display-url-api.hpi
  > scm-api depends on structs:1.9
+Downloading plugin: display-url-api from https://updates.jenkins.io/2.235/latest/display-url-api.hpi
 Skipping already installed dependency structs:1.9 (1.9 <= 1.20)
  > git-client depends on configuration-as-code:1.36;resolution:=optional,apache-httpcomponents-client-4-api:4.5.10-2.0,credentials:2.3.9,jsch:0.1.55.2,script-security:1.73,ssh-credentials:1.18.1,structs:1.20,trilead-api:1.0.8
 Skipping optional dependency configuration-as-code
@@ -227,10 +225,10 @@ trilead-api:1.0.8
 workflow-scm-step:2.11
 workflow-step-api:2.22
 Cleaning up locks
-Removing intermediate container 96f554e87e57
- ---> eaf684916200
-Step 23/82 : RUN /usr/local/bin/install-plugins.sh github-branch-source            # Github Branch Source
- ---> Running in 26a2faca3b62
+Removing intermediate container 35f11f9b3617
+ ---> bf8f60835c2b
+Step 22/81 : RUN /usr/local/bin/install-plugins.sh github-branch-source            # Github Branch Source
+ ---> Running in 3943df5a0ecf
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -241,18 +239,18 @@ Downloading plugin: github-branch-source from https://updates.jenkins.io/2.235/l
 Downloading plugin: github from https://updates.jenkins.io/2.235/latest/github.hpi
 Downloading plugin: github-api from https://updates.jenkins.io/2.235/latest/github-api.hpi
 Downloading plugin: jackson2-api from https://updates.jenkins.io/2.235/latest/jackson2-api.hpi
+ > github-api depends on okhttp-api:3.14.9,jackson2-api:2.10.2
+Downloading plugin: okhttp-api from https://updates.jenkins.io/2.235/latest/okhttp-api.hpi
  > github depends on credentials:2.1.13,display-url-api:2.0,git:3.4.0,github-api:1.114.2,plain-credentials:1.1,scm-api:2.2.0,structs:1.17,token-macro:1.12.1
 Skipping already installed dependency credentials:2.1.13 (2.1.13 <= 2.3.12)
 Skipping already installed dependency display-url-api:2.0 (2.0 <= 2.3.3)
 Skipping already installed dependency git:3.4.0 (3.4.0 <= 4.3.0)
+ > jackson2-api depends on snakeyaml-api:1.26.3
 Skipping already installed dependency plain-credentials:1.1 (1.1 <= 1.7)
+Downloading plugin: snakeyaml-api from https://updates.jenkins.io/2.235/latest/snakeyaml-api.hpi
 Skipping already installed dependency scm-api:2.2.0 (2.2.0 <= 2.6.3)
 Skipping already installed dependency structs:1.17 (1.17 <= 1.20)
 Skipping already installed dependency token-macro:1.12.1 (1.12.1 <= 2.12)
- > github-api depends on okhttp-api:3.14.9,jackson2-api:2.10.2
-Downloading plugin: okhttp-api from https://updates.jenkins.io/2.235/latest/okhttp-api.hpi
- > jackson2-api depends on snakeyaml-api:1.26.3
-Downloading plugin: snakeyaml-api from https://updates.jenkins.io/2.235/latest/snakeyaml-api.hpi
 
 WAR bundled plugins:
 
@@ -285,10 +283,10 @@ trilead-api:1.0.8
 workflow-scm-step:2.11
 workflow-step-api:2.22
 Cleaning up locks
-Removing intermediate container 26a2faca3b62
- ---> 5165f7023f63
-Step 24/82 : RUN /usr/local/bin/install-plugins.sh gradle                          # Gradle
- ---> Running in 6955aaf17024
+Removing intermediate container 3943df5a0ecf
+ ---> 2ddba4d2e0f8
+Step 23/81 : RUN /usr/local/bin/install-plugins.sh gradle                          # Gradle
+ ---> Running in e1c9ca6e293e
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -310,17 +308,17 @@ Downloading plugin: durable-task from https://updates.jenkins.io/2.235/latest/du
 Skipping already installed dependency scm-api:2.2.6 (2.2.6 <= 2.6.3)
 Skipping already installed dependency script-security:1.58 (1.58 <= 1.74)
 Skipping already installed dependency structs:1.18 (1.18 <= 1.20)
+ > workflow-basic-steps depends on workflow-api:2.40,workflow-durable-task-step:2.31,workflow-step-api:2.22,apache-httpcomponents-client-4-api:4.5.10-2.0,mailer:1.32,structs:1.20
+ > workflow-job depends on workflow-api:2.36,workflow-step-api:2.20,workflow-support:3.3
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency workflow-step-api:2.20 (2.20 <= 2.22)
+Skipping already installed dependency apache-httpcomponents-client-4-api:4.5.10-2.0 (4.5.10-2.0 <= 4.5.10-2.0)
+Skipping already installed dependency mailer:1.32 (1.32 <= 1.32)
  > workflow-api depends on workflow-step-api:2.16,scm-api:2.2.6,structs:1.17
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
 Skipping already installed dependency workflow-step-api:2.16 (2.16 <= 2.22)
 Skipping already installed dependency scm-api:2.2.6 (2.2.6 <= 2.6.3)
 Skipping already installed dependency structs:1.17 (1.17 <= 1.20)
- > workflow-basic-steps depends on workflow-api:2.40,workflow-durable-task-step:2.31,workflow-step-api:2.22,apache-httpcomponents-client-4-api:4.5.10-2.0,mailer:1.32,structs:1.20
-Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
- > workflow-job depends on workflow-api:2.36,workflow-step-api:2.20,workflow-support:3.3
-Skipping already installed dependency apache-httpcomponents-client-4-api:4.5.10-2.0 (4.5.10-2.0 <= 4.5.10-2.0)
-Skipping already installed dependency mailer:1.32 (1.32 <= 1.32)
-Skipping already installed dependency workflow-step-api:2.20 (2.20 <= 2.22)
-Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
  > workflow-cps depends on workflow-api:2.40,workflow-scm-step:2.9,workflow-step-api:2.22,workflow-support:3.4,scm-api:2.6.3,script-security:1.71,structs:1.20,support-core:2.43;resolution:=optional,ace-editor:1.1,jquery-detached:1.2.1
 Skipping already installed dependency workflow-scm-step:2.9 (2.9 <= 2.11)
 Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
@@ -376,10 +374,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 6955aaf17024
- ---> 18a381a19900
-Step 25/82 : RUN /usr/local/bin/install-plugins.sh email-ext                       # Email Extension
- ---> Running in d8f2599d1796
+Removing intermediate container e1c9ca6e293e
+ ---> 13f5476aba20
+Step 24/81 : RUN /usr/local/bin/install-plugins.sh email-ext                       # Email Extension
+ ---> Running in 5861cc6ebbfe
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -449,10 +447,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container d8f2599d1796
- ---> 8e5902f88e65
-Step 26/82 : RUN /usr/local/bin/install-plugins.sh ldap                            # LDAP Plugin
- ---> Running in 0d9b2c2f01f4
+Removing intermediate container 5861cc6ebbfe
+ ---> 568e206dd194
+Step 25/81 : RUN /usr/local/bin/install-plugins.sh ldap                            # LDAP Plugin
+ ---> Running in 92e47c8cabbf
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -507,10 +505,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 0d9b2c2f01f4
- ---> 7148a666281d
-Step 27/82 : RUN /usr/local/bin/install-plugins.sh mailer                          # Mailer Plugin
- ---> Running in 67c660d641bb
+Removing intermediate container 92e47c8cabbf
+ ---> 9f6693e2971b
+Step 26/81 : RUN /usr/local/bin/install-plugins.sh mailer                          # Mailer Plugin
+ ---> Running in 1be5edf2b90e
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -565,10 +563,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 67c660d641bb
- ---> 2a5fdfbee182
-Step 28/82 : RUN /usr/local/bin/install-plugins.sh matrix-auth                     # Matrix Authorization Strategy
- ---> Running in 8fd18d88e5f0
+Removing intermediate container 1be5edf2b90e
+ ---> 46da1f7d1250
+Step 27/81 : RUN /usr/local/bin/install-plugins.sh matrix-auth                     # Matrix Authorization Strategy
+ ---> Running in dcbe869bd95f
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -625,10 +623,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 8fd18d88e5f0
- ---> 5a48d0a04b32
-Step 29/82 : RUN /usr/local/bin/install-plugins.sh antisamy-markup-formatter       # OWSASP Markup Formatter
- ---> Running in 5e6c996c0231
+Removing intermediate container dcbe869bd95f
+ ---> 128325833cf4
+Step 28/81 : RUN /usr/local/bin/install-plugins.sh antisamy-markup-formatter       # OWSASP Markup Formatter
+ ---> Running in d03299bef5b7
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -683,10 +681,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 5e6c996c0231
- ---> 22718dc1c5d0
-Step 30/82 : RUN /usr/local/bin/install-plugins.sh pam-auth                        # PAM Authentication Plugin
- ---> Running in 89b5e52feadd
+Removing intermediate container d03299bef5b7
+ ---> ab2b4bef1b9e
+Step 29/81 : RUN /usr/local/bin/install-plugins.sh pam-auth                        # PAM Authentication Plugin
+ ---> Running in 5ece07b0d6c5
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -742,10 +740,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 89b5e52feadd
- ---> 00342a8e1991
-Step 31/82 : RUN /usr/local/bin/install-plugins.sh workflow-aggregator             # Pipeline
- ---> Running in 5e930a1fd5f8
+Removing intermediate container 5ece07b0d6c5
+ ---> eab44ae132aa
+Step 30/81 : RUN /usr/local/bin/install-plugins.sh workflow-aggregator             # Pipeline
+ ---> Running in b7877714e659
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -776,47 +774,58 @@ Downloading plugin: pipeline-stage-step from https://updates.jenkins.io/2.235/la
 Skipping already installed dependency scm-api:2.2.8 (2.2.8 <= 2.6.3)
 Skipping already installed dependency structs:1.15 (1.15 <= 1.20)
 Downloading plugin: pipeline-model-definition from https://updates.jenkins.io/2.235/latest/pipeline-model-definition.hpi
- > pipeline-stage-step depends on workflow-api:2.40,workflow-step-api:2.22
-Skipping already installed dependency workflow-api:2.40 (2.40 <= 2.40)
-Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
- > lockable-resources depends on workflow-support:3.4,mailer:1.18,matrix-project:1.14,script-security:1.62,structs:1.20
-Skipping already installed dependency workflow-support:3.4 (3.4 <= 3.5)
- > pipeline-milestone-step depends on workflow-api:2.11,workflow-step-api:2.9
- > pipeline-build-step depends on workflow-api:2.33,workflow-step-api:2.22,workflow-support:3.1,script-security:1.50
-Skipping already installed dependency mailer:1.18 (1.18 <= 1.32)
-Skipping already installed dependency workflow-api:2.11 (2.11 <= 2.40)
-Skipping already installed dependency workflow-api:2.33 (2.33 <= 2.40)
-Skipping already installed dependency matrix-project:1.14 (1.14 <= 1.17)
-Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
-Skipping already installed dependency workflow-step-api:2.9 (2.9 <= 2.22)
-Skipping already installed dependency script-security:1.62 (1.62 <= 1.74)
- > workflow-multibranch depends on workflow-api:2.27,workflow-cps:2.53,workflow-job:2.21,workflow-scm-step:2.4,workflow-step-api:2.13,workflow-support:2.17,branch-api:2.0.21,cloudbees-folder:6.1.2,scm-api:2.2.7,script-security:1.42,structs:1.17
-Skipping already installed dependency workflow-support:3.1 (3.1 <= 3.5)
-Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
-Skipping already installed dependency script-security:1.50 (1.50 <= 1.74)
-Skipping already installed dependency workflow-api:2.27 (2.27 <= 2.40)
-Skipping already installed dependency workflow-cps:2.53 (2.53 <= 2.81)
-Skipping already installed dependency workflow-job:2.21 (2.21 <= 2.39)
-Skipping already installed dependency workflow-scm-step:2.4 (2.4 <= 2.11)
-Skipping already installed dependency workflow-step-api:2.13 (2.13 <= 2.22)
-Skipping already installed dependency workflow-support:2.17 (2.17 <= 3.5)
-Downloading plugin: branch-api from https://updates.jenkins.io/2.235/latest/branch-api.hpi
- > pipeline-stage-view depends on pipeline-rest-api:2.13,workflow-api:2.24,workflow-job:2.12,handlebars:1.1.1,jquery-detached:1.2.1,momentjs:1.1
-Skipping already installed dependency cloudbees-folder:6.1.2 (6.1.2 <= 6.14)
-Downloading plugin: pipeline-rest-api from https://updates.jenkins.io/2.235/latest/pipeline-rest-api.hpi
-Skipping already installed dependency scm-api:2.2.7 (2.2.7 <= 2.6.3)
-Skipping already installed dependency workflow-api:2.24 (2.24 <= 2.40)
-Skipping already installed dependency script-security:1.42 (1.42 <= 1.74)
-Skipping already installed dependency workflow-job:2.12 (2.12 <= 2.39)
-Downloading plugin: handlebars from https://updates.jenkins.io/2.235/latest/handlebars.hpi
-Skipping already installed dependency structs:1.17 (1.17 <= 1.20)
-Skipping already installed dependency jquery-detached:1.2.1 (1.2.1 <= 1.2.1)
-Downloading plugin: momentjs from https://updates.jenkins.io/2.235/latest/momentjs.hpi
  > pipeline-input-step depends on workflow-api:2.35,workflow-step-api:2.20,workflow-support:3.3,credentials:2.3.0
+ > pipeline-milestone-step depends on workflow-api:2.11,workflow-step-api:2.9
+ > lockable-resources depends on workflow-support:3.4,mailer:1.18,matrix-project:1.14,script-security:1.62,structs:1.20
+ > workflow-multibranch depends on workflow-api:2.27,workflow-cps:2.53,workflow-job:2.21,workflow-scm-step:2.4,workflow-step-api:2.13,workflow-support:2.17,branch-api:2.0.21,cloudbees-folder:6.1.2,scm-api:2.2.7,script-security:1.42,structs:1.17
+Skipping already installed dependency workflow-api:2.11 (2.11 <= 2.40)
 Skipping already installed dependency workflow-api:2.35 (2.35 <= 2.40)
+Skipping already installed dependency workflow-api:2.27 (2.27 <= 2.40)
+Skipping already installed dependency workflow-support:3.4 (3.4 <= 3.5)
+Skipping already installed dependency workflow-step-api:2.9 (2.9 <= 2.22)
 Skipping already installed dependency workflow-step-api:2.20 (2.20 <= 2.22)
+ > pipeline-stage-step depends on workflow-api:2.40,workflow-step-api:2.22
+Skipping already installed dependency workflow-cps:2.53 (2.53 <= 2.81)
+Skipping already installed dependency mailer:1.18 (1.18 <= 1.32)
 Skipping already installed dependency workflow-support:3.3 (3.3 <= 3.5)
+Skipping already installed dependency workflow-api:2.40 (2.40 <= 2.40)
+Skipping already installed dependency matrix-project:1.14 (1.14 <= 1.17)
+Skipping already installed dependency workflow-job:2.21 (2.21 <= 2.39)
 Skipping already installed dependency credentials:2.3.0 (2.3.0 <= 2.3.12)
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency script-security:1.62 (1.62 <= 1.74)
+Skipping already installed dependency workflow-scm-step:2.4 (2.4 <= 2.11)
+ > pipeline-stage-view depends on pipeline-rest-api:2.13,workflow-api:2.24,workflow-job:2.12,handlebars:1.1.1,jquery-detached:1.2.1,momentjs:1.1
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
+Skipping already installed dependency workflow-step-api:2.13 (2.13 <= 2.22)
+Downloading plugin: pipeline-rest-api from https://updates.jenkins.io/2.235/latest/pipeline-rest-api.hpi
+Skipping already installed dependency workflow-api:2.24 (2.24 <= 2.40)
+Skipping already installed dependency workflow-support:2.17 (2.17 <= 3.5)
+Skipping already installed dependency workflow-job:2.12 (2.12 <= 2.39)
+ > pipeline-build-step depends on workflow-api:2.33,workflow-step-api:2.22,workflow-support:3.1,script-security:1.50
+Downloading plugin: branch-api from https://updates.jenkins.io/2.235/latest/branch-api.hpi
+Downloading plugin: handlebars from https://updates.jenkins.io/2.235/latest/handlebars.hpi
+Skipping already installed dependency cloudbees-folder:6.1.2 (6.1.2 <= 6.14)
+Skipping already installed dependency workflow-api:2.33 (2.33 <= 2.40)
+Skipping already installed dependency jquery-detached:1.2.1 (1.2.1 <= 1.2.1)
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency scm-api:2.2.7 (2.2.7 <= 2.6.3)
+Downloading plugin: momentjs from https://updates.jenkins.io/2.235/latest/momentjs.hpi
+Skipping already installed dependency workflow-support:3.1 (3.1 <= 3.5)
+Skipping already installed dependency script-security:1.42 (1.42 <= 1.74)
+Skipping already installed dependency script-security:1.50 (1.50 <= 1.74)
+Skipping already installed dependency structs:1.17 (1.17 <= 1.20)
+ > workflow-cps-global-lib depends on workflow-api:2.40,workflow-cps:2.80,workflow-step-api:2.22,workflow-support:3.4,cloudbees-folder:6.11.1,credentials:2.3.5,git-server:1.9,scm-api:2.6.3,script-security:1.71,structs:1.20
+Skipping already installed dependency workflow-api:2.40 (2.40 <= 2.40)
+Skipping already installed dependency workflow-cps:2.80 (2.80 <= 2.81)
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency workflow-support:3.4 (3.4 <= 3.5)
+Skipping already installed dependency cloudbees-folder:6.11.1 (6.11.1 <= 6.14)
+Skipping already installed dependency credentials:2.3.5 (2.3.5 <= 2.3.12)
+Downloading plugin: git-server from https://updates.jenkins.io/2.235/latest/git-server.hpi
+Skipping already installed dependency scm-api:2.6.3 (2.6.3 <= 2.6.3)
+Skipping already installed dependency script-security:1.71 (1.71 <= 1.74)
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
  > pipeline-model-definition depends on workflow-api:2.40,workflow-basic-steps:2.20,workflow-cps-global-lib:2.16,workflow-cps:2.80,workflow-durable-task-step:2.35,workflow-multibranch:2.16,workflow-scm-step:2.11,workflow-support:3.4,credentials-binding:1.23,credentials:2.3.7,docker-workflow:1.22;resolution:=optional,git-client:3.2.1,mailer:1.32,pipeline-input-step:2.11,pipeline-stage-step:2.3,scm-api:2.6.3,pipeline-model-api:1.7.1,pipeline-model-extensions:1.7.1,pipeline-stage-tags-metadata:1.7.1
 Skipping already installed dependency workflow-api:2.40 (2.40 <= 2.40)
 Skipping already installed dependency workflow-basic-steps:2.20 (2.20 <= 2.20)
@@ -833,17 +842,6 @@ Skipping already installed dependency scm-api:2.6.3 (2.6.3 <= 2.6.3)
 Downloading plugin: pipeline-model-api from https://updates.jenkins.io/2.235/latest/pipeline-model-api.hpi
 Downloading plugin: pipeline-model-extensions from https://updates.jenkins.io/2.235/latest/pipeline-model-extensions.hpi
 Downloading plugin: pipeline-stage-tags-metadata from https://updates.jenkins.io/2.235/latest/pipeline-stage-tags-metadata.hpi
- > workflow-cps-global-lib depends on workflow-api:2.40,workflow-cps:2.80,workflow-step-api:2.22,workflow-support:3.4,cloudbees-folder:6.11.1,credentials:2.3.5,git-server:1.9,scm-api:2.6.3,script-security:1.71,structs:1.20
-Skipping already installed dependency workflow-api:2.40 (2.40 <= 2.40)
-Skipping already installed dependency workflow-cps:2.80 (2.80 <= 2.81)
-Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
-Skipping already installed dependency workflow-support:3.4 (3.4 <= 3.5)
-Skipping already installed dependency cloudbees-folder:6.11.1 (6.11.1 <= 6.14)
-Skipping already installed dependency credentials:2.3.5 (2.3.5 <= 2.3.12)
-Downloading plugin: git-server from https://updates.jenkins.io/2.235/latest/git-server.hpi
-Skipping already installed dependency scm-api:2.6.3 (2.6.3 <= 2.6.3)
-Skipping already installed dependency script-security:1.71 (1.71 <= 1.74)
-Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
  > pipeline-rest-api depends on workflow-api:2.24,workflow-job:2.12,workflow-step-api:2.14,workflow-support:2.14,jackson2-api:2.9.9.1,pipeline-graph-analysis:1.4,pipeline-input-step:2.8,pipeline-stage-step:2.3
 Skipping already installed dependency workflow-api:2.24 (2.24 <= 2.40)
 Skipping already installed dependency workflow-job:2.12 (2.12 <= 2.39)
@@ -854,6 +852,8 @@ Downloading plugin: pipeline-graph-analysis from https://updates.jenkins.io/2.23
  > branch-api depends on cloudbees-folder:6.12,scm-api:2.6.3
 Skipping already installed dependency cloudbees-folder:6.12 (6.12 <= 6.14)
 Skipping already installed dependency scm-api:2.6.3 (2.6.3 <= 2.6.3)
+ > git-server depends on git-client:2.7.6
+Skipping already installed dependency git-client:2.7.6 (2.7.6 <= 3.3.1)
  > pipeline-stage-tags-metadata depends on workflow-api:2.40
 Skipping already installed dependency workflow-api:2.40 (2.40 <= 2.40)
  > pipeline-model-extensions depends on workflow-cps:2.80,workflow-job:2.39,credentials-binding:1.23,credentials:2.3.7,pipeline-stage-step:2.3,pipeline-model-api:1.7.1
@@ -861,12 +861,6 @@ Skipping already installed dependency workflow-cps:2.80 (2.80 <= 2.81)
 Skipping already installed dependency workflow-job:2.39 (2.39 <= 2.39)
 Skipping already installed dependency credentials-binding:1.23 (1.23 <= 1.23)
 Skipping already installed dependency credentials:2.3.7 (2.3.7 <= 2.3.12)
- > git-server depends on git-client:2.7.6
-Skipping already installed dependency git-client:2.7.6 (2.7.6 <= 3.3.1)
- > pipeline-model-api depends on workflow-step-api:2.22,jackson2-api:2.9.8,structs:1.20
-Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
-Skipping already installed dependency jackson2-api:2.9.8 (2.9.8 <= 2.11.1)
-Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
  > pipeline-graph-analysis depends on workflow-api:2.34,workflow-cps:2.65,workflow-job:2.32,workflow-step-api:2.19,workflow-support:3.2,pipeline-input-step:2.8,pipeline-stage-step:2.3,scm-api:2.2.7,structs:1.17
 Skipping already installed dependency workflow-api:2.34 (2.34 <= 2.40)
 Skipping already installed dependency workflow-cps:2.65 (2.65 <= 2.81)
@@ -875,6 +869,10 @@ Skipping already installed dependency workflow-step-api:2.19 (2.19 <= 2.22)
 Skipping already installed dependency workflow-support:3.2 (3.2 <= 3.5)
 Skipping already installed dependency scm-api:2.2.7 (2.2.7 <= 2.6.3)
 Skipping already installed dependency structs:1.17 (1.17 <= 1.20)
+ > pipeline-model-api depends on workflow-step-api:2.22,jackson2-api:2.9.8,structs:1.20
+Skipping already installed dependency workflow-step-api:2.22 (2.22 <= 2.22)
+Skipping already installed dependency jackson2-api:2.9.8 (2.9.8 <= 2.11.1)
+Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
 
 WAR bundled plugins:
 
@@ -943,10 +941,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 5e930a1fd5f8
- ---> b814564cbec2
-Step 32/82 : RUN /usr/local/bin/install-plugins.sh pipeline-github-lib             # Pipeline: Github Groovy Libraries
- ---> Running in 0bb16c3f3b5d
+Removing intermediate container b7877714e659
+ ---> 0d1f0ffc9645
+Step 31/81 : RUN /usr/local/bin/install-plugins.sh pipeline-github-lib             # Pipeline: Github Groovy Libraries
+ ---> Running in 3be9a78e93b4
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1025,10 +1023,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 0bb16c3f3b5d
- ---> 2130d932db90
-Step 33/82 : RUN /usr/local/bin/install-plugins.sh workflow-durable-task-step      # Pipeline: Node and Processes
- ---> Running in 579fff9c8e1b
+Removing intermediate container 3be9a78e93b4
+ ---> d4b690cb0098
+Step 32/81 : RUN /usr/local/bin/install-plugins.sh workflow-durable-task-step      # Pipeline: Node and Processes
+ ---> Running in 01e1edc1dbb1
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1112,10 +1110,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 579fff9c8e1b
- ---> 076afa4e6205
-Step 34/82 : RUN /usr/local/bin/install-plugins.sh pipeline-stage-view             # Pipeline: Stage View Plugin
- ---> Running in 390256776ced
+Removing intermediate container 01e1edc1dbb1
+ ---> 98638dce8a33
+Step 33/81 : RUN /usr/local/bin/install-plugins.sh pipeline-stage-view             # Pipeline: Stage View Plugin
+ ---> Running in 6ae4ca0108a6
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1198,10 +1196,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 390256776ced
- ---> fe67298710a2
-Step 35/82 : RUN /usr/local/bin/install-plugins.sh ssh-credentials                 # SSH Credentials Plugin
- ---> Running in 1dc643734f51
+Removing intermediate container 6ae4ca0108a6
+ ---> b812573d0622
+Step 34/81 : RUN /usr/local/bin/install-plugins.sh ssh-credentials                 # SSH Credentials Plugin
+ ---> Running in c5ae530a8df5
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1280,10 +1278,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 1dc643734f51
- ---> a3b71701cd17
-Step 36/82 : RUN /usr/local/bin/install-plugins.sh ssh-slaves                      # SSH Build Agents
- ---> Running in 0a6b96f3fcfb
+Removing intermediate container c5ae530a8df5
+ ---> f09cd4f68081
+Step 35/81 : RUN /usr/local/bin/install-plugins.sh ssh-slaves                      # SSH Build Agents
+ ---> Running in bb353d45227a
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1364,10 +1362,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 0a6b96f3fcfb
- ---> 2994054acd3a
-Step 37/82 : RUN /usr/local/bin/install-plugins.sh timestamper                     # Timestamper
- ---> Running in 49462224f33a
+Removing intermediate container bb353d45227a
+ ---> 1dda88b2cd22
+Step 36/81 : RUN /usr/local/bin/install-plugins.sh timestamper                     # Timestamper
+ ---> Running in e484fed78c01
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1448,10 +1446,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container 49462224f33a
- ---> 365ee90cfb7c
-Step 38/82 : RUN /usr/local/bin/install-plugins.sh trilead-api                     # Trilead API Plugin
- ---> Running in b71ac5a1342b
+Removing intermediate container e484fed78c01
+ ---> 41e129e89c8b
+Step 37/81 : RUN /usr/local/bin/install-plugins.sh trilead-api                     # Trilead API Plugin
+ ---> Running in debaa969d4fd
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1529,10 +1527,10 @@ workflow-scm-step:2.11
 workflow-step-api:2.22
 workflow-support:3.5
 Cleaning up locks
-Removing intermediate container b71ac5a1342b
- ---> 6626f5429759
-Step 39/82 : RUN /usr/local/bin/install-plugins.sh ws-cleanup                      # Workspace Cleanup
- ---> Running in a378d21cb543
+Removing intermediate container debaa969d4fd
+ ---> 54b1b2e2069a
+Step 38/81 : RUN /usr/local/bin/install-plugins.sh ws-cleanup                      # Workspace Cleanup
+ ---> Running in 711b0284827a
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1618,10 +1616,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container a378d21cb543
- ---> 62da66d9faac
-Step 40/82 : RUN /usr/local/bin/install-plugins.sh git-parameter
- ---> Running in 1ec9452ce186
+Removing intermediate container 711b0284827a
+ ---> d6243c52627b
+Step 39/81 : RUN /usr/local/bin/install-plugins.sh git-parameter
+ ---> Running in 8385794ad037
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1708,10 +1706,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 1ec9452ce186
- ---> a30199e9f6b6
-Step 41/82 : RUN /usr/local/bin/install-plugins.sh groovy
- ---> Running in 066e34b47376
+Removing intermediate container 8385794ad037
+ ---> 7dd9d081d068
+Step 40/81 : RUN /usr/local/bin/install-plugins.sh groovy
+ ---> Running in aee0ee893970
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1797,10 +1795,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 066e34b47376
- ---> a361f7e11304
-Step 42/82 : RUN /usr/local/bin/install-plugins.sh job-dsl
- ---> Running in b8cd134b9835
+Removing intermediate container aee0ee893970
+ ---> 79dcf3a6446f
+Step 41/81 : RUN /usr/local/bin/install-plugins.sh job-dsl
+ ---> Running in 18552797b2af
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1891,10 +1889,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container b8cd134b9835
- ---> 96b309b0b51e
-Step 43/82 : RUN /usr/local/bin/install-plugins.sh maven-plugin
- ---> Running in c683414096e6
+Removing intermediate container 18552797b2af
+ ---> 9fd0ff407d7d
+Step 42/81 : RUN /usr/local/bin/install-plugins.sh maven-plugin
+ ---> Running in e7945266bd90
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -1987,10 +1985,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container c683414096e6
- ---> 8dc7ff43211e
-Step 44/82 : RUN /usr/local/bin/install-plugins.sh parameterized-trigger
- ---> Running in b4b22ec302b0
+Removing intermediate container e7945266bd90
+ ---> 1999f904f2f7
+Step 43/81 : RUN /usr/local/bin/install-plugins.sh parameterized-trigger
+ ---> Running in c975cc98ee36
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -2092,10 +2090,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container b4b22ec302b0
- ---> 7b9faf73f9a9
-Step 45/82 : RUN /usr/local/bin/install-plugins.sh pipeline-utility-steps
- ---> Running in f5b13d439b75
+Removing intermediate container c975cc98ee36
+ ---> 750fe2bda9b8
+Step 44/81 : RUN /usr/local/bin/install-plugins.sh pipeline-utility-steps
+ ---> Running in 5017997d8bb4
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -2192,10 +2190,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container f5b13d439b75
- ---> 47256b157b33
-Step 46/82 : RUN /usr/local/bin/install-plugins.sh ssh-agent	# SSH Agent Plugin: provides SSH credentials to builds
- ---> Running in 7126beb95362
+Removing intermediate container 5017997d8bb4
+ ---> cd3c2350fcc1
+Step 45/81 : RUN /usr/local/bin/install-plugins.sh ssh-agent	# SSH Agent Plugin: provides SSH credentials to builds
+ ---> Running in 1f2682419e5a
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -2292,10 +2290,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 7126beb95362
- ---> 911dededdf75
-Step 47/82 : RUN /usr/local/bin/install-plugins.sh workflow-multibranch
- ---> Running in 7db423312b26
+Removing intermediate container 1f2682419e5a
+ ---> 4aeca9d61259
+Step 46/81 : RUN /usr/local/bin/install-plugins.sh workflow-multibranch
+ ---> Running in 93b2ce88c6ac
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -2399,10 +2397,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 7db423312b26
- ---> 924887377e0f
-Step 48/82 : RUN /usr/local/bin/install-plugins.sh command-launcher # Command Agent Launcher
- ---> Running in 5ab2354efb34
+Removing intermediate container 93b2ce88c6ac
+ ---> 2e54b9351796
+Step 47/81 : RUN /usr/local/bin/install-plugins.sh command-launcher # Command Agent Launcher
+ ---> Running in e696211b1a41
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -2497,10 +2495,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 5ab2354efb34
- ---> d88e6ee532bd
-Step 49/82 : RUN /usr/local/bin/install-plugins.sh external-monitor-job # External Monitor Job Type
- ---> Running in 500d3f5ab37d
+Removing intermediate container e696211b1a41
+ ---> 1e3621d355a2
+Step 48/81 : RUN /usr/local/bin/install-plugins.sh external-monitor-job # External Monitor Job Type
+ ---> Running in f1e9e077a658
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -2594,10 +2592,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 500d3f5ab37d
- ---> 8b3d8e94468a
-Step 50/82 : RUN /usr/local/bin/install-plugins.sh jaxb # JAXB packaging for more transparent Java 9+ compatibility
- ---> Running in ea94ce4f1672
+Removing intermediate container f1e9e077a658
+ ---> 0deb2d63c33f
+Step 49/81 : RUN /usr/local/bin/install-plugins.sh jaxb # JAXB packaging for more transparent Java 9+ compatibility
+ ---> Running in 6a1d1560a613
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -2692,10 +2690,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container ea94ce4f1672
- ---> a9f2625b8492
-Step 51/82 : RUN /usr/local/bin/install-plugins.sh jdk-tool # Oracle Java SE Development Kit Installer
- ---> Running in fef8404cbdd2
+Removing intermediate container 6a1d1560a613
+ ---> 9c4c3371e3e4
+Step 50/81 : RUN /usr/local/bin/install-plugins.sh jdk-tool # Oracle Java SE Development Kit Installer
+ ---> Running in ed322bfc4d1d
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -2791,10 +2789,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container fef8404cbdd2
- ---> aa577c1e8651
-Step 52/82 : RUN /usr/local/bin/install-plugins.sh windows-slaves # WMI Windows Agent
- ---> Running in 752bc2ed752f
+Removing intermediate container ed322bfc4d1d
+ ---> 820727fa1ad0
+Step 51/81 : RUN /usr/local/bin/install-plugins.sh windows-slaves # WMI Windows Agent
+ ---> Running in 7c08ef57f47c
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -2893,10 +2891,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 752bc2ed752f
- ---> 8641a8dd45d6
-Step 53/82 : RUN /usr/local/bin/install-plugins.sh strict-crumb-issuer
- ---> Running in cc790acc7383
+Removing intermediate container 7c08ef57f47c
+ ---> fab82fa27a6f
+Step 52/81 : RUN /usr/local/bin/install-plugins.sh strict-crumb-issuer
+ ---> Running in 5fa257dfee42
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -2994,10 +2992,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container cc790acc7383
- ---> e854beef5a12
-Step 54/82 : RUN /usr/local/bin/install-plugins.sh periodicbackup
- ---> Running in f17533bce2a3
+Removing intermediate container 5fa257dfee42
+ ---> 369f8cb3883b
+Step 53/81 : RUN /usr/local/bin/install-plugins.sh periodicbackup
+ ---> Running in 1fcb7907ef17
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -3096,10 +3094,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container f17533bce2a3
- ---> 9625455a25ec
-Step 55/82 : RUN /usr/local/bin/install-plugins.sh monitoring
- ---> Running in 31138074f8ac
+Removing intermediate container 1fcb7907ef17
+ ---> cb51522e8c14
+Step 54/81 : RUN /usr/local/bin/install-plugins.sh monitoring
+ ---> Running in fc8cc49893ad
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -3201,10 +3199,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 31138074f8ac
- ---> abbf953d8495
-Step 56/82 : RUN /usr/local/bin/install-plugins.sh authorize-project
- ---> Running in 710c02c99eb2
+Removing intermediate container fc8cc49893ad
+ ---> ebd281c5b998
+Step 55/81 : RUN /usr/local/bin/install-plugins.sh authorize-project
+ ---> Running in a4474e1b880c
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -3305,10 +3303,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 710c02c99eb2
- ---> ad96dfe60ebf
-Step 57/82 : RUN /usr/local/bin/install-plugins.sh role-strategy
- ---> Running in 6b54ba8487d1
+Removing intermediate container a4474e1b880c
+ ---> d4636ff383a8
+Step 56/81 : RUN /usr/local/bin/install-plugins.sh role-strategy
+ ---> Running in 97d2edde492f
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -3415,10 +3413,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 6b54ba8487d1
- ---> d46a4c544fb3
-Step 58/82 : RUN /usr/local/bin/install-plugins.sh nexus-jenkins-plugin
- ---> Running in adf0ec918916
+Removing intermediate container 97d2edde492f
+ ---> 6d7d5c256363
+Step 57/81 : RUN /usr/local/bin/install-plugins.sh nexus-jenkins-plugin
+ ---> Running in 3875aa891f96
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -3528,10 +3526,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container adf0ec918916
- ---> 7019fa87e7e0
-Step 59/82 : RUN /usr/local/bin/install-plugins.sh mailer
- ---> Running in b9980a380ee6
+Removing intermediate container 3875aa891f96
+ ---> d8a1ad218354
+Step 58/81 : RUN /usr/local/bin/install-plugins.sh mailer
+ ---> Running in 6fa00caf6cba
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -3637,10 +3635,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container b9980a380ee6
- ---> 0805406c79c0
-Step 60/82 : RUN /usr/local/bin/install-plugins.sh slack
- ---> Running in 4f85b451b99b
+Removing intermediate container 6fa00caf6cba
+ ---> 76b6ab14a6ca
+Step 59/81 : RUN /usr/local/bin/install-plugins.sh slack
+ ---> Running in 606a36f53ead
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -3758,10 +3756,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 4f85b451b99b
- ---> 15f2e342c66c
-Step 61/82 : RUN /usr/local/bin/install-plugins.sh htmlpublisher
- ---> Running in f833e9aad12e
+Removing intermediate container 606a36f53ead
+ ---> 7aeb708e064e
+Step 60/81 : RUN /usr/local/bin/install-plugins.sh htmlpublisher
+ ---> Running in 61b9e84d2c94
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -3870,10 +3868,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container f833e9aad12e
- ---> 2b69b03ca098
-Step 62/82 : RUN /usr/local/bin/install-plugins.sh oauth-credentials
- ---> Running in 246d1b403fb2
+Removing intermediate container 61b9e84d2c94
+ ---> 451f29b00a57
+Step 61/81 : RUN /usr/local/bin/install-plugins.sh oauth-credentials
+ ---> Running in bb580a629278
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -3982,10 +3980,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 246d1b403fb2
- ---> d2b950125bd4
-Step 63/82 : RUN /usr/local/bin/install-plugins.sh greenballs # Changes Hudson to use green balls instead of blue for successful builds
- ---> Running in f5226a8051f5
+Removing intermediate container bb580a629278
+ ---> bda08aa45ce9
+Step 62/81 : RUN /usr/local/bin/install-plugins.sh greenballs # Changes Hudson to use green balls instead of blue for successful builds
+ ---> Running in 377b0614baef
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -4093,10 +4091,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container f5226a8051f5
- ---> f0b99ce43f86
-Step 64/82 : RUN /usr/local/bin/install-plugins.sh simple-theme-plugin # Customize appearance with custom CSS and JavaScript, replace Favicon
- ---> Running in 17fbf01ca22a
+Removing intermediate container 377b0614baef
+ ---> f00b5dd4a083
+Step 63/81 : RUN /usr/local/bin/install-plugins.sh simple-theme-plugin # Customize appearance with custom CSS and JavaScript, replace Favicon
+ ---> Running in 9e411db374a9
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -4205,10 +4203,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 17fbf01ca22a
- ---> fad3127dc4e9
-Step 65/82 : RUN /usr/local/bin/install-plugins.sh aws-credentials
- ---> Running in e9fa128cb1dc
+Removing intermediate container 9e411db374a9
+ ---> f8c7cbfda7ea
+Step 64/81 : RUN /usr/local/bin/install-plugins.sh aws-credentials
+ ---> Running in 1d9280a59d8c
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -4332,10 +4330,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container e9fa128cb1dc
- ---> da5fb8a8c23b
-Step 66/82 : RUN /usr/local/bin/install-plugins.sh aws-bucket-credentials
- ---> Running in b57e917ab467
+Removing intermediate container 1d9280a59d8c
+ ---> d21f0bf48aef
+Step 65/81 : RUN /usr/local/bin/install-plugins.sh aws-bucket-credentials
+ ---> Running in 5adcb95e65e9
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -4452,10 +4450,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container b57e917ab467
- ---> a3932c977678
-Step 67/82 : RUN /usr/local/bin/install-plugins.sh docker-plugin
- ---> Running in 017bf58636c1
+Removing intermediate container 5adcb95e65e9
+ ---> 214941fd3eca
+Step 66/81 : RUN /usr/local/bin/install-plugins.sh docker-plugin
+ ---> Running in 423d62b77011
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -4483,10 +4481,10 @@ Skipping already installed dependency credentials-binding:1.23 (1.23 <= 1.23)
 Skipping already installed dependency credentials:2.3.9 (2.3.9 <= 2.3.12)
 Skipping already installed dependency structs:1.20 (1.20 <= 1.20)
 Skipping optional dependency pipeline-model-extensions
- > authentication-tokens depends on credentials:1.22
-Skipping already installed dependency credentials:1.22 (1.22 <= 2.3.12)
  > docker-java-api depends on jackson2-api:2.6.4
 Skipping already installed dependency jackson2-api:2.6.4 (2.6.4 <= 2.11.1)
+ > authentication-tokens depends on credentials:1.22
+Skipping already installed dependency credentials:1.22 (1.22 <= 2.3.12)
 
 WAR bundled plugins:
 
@@ -4597,10 +4595,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 017bf58636c1
- ---> ada38313f26e
-Step 68/82 : RUN /usr/local/bin/install-plugins.sh docker-build-publish
- ---> Running in 96212802811e
+Removing intermediate container 423d62b77011
+ ---> 9ce0350de426
+Step 67/81 : RUN /usr/local/bin/install-plugins.sh docker-build-publish
+ ---> Running in bfb0a364f63b
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -4721,10 +4719,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 96212802811e
- ---> c1b8c04d8813
-Step 69/82 : RUN /usr/local/bin/install-plugins.sh docker-compose-build-step
- ---> Running in 41c30478d630
+Removing intermediate container bfb0a364f63b
+ ---> ff5dd7a9069d
+Step 68/81 : RUN /usr/local/bin/install-plugins.sh docker-compose-build-step
+ ---> Running in 44502fce5323
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -4843,10 +4841,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 41c30478d630
- ---> cc4e50da8dfd
-Step 70/82 : RUN /usr/local/bin/install-plugins.sh kubernetes
- ---> Running in 5cad327795fd
+Removing intermediate container 44502fce5323
+ ---> a800042bb29d
+Step 69/81 : RUN /usr/local/bin/install-plugins.sh kubernetes
+ ---> Running in 841691af3a8a
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -4995,10 +4993,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 5cad327795fd
- ---> b5722275a0e6
-Step 71/82 : RUN /usr/local/bin/install-plugins.sh kubernetes-cli
- ---> Running in 916f80b0115e
+Removing intermediate container 841691af3a8a
+ ---> 98969a2ae281
+Step 70/81 : RUN /usr/local/bin/install-plugins.sh kubernetes-cli
+ ---> Running in 7e3667a40807
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -5128,10 +5126,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 916f80b0115e
- ---> c5f096774783
-Step 72/82 : RUN /usr/local/bin/install-plugins.sh ansible
- ---> Running in 0f782cf507cb
+Removing intermediate container 7e3667a40807
+ ---> 7508ef83930c
+Step 71/81 : RUN /usr/local/bin/install-plugins.sh ansible
+ ---> Running in fe359d4a542f
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -5261,10 +5259,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 0f782cf507cb
- ---> 41d0f817c0a3
-Step 73/82 : RUN /usr/local/bin/install-plugins.sh ansible-tower
- ---> Running in 6c2f5c6c1c1d
+Removing intermediate container fe359d4a542f
+ ---> d6493f7b0fca
+Step 72/81 : RUN /usr/local/bin/install-plugins.sh ansible-tower
+ ---> Running in a89b9813ed93
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -5395,10 +5393,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 6c2f5c6c1c1d
- ---> d6f0547055fb
-Step 74/82 : RUN /usr/local/bin/install-plugins.sh terraform
- ---> Running in 8f41a4deb148
+Removing intermediate container a89b9813ed93
+ ---> 268713533fc5
+Step 73/81 : RUN /usr/local/bin/install-plugins.sh terraform
+ ---> Running in ee7993e51688
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -5524,10 +5522,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 8f41a4deb148
- ---> c7b4221c1474
-Step 75/82 : RUN /usr/local/bin/install-plugins.sh active-directory
- ---> Running in 149513868d36
+Removing intermediate container ee7993e51688
+ ---> f1aa7c3bb721
+Step 74/81 : RUN /usr/local/bin/install-plugins.sh active-directory
+ ---> Running in 901135630f5a
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -5656,10 +5654,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 149513868d36
- ---> 49ac16315ff7
-Step 76/82 : RUN /usr/local/bin/install-plugins.sh aqua-security-scanner
- ---> Running in c1b0eabf694a
+Removing intermediate container 901135630f5a
+ ---> de86c3f908ef
+Step 75/81 : RUN /usr/local/bin/install-plugins.sh aqua-security-scanner
+ ---> Running in 9783325be03b
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -5789,10 +5787,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container c1b0eabf694a
- ---> 705fe68c2829
-Step 77/82 : RUN /usr/local/bin/install-plugins.sh aqua-microscanner
- ---> Running in f088e6be7979
+Removing intermediate container 9783325be03b
+ ---> f0461266dbe4
+Step 76/81 : RUN /usr/local/bin/install-plugins.sh aqua-microscanner
+ ---> Running in 260c5da0f1fa
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -5923,10 +5921,10 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container f088e6be7979
- ---> 701c8a4da127
-Step 78/82 : RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
- ---> Running in 1e641f9e1e48
+Removing intermediate container 260c5da0f1fa
+ ---> 0476913ceaf3
+Step 77/81 : RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
+ ---> Running in a222d6c1dccf
 Creating initial locks...
 Analyzing war /usr/share/jenkins/jenkins.war...
 Registering preinstalled plugins...
@@ -6056,25 +6054,25 @@ workflow-step-api:2.22
 workflow-support:3.5
 ws-cleanup:0.38
 Cleaning up locks
-Removing intermediate container 1e641f9e1e48
- ---> 06d5eb2fe4d2
-Step 79/82 : USER root
- ---> Running in d73a35796203
-Removing intermediate container d73a35796203
- ---> 8b376c43541d
-Step 80/82 : RUN apt-get update &&   apt-get install -y apt-transport-https ca-certificates python3 python3-pip curl git gnupg2 jq maven tree software-properties-common unzip vim wget zip &&   rm -rf /var/lib/apt/lists/* &&   pip3 install ansible==2.9.10 jinja2 dnspython &&   /var/tmp/download_install_awscli_v2.sh
- ---> Running in b6b6b5f25d90
+Removing intermediate container a222d6c1dccf
+ ---> 7cfa204b5e5f
+Step 78/81 : USER root
+ ---> Running in f2dc049fd392
+Removing intermediate container f2dc049fd392
+ ---> 2466cadd79a4
+Step 79/81 : RUN apt-get update &&   apt-get install -y apt-transport-https ca-certificates python3 python3-pip curl git gnupg2 jq maven tree software-properties-common unzip vim wget zip &&   rm -rf /var/lib/apt/lists/* &&   pip3 install ansible==2.9.10 jinja2 dnspython &&   /var/tmp/download_install_awscli_v2.sh
+ ---> Running in 8a14d7e77fd7
 Ign:1 http://deb.debian.org/debian stretch InRelease
-Get:2 http://security.debian.org/debian-security stretch/updates InRelease [53.0 kB]
-Get:3 http://deb.debian.org/debian stretch-updates InRelease [93.6 kB]
+Get:2 http://deb.debian.org/debian stretch-updates InRelease [93.6 kB]
+Get:3 http://security.debian.org/debian-security stretch/updates InRelease [53.0 kB]
 Get:4 http://deb.debian.org/debian stretch Release [118 kB]
-Get:5 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [537 kB]
-Get:6 http://deb.debian.org/debian stretch Release.gpg [2410 B]
-Get:7 http://deb.debian.org/debian stretch-updates/main amd64 Packages [2596 B]
+Get:5 http://deb.debian.org/debian stretch Release.gpg [2410 B]
+Get:6 http://deb.debian.org/debian stretch-updates/main amd64 Packages [2596 B]
+Get:7 http://security.debian.org/debian-security stretch/updates/main amd64 Packages [537 kB]
 Get:8 http://deb.debian.org/debian stretch/main amd64 Packages [7080 kB]
 Get:9 https://packagecloud.io/github/git-lfs/debian stretch InRelease [23.2 kB]
 Get:10 https://packagecloud.io/github/git-lfs/debian stretch/main amd64 Packages [4884 B]
-Fetched 7915 kB in 3s (2362 kB/s)
+Fetched 7915 kB in 3s (2037 kB/s)
 Reading package lists...
 Reading package lists...
 Building dependency tree...
@@ -6256,38 +6254,38 @@ Get:8 http://deb.debian.org/debian stretch/main amd64 libkmod2 amd64 23-2 [48.1 
 Get:9 http://deb.debian.org/debian stretch/main amd64 libseccomp2 amd64 2.3.1-2.1+deb9u1 [40.7 kB]
 Get:10 http://deb.debian.org/debian stretch/main amd64 systemd amd64 232-25+deb9u12 [2469 kB]
 Get:11 http://security.debian.org/debian-security stretch/updates/main amd64 python3.5-minimal amd64 3.5.3-1+deb9u2 [1695 kB]
-Get:12 http://deb.debian.org/debian stretch/main amd64 liblocale-gettext-perl amd64 1.07-3+b1 [18.7 kB]
-Get:13 http://deb.debian.org/debian stretch/main amd64 libxau6 amd64 1:1.0.8-1 [20.7 kB]
-Get:14 http://deb.debian.org/debian stretch/main amd64 python3-minimal amd64 3.5.3-1 [35.3 kB]
-Get:15 http://deb.debian.org/debian stretch/main amd64 libmpdec2 amd64 2.4.2-1 [85.2 kB]
-Get:16 http://deb.debian.org/debian stretch/main amd64 libpython3-stdlib amd64 3.5.3-1 [18.6 kB]
-Get:17 http://deb.debian.org/debian stretch/main amd64 dh-python all 2.20170125 [86.8 kB]
-Get:18 http://deb.debian.org/debian stretch/main amd64 python3 amd64 3.5.3-1 [21.6 kB]
-Get:19 http://deb.debian.org/debian stretch/main amd64 sgml-base all 1.29 [14.8 kB]
-Get:20 http://deb.debian.org/debian stretch/main amd64 libapt-inst2.0 amd64 1.4.10 [191 kB]
-Get:21 http://deb.debian.org/debian stretch/main amd64 apt-utils amd64 1.4.10 [410 kB]
-Get:22 http://deb.debian.org/debian stretch/main amd64 xxd amd64 2:8.0.0197-4+deb9u3 [132 kB]
-Get:23 http://deb.debian.org/debian stretch/main amd64 vim-common all 2:8.0.0197-4+deb9u3 [159 kB]
-Get:24 http://security.debian.org/debian-security stretch/updates/main amd64 libpython3.5-stdlib amd64 3.5.3-1+deb9u2 [2169 kB]
-Get:25 http://deb.debian.org/debian stretch/main amd64 libdbus-1-3 amd64 1.10.32-0+deb9u1 [196 kB]
-Get:26 http://deb.debian.org/debian stretch/main amd64 dbus amd64 1.10.32-0+deb9u1 [213 kB]
-Get:27 http://deb.debian.org/debian stretch/main amd64 libgc1c2 amd64 1:7.4.2-8 [208 kB]
-Get:28 http://deb.debian.org/debian stretch/main amd64 libgpm2 amd64 1.20.4-6.2+b1 [34.2 kB]
-Get:29 http://deb.debian.org/debian stretch/main amd64 libglib2.0-0 amd64 2.50.3-2+deb9u2 [2692 kB]
-Get:30 http://deb.debian.org/debian stretch/main amd64 libnih1 amd64 1.0.3-8 [125 kB]
-Get:31 http://deb.debian.org/debian stretch/main amd64 libnih-dbus1 amd64 1.0.3-8 [96.8 kB]
-Get:32 http://deb.debian.org/debian stretch/main amd64 libcgmanager0 amd64 0.41-2 [41.1 kB]
-Get:33 http://deb.debian.org/debian stretch/main amd64 cgmanager amd64 0.41-2 [84.0 kB]
-Get:34 http://deb.debian.org/debian stretch/main amd64 systemd-shim amd64 10-3 [20.0 kB]
-Get:35 http://deb.debian.org/debian stretch/main amd64 libpam-systemd amd64 232-25+deb9u12 [189 kB]
-Get:36 http://deb.debian.org/debian stretch/main amd64 libwrap0 amd64 7.6.q-26 [58.2 kB]
-Get:37 http://deb.debian.org/debian stretch/main amd64 libicu57 amd64 57.1-6+deb9u4 [7699 kB]
-Get:38 http://security.debian.org/debian-security stretch/updates/main amd64 python3.5 amd64 3.5.3-1+deb9u2 [230 kB]
-Get:39 http://security.debian.org/debian-security stretch/updates/main amd64 curl amd64 7.52.1-5+deb9u11 [227 kB]
-Get:40 http://security.debian.org/debian-security stretch/updates/main amd64 libcurl3 amd64 7.52.1-5+deb9u11 [292 kB]
-Get:41 http://security.debian.org/debian-security stretch/updates/main amd64 libservlet3.1-java all 8.5.54-0+deb9u3 [404 kB]
-Get:42 http://security.debian.org/debian-security stretch/updates/main amd64 libpython3.5 amd64 3.5.3-1+deb9u2 [1371 kB]
-Get:43 http://security.debian.org/debian-security stretch/updates/main amd64 libpython3.5-dev amd64 3.5.3-1+deb9u2 [37.7 MB]
+Get:12 http://security.debian.org/debian-security stretch/updates/main amd64 libpython3.5-stdlib amd64 3.5.3-1+deb9u2 [2169 kB]
+Get:13 http://deb.debian.org/debian stretch/main amd64 liblocale-gettext-perl amd64 1.07-3+b1 [18.7 kB]
+Get:14 http://deb.debian.org/debian stretch/main amd64 libxau6 amd64 1:1.0.8-1 [20.7 kB]
+Get:15 http://deb.debian.org/debian stretch/main amd64 python3-minimal amd64 3.5.3-1 [35.3 kB]
+Get:16 http://deb.debian.org/debian stretch/main amd64 libmpdec2 amd64 2.4.2-1 [85.2 kB]
+Get:17 http://deb.debian.org/debian stretch/main amd64 libpython3-stdlib amd64 3.5.3-1 [18.6 kB]
+Get:18 http://deb.debian.org/debian stretch/main amd64 dh-python all 2.20170125 [86.8 kB]
+Get:19 http://deb.debian.org/debian stretch/main amd64 python3 amd64 3.5.3-1 [21.6 kB]
+Get:20 http://deb.debian.org/debian stretch/main amd64 sgml-base all 1.29 [14.8 kB]
+Get:21 http://deb.debian.org/debian stretch/main amd64 libapt-inst2.0 amd64 1.4.10 [191 kB]
+Get:22 http://deb.debian.org/debian stretch/main amd64 apt-utils amd64 1.4.10 [410 kB]
+Get:23 http://deb.debian.org/debian stretch/main amd64 xxd amd64 2:8.0.0197-4+deb9u3 [132 kB]
+Get:24 http://deb.debian.org/debian stretch/main amd64 vim-common all 2:8.0.0197-4+deb9u3 [159 kB]
+Get:25 http://security.debian.org/debian-security stretch/updates/main amd64 python3.5 amd64 3.5.3-1+deb9u2 [230 kB]
+Get:26 http://deb.debian.org/debian stretch/main amd64 libdbus-1-3 amd64 1.10.32-0+deb9u1 [196 kB]
+Get:27 http://deb.debian.org/debian stretch/main amd64 dbus amd64 1.10.32-0+deb9u1 [213 kB]
+Get:28 http://security.debian.org/debian-security stretch/updates/main amd64 curl amd64 7.52.1-5+deb9u11 [227 kB]
+Get:29 http://deb.debian.org/debian stretch/main amd64 libgc1c2 amd64 1:7.4.2-8 [208 kB]
+Get:30 http://security.debian.org/debian-security stretch/updates/main amd64 libcurl3 amd64 7.52.1-5+deb9u11 [292 kB]
+Get:31 http://deb.debian.org/debian stretch/main amd64 libgpm2 amd64 1.20.4-6.2+b1 [34.2 kB]
+Get:32 http://deb.debian.org/debian stretch/main amd64 libglib2.0-0 amd64 2.50.3-2+deb9u2 [2692 kB]
+Get:33 http://security.debian.org/debian-security stretch/updates/main amd64 libservlet3.1-java all 8.5.54-0+deb9u3 [404 kB]
+Get:34 http://security.debian.org/debian-security stretch/updates/main amd64 libpython3.5 amd64 3.5.3-1+deb9u2 [1371 kB]
+Get:35 http://security.debian.org/debian-security stretch/updates/main amd64 libpython3.5-dev amd64 3.5.3-1+deb9u2 [37.7 MB]
+Get:36 http://deb.debian.org/debian stretch/main amd64 libnih1 amd64 1.0.3-8 [125 kB]
+Get:37 http://deb.debian.org/debian stretch/main amd64 libnih-dbus1 amd64 1.0.3-8 [96.8 kB]
+Get:38 http://deb.debian.org/debian stretch/main amd64 libcgmanager0 amd64 0.41-2 [41.1 kB]
+Get:39 http://deb.debian.org/debian stretch/main amd64 cgmanager amd64 0.41-2 [84.0 kB]
+Get:40 http://deb.debian.org/debian stretch/main amd64 systemd-shim amd64 10-3 [20.0 kB]
+Get:41 http://deb.debian.org/debian stretch/main amd64 libpam-systemd amd64 232-25+deb9u12 [189 kB]
+Get:42 http://deb.debian.org/debian stretch/main amd64 libwrap0 amd64 7.6.q-26 [58.2 kB]
+Get:43 http://deb.debian.org/debian stretch/main amd64 libicu57 amd64 57.1-6+deb9u4 [7699 kB]
 Get:44 http://deb.debian.org/debian stretch/main amd64 libxml2 amd64 2.9.4+dfsg1-2.2+deb9u2 [920 kB]
 Get:45 http://deb.debian.org/debian stretch/main amd64 manpages all 4.10-2 [1222 kB]
 Get:46 http://deb.debian.org/debian stretch/main amd64 libnspr4 amd64 2:4.12-6 [117 kB]
@@ -6311,35 +6309,35 @@ Get:63 http://deb.debian.org/debian stretch/main amd64 libxrender1 amd64 1:0.9.1
 Get:64 http://deb.debian.org/debian stretch/main amd64 x11-common all 1:7.7+19 [251 kB]
 Get:65 http://deb.debian.org/debian stretch/main amd64 libxtst6 amd64 2:1.2.3-1 [27.8 kB]
 Get:66 http://deb.debian.org/debian stretch/main amd64 openjdk-8-jre-headless amd64 8u252-b09-1~deb9u1 [27.4 MB]
-Get:67 http://deb.debian.org/debian stretch/main amd64 default-jre-headless amd64 2:1.8-58+deb9u1 [10.1 kB]
-Get:68 http://deb.debian.org/debian stretch/main amd64 ant all 1.9.9-1+deb9u1 [1923 kB]
-Get:69 http://deb.debian.org/debian stretch/main amd64 ant-optional all 1.9.9-1+deb9u1 [350 kB]
-Get:70 http://deb.debian.org/debian stretch/main amd64 binutils amd64 2.28-5 [3770 kB]
-Get:71 http://deb.debian.org/debian stretch/main amd64 libc-dev-bin amd64 2.24-11+deb9u4 [259 kB]
-Get:72 http://deb.debian.org/debian stretch/main amd64 linux-libc-dev amd64 4.9.228-1 [1511 kB]
-Get:73 http://deb.debian.org/debian stretch/main amd64 libc6-dev amd64 2.24-11+deb9u4 [2364 kB]
-Get:74 http://deb.debian.org/debian stretch/main amd64 libisl15 amd64 0.18-1 [564 kB]
-Get:75 http://deb.debian.org/debian stretch/main amd64 libmpfr4 amd64 3.1.5-1 [556 kB]
-Get:76 http://deb.debian.org/debian stretch/main amd64 libmpc3 amd64 1.0.3-1+b2 [39.9 kB]
-Get:77 http://deb.debian.org/debian stretch/main amd64 cpp-6 amd64 6.3.0-18+deb9u1 [6584 kB]
-Get:78 http://deb.debian.org/debian stretch/main amd64 cpp amd64 4:6.3.0-4 [18.7 kB]
-Get:79 http://deb.debian.org/debian stretch/main amd64 libcc1-0 amd64 6.3.0-18+deb9u1 [30.6 kB]
-Get:80 http://deb.debian.org/debian stretch/main amd64 libgomp1 amd64 6.3.0-18+deb9u1 [73.3 kB]
-Get:81 http://deb.debian.org/debian stretch/main amd64 libitm1 amd64 6.3.0-18+deb9u1 [27.3 kB]
-Get:82 http://deb.debian.org/debian stretch/main amd64 libatomic1 amd64 6.3.0-18+deb9u1 [8966 B]
-Get:83 http://deb.debian.org/debian stretch/main amd64 libasan3 amd64 6.3.0-18+deb9u1 [311 kB]
-Get:84 http://deb.debian.org/debian stretch/main amd64 liblsan0 amd64 6.3.0-18+deb9u1 [115 kB]
-Get:85 http://deb.debian.org/debian stretch/main amd64 libtsan0 amd64 6.3.0-18+deb9u1 [257 kB]
-Get:86 http://deb.debian.org/debian stretch/main amd64 libubsan0 amd64 6.3.0-18+deb9u1 [107 kB]
-Get:87 http://deb.debian.org/debian stretch/main amd64 libcilkrts5 amd64 6.3.0-18+deb9u1 [40.5 kB]
-Get:88 http://deb.debian.org/debian stretch/main amd64 libmpx2 amd64 6.3.0-18+deb9u1 [11.2 kB]
-Get:89 http://deb.debian.org/debian stretch/main amd64 libquadmath0 amd64 6.3.0-18+deb9u1 [131 kB]
-Get:90 http://deb.debian.org/debian stretch/main amd64 libgcc-6-dev amd64 6.3.0-18+deb9u1 [2296 kB]
-Get:91 http://deb.debian.org/debian stretch/main amd64 gcc-6 amd64 6.3.0-18+deb9u1 [6900 kB]
-Get:92 http://deb.debian.org/debian stretch/main amd64 gcc amd64 4:6.3.0-4 [5196 B]
-Get:93 http://deb.debian.org/debian stretch/main amd64 libstdc++-6-dev amd64 6.3.0-18+deb9u1 [1420 kB]
-Get:94 http://deb.debian.org/debian stretch/main amd64 g++-6 amd64 6.3.0-18+deb9u1 [7094 kB]
-Get:95 http://security.debian.org/debian-security stretch/updates/main amd64 python3.5-dev amd64 3.5.3-1+deb9u2 [413 kB]
+Get:67 http://security.debian.org/debian-security stretch/updates/main amd64 python3.5-dev amd64 3.5.3-1+deb9u2 [413 kB]
+Get:68 http://deb.debian.org/debian stretch/main amd64 default-jre-headless amd64 2:1.8-58+deb9u1 [10.1 kB]
+Get:69 http://deb.debian.org/debian stretch/main amd64 ant all 1.9.9-1+deb9u1 [1923 kB]
+Get:70 http://deb.debian.org/debian stretch/main amd64 ant-optional all 1.9.9-1+deb9u1 [350 kB]
+Get:71 http://deb.debian.org/debian stretch/main amd64 binutils amd64 2.28-5 [3770 kB]
+Get:72 http://deb.debian.org/debian stretch/main amd64 libc-dev-bin amd64 2.24-11+deb9u4 [259 kB]
+Get:73 http://deb.debian.org/debian stretch/main amd64 linux-libc-dev amd64 4.9.228-1 [1511 kB]
+Get:74 http://deb.debian.org/debian stretch/main amd64 libc6-dev amd64 2.24-11+deb9u4 [2364 kB]
+Get:75 http://deb.debian.org/debian stretch/main amd64 libisl15 amd64 0.18-1 [564 kB]
+Get:76 http://deb.debian.org/debian stretch/main amd64 libmpfr4 amd64 3.1.5-1 [556 kB]
+Get:77 http://deb.debian.org/debian stretch/main amd64 libmpc3 amd64 1.0.3-1+b2 [39.9 kB]
+Get:78 http://deb.debian.org/debian stretch/main amd64 cpp-6 amd64 6.3.0-18+deb9u1 [6584 kB]
+Get:79 http://deb.debian.org/debian stretch/main amd64 cpp amd64 4:6.3.0-4 [18.7 kB]
+Get:80 http://deb.debian.org/debian stretch/main amd64 libcc1-0 amd64 6.3.0-18+deb9u1 [30.6 kB]
+Get:81 http://deb.debian.org/debian stretch/main amd64 libgomp1 amd64 6.3.0-18+deb9u1 [73.3 kB]
+Get:82 http://deb.debian.org/debian stretch/main amd64 libitm1 amd64 6.3.0-18+deb9u1 [27.3 kB]
+Get:83 http://deb.debian.org/debian stretch/main amd64 libatomic1 amd64 6.3.0-18+deb9u1 [8966 B]
+Get:84 http://deb.debian.org/debian stretch/main amd64 libasan3 amd64 6.3.0-18+deb9u1 [311 kB]
+Get:85 http://deb.debian.org/debian stretch/main amd64 liblsan0 amd64 6.3.0-18+deb9u1 [115 kB]
+Get:86 http://deb.debian.org/debian stretch/main amd64 libtsan0 amd64 6.3.0-18+deb9u1 [257 kB]
+Get:87 http://deb.debian.org/debian stretch/main amd64 libubsan0 amd64 6.3.0-18+deb9u1 [107 kB]
+Get:88 http://deb.debian.org/debian stretch/main amd64 libcilkrts5 amd64 6.3.0-18+deb9u1 [40.5 kB]
+Get:89 http://deb.debian.org/debian stretch/main amd64 libmpx2 amd64 6.3.0-18+deb9u1 [11.2 kB]
+Get:90 http://deb.debian.org/debian stretch/main amd64 libquadmath0 amd64 6.3.0-18+deb9u1 [131 kB]
+Get:91 http://deb.debian.org/debian stretch/main amd64 libgcc-6-dev amd64 6.3.0-18+deb9u1 [2296 kB]
+Get:92 http://deb.debian.org/debian stretch/main amd64 gcc-6 amd64 6.3.0-18+deb9u1 [6900 kB]
+Get:93 http://deb.debian.org/debian stretch/main amd64 gcc amd64 4:6.3.0-4 [5196 B]
+Get:94 http://deb.debian.org/debian stretch/main amd64 libstdc++-6-dev amd64 6.3.0-18+deb9u1 [1420 kB]
+Get:95 http://deb.debian.org/debian stretch/main amd64 g++-6 amd64 6.3.0-18+deb9u1 [7094 kB]
 Get:96 http://deb.debian.org/debian stretch/main amd64 g++ amd64 4:6.3.0-4 [1546 B]
 Get:97 http://deb.debian.org/debian stretch/main amd64 make amd64 4.1-9.1 [302 kB]
 Get:98 http://deb.debian.org/debian stretch/main amd64 libdpkg-perl all 1.18.25 [1287 kB]
@@ -6508,7 +6506,7 @@ Get:260 http://deb.debian.org/debian stretch/main amd64 xdg-user-dirs amd64 0.15
 Get:261 http://deb.debian.org/debian stretch/main amd64 xml-core all 0.17 [23.2 kB]
 Get:262 http://deb.debian.org/debian stretch/main amd64 zip amd64 3.0-11+b1 [234 kB]
 [91mdebconf: delaying package configuration, since apt-utils is not installed
-[0mFetched 196 MB in 30s (6351 kB/s)
+[0mFetched 196 MB in 12s (15.4 MB/s)
 Selecting previously unselected package cron.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 12466 files and directories currently installed.)
 Preparing to unpack .../00-cron_3.0pl1-128+deb9u1_amd64.deb ...
@@ -7822,20 +7820,20 @@ Successfully built ansible PyYAML
 Installing collected packages: PyYAML, MarkupSafe, jinja2, ansible, dnspython
 Successfully installed MarkupSafe-1.1.1 PyYAML-5.3.1 ansible-2.9.10 dnspython-1.16.0 jinja2-2.11.2
 [91m  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                          [0m[91m       Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0[0m[91m 13 31.7M   13 4403k    0     0  4660k      0  0:00:06 --:--:--  0[0m[91m:00:06 4660k[0m[91m 59 31.7M   59 18.7M    0     0  9896k      0  0:00:03  0:00:01  0:00:02 9895k[0m[91m100 31.7M  100 31.7M    0     0  11.4M      0  0:00:02  0:00:02 --:--:-- 11.4M
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0[0m[91m  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0[0m[91m 41 31.7M   41 13.2M    0     0  8681k      0  0:00:03  0:00:01  0:00:02 8678k[0m[91m 93 31.7M   93 29.8M    0     0  11.6M      0  0:00:02  0:00:02 --:--:-- 11.6M[0m[91m100 31.7M  100 31.7M    0     0  11.8M      0  0:00:02  0:00:02 --:--:-- 11.8M
 [0mUn-zipping awscli v2 files...
 Compiling and installing awscli v2 files...
 You can now run: /usr/local/bin/aws --version
-Removing intermediate container b6b6b5f25d90
- ---> 3576be223728
-Step 81/82 : USER jenkins
- ---> Running in 2a32d6a59a81
-Removing intermediate container 2a32d6a59a81
- ---> 45743fb126f8
-Step 82/82 : HEALTHCHECK --interval=5s --timeout=3s --retries=3 --start-period=2m CMD "curl --insecure --head http://localhost:8080 && exit 0 || exit 1"
- ---> Running in eb3d8133336f
-Removing intermediate container eb3d8133336f
- ---> 60e2fe216912
-Successfully built 60e2fe216912
-Successfully tagged garyttt8/jenkins:1.0.3
+Removing intermediate container 8a14d7e77fd7
+ ---> e349b7bafe90
+Step 80/81 : USER jenkins
+ ---> Running in 16ebfde9bdcd
+Removing intermediate container 16ebfde9bdcd
+ ---> ab9fec55b8a8
+Step 81/81 : HEALTHCHECK --interval=5s --timeout=3s --retries=3 --start-period=2m CMD "curl --insecure --head http://localhost:8080 && exit 0 || exit 1"
+ ---> Running in ec5249003c06
+Removing intermediate container ec5249003c06
+ ---> 1f22974d23b1
+Successfully built 1f22974d23b1
+Successfully tagged garyttt8/jenkins:1.0.4

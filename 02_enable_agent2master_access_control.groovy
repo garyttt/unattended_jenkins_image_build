@@ -6,8 +6,9 @@ Jenkins.instance.getInjector().getInstance(AdminWhitelistRule.class)
 .setMasterKillSwitch(false)
 
 /*
-Ref: https://wiki.jenkins.io/display/JENKINS/Slave+To+Master+Access+Control
-This is set a 'false' content to $JENKINS_HOME/secrets/slave-to-master-security-kill-switch
+Ref 1: https://wiki.jenkins.io/display/JENKINS/Slave+To+Master+Access+Control
+
+This is to set a 'false' content to $JENKINS_HOME/secrets/slave-to-master-security-kill-switch
 false means enabled
 */
 
