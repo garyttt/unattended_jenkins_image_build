@@ -22,7 +22,7 @@ COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.gr
 COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
 COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
 COPY 03_set_NumExecutors.groovy                   /usr/share/jenkins/ref/init.groovy.d/
-COPY 04_enable_proxy_compatbility.groovy          /usr/share/jenkins/ref/init.groovy.d/
+COPY 04_enable_proxy_compatibility.groovy         /usr/share/jenkins/ref/init.groovy.d/
 # Install the same list as the suggested plugsins during default interactive initial login screen
 # Sorted by plugin description
 RUN /usr/local/bin/install-plugins.sh ant                             # Ant
