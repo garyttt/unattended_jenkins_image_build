@@ -2,27 +2,19 @@
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
 FROM jenkins/jenkins:2.235.3-lts-jdk11
 WORKDIR /var/jenkins_home
-ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
 # Prior to running docker build, run the ONE-TIME generate_self_signed_jks.sh manually to generate the selfsigned.jks
-# Un-comment the next 3 lines to enable HTTPS, do not set httpPort to -1 just in case we need it
+# Un-comment the next 3 lines to enable HTTPS, do not set httpPort to -1 just in case we also need HTTP
 COPY selfsigned.jks /var/jenkins_home
 ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=8080 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
 EXPOSE 8083
 # Define fisrt admin user/pass
+ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
 ENV JENKINS_FIRST_ADMIN_USER admin
 ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
 # Docker build script will download kops, terraform (>0.12) and create download/install scriot for awscli v2
 COPY kops /usr/local/bin/kops
 COPY terraform /usr/local/bin/terraform
 COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
-# Pre-Create folder for periodicbackup plugin to backup ConfigOnly data, please 'enable' it in GUI
-RUN mkdir -p /var/tmp/jenkins_config_backup
-# Jenkins init.groovy.d scripts, if you make changes, please also copy the changed one to $DOCKER_HOST:$PWD/jenkins_home/init.groovy.d/
-COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
-COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
-COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
-COPY 03_set_NumExecutors.groovy                   /usr/share/jenkins/ref/init.groovy.d/
-COPY 04_enable_proxy_compatibility.groovy         /usr/share/jenkins/ref/init.groovy.d/
 # Install the same list as the suggested plugsins during default interactive initial login screen
 # Sorted by plugin description
 RUN /usr/local/bin/install-plugins.sh ant                             # Ant
@@ -104,13 +96,23 @@ RUN /usr/local/bin/install-plugins.sh aqua-microscanner
 RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
 # Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, vim, wget, zip, ansible/jinja2/dnspythonn... 
 # HTTPS SSL Ciphers suppoet: apt-transport-https ca-certificates gnupg2 software-properties-common 
+# Pre-Create folder for periodicbackup plugin to backup ConfigOnly data, please 'enable' it in GUI
 # Group all packages on same command line to reduce image size`
 USER root
-RUN apt-get update && \
+RUN set -x && \
+  apt-get update && \
   apt-get install -y apt-transport-https ca-certificates python3 python3-pip curl git gnupg2 jq maven tree software-properties-common unzip vim wget zip && \
   rm -rf /var/lib/apt/lists/* && \
   pip3 install ansible==2.9.10 jinja2 dnspython && \
-  /var/tmp/download_install_awscli_v2.sh
+  mkdir -p /var/tmp/jenkins_config_backup && \
+  chown 1000:1000 /var/tmp/jenkins_config_backup && \
+  bash /var/tmp/download_install_awscli_v2.sh
 USER jenkins
+# Jenkins init.groovy.d scripts, if you make changes, please also copy the changes to $DOCKER_HOST:$PWD/jenkins_home/init.groovy.d/
+COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
+COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
+COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY 03_set_NumExecutors.groovy                   /usr/share/jenkins/ref/init.groovy.d/
+COPY 04_enable_proxy_compatibility.groovy         /usr/share/jenkins/ref/init.groovy.d/
 # Health Check got to use --head (Show document info only), otherwise it may throw 'anonymous' access permission denied 
 HEALTHCHECK --interval=5s --timeout=3s --retries=3 --start-period=2m CMD "curl --insecure --head http://localhost:8080 && exit 0 || exit 1"
