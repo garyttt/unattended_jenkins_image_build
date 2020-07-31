@@ -274,7 +274,7 @@ download_helm_v3() {
   local HELM_V3_ZIP_FILE="helm-${VERSION}-linux-amd64.tar.gz"
   local HELM_V3_URL="https://get.helm.sh/${HELM_V3_ZIP_FILE}"
   curl -OL ${HELM_V3_URL}
-  echo "Un-zipping helm v3 binary"
+  echo "Extracting helm v3 binary"
   tar zxvf ${HELM_V3_ZIP_FILE}
   mv -f linux-amd64/helm .
   rm -f ${HELM_V3_ZIP_FILE}
@@ -318,7 +318,6 @@ install_jx() {
   fi
 }
 
-# Install helm v3
 # Download kops
 download_kops() {
   local FILE=$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
@@ -354,6 +353,30 @@ install_kubectl() {
   fi
 }
 
+# Download vault
+# Ref: 
+download_vault() {
+  local VERSION
+  [ -n "$1" ] && VERSION="$1" || VERSION="1.5.0"
+  local VAULT_ZIP_FILE="vault_${VERSION}_linux_amd64.zip"
+  local VAULT_URL="https://releases.hashicorp.com/vault/${VERSION}/${VAULT_ZIP_FILE}"
+  curl -OL ${VAULT_URL}
+  echo "Un-zipping vault binary"
+  unzip -oq ${VAULT_ZIP_FILE} 
+  rm -f ${VAULT_ZIP_FILE}
+}
+
+# Install vault
+install_vault() {
+  download_vault
+  if [ -z "$(which vault)" ]; then
+    sudo mv -f ./vault /usr/local/bin/vault
+    sudo chown root:root /usr/local/bin/vault
+    sudo chmod +x /usr/local/bin/vault 
+  else
+    echo "vault (might not be the latest release) is most likely installed"
+  fi
+}
 # Install promtool
 # Requires golang
 install_promtool() {
