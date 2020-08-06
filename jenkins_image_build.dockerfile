@@ -1,4 +1,4 @@
-# jenkins_image_build.dockerfile v1.0.4
+# jenkins_image_build.dockerfile v1.0.5
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
 FROM jenkins/jenkins:2.235.3-lts-jdk11
 WORKDIR /var/jenkins_home
@@ -39,7 +39,7 @@ RUN /usr/local/bin/install-plugins.sh ssh-slaves                      # SSH Buil
 RUN /usr/local/bin/install-plugins.sh timestamper                     # Timestamper
 RUN /usr/local/bin/install-plugins.sh trilead-api                     # Trilead API Plugin
 RUN /usr/local/bin/install-plugins.sh ws-cleanup                      # Workspace Cleanup
-# SCM, Builds, Job DSL, Pipeline, Workflows
+# SCM, Builds, Job DSL, Pipeline, Workflows, GITHub Integration
 RUN /usr/local/bin/install-plugins.sh git-parameter
 RUN /usr/local/bin/install-plugins.sh groovy
 RUN /usr/local/bin/install-plugins.sh job-dsl
@@ -53,12 +53,21 @@ RUN /usr/local/bin/install-plugins.sh external-monitor-job # External Monitor Jo
 RUN /usr/local/bin/install-plugins.sh jaxb # JAXB packaging for more transparent Java 9+ compatibility 
 RUN /usr/local/bin/install-plugins.sh jdk-tool # Oracle Java SE Development Kit Installer
 RUN /usr/local/bin/install-plugins.sh windows-slaves # WMI Windows Agent
+RUN /usr/local/bin/install-plugins.sh jenkins-multijob-plugin
+RUN /usr/local/bin/install-plugins.sh github-pullrequest
 # Strict Crumb Issuer Plugin to help with Web Security (CSRF Cross Site Request Forging attacks and External Reverse Proxy)
 RUN /usr/local/bin/install-plugins.sh strict-crumb-issuer
 # Backup Jenkins Configuration
 RUN /usr/local/bin/install-plugins.sh periodicbackup
-# Java Memory Monitoring (JavaMelody)
+# Java Memory Monitoring (JavaMelody), Metrics, View-Job-Filters, Test-Results-Analyzer, Multi-Test-Results-Report, Performance
 RUN /usr/local/bin/install-plugins.sh monitoring
+RUN /usr/local/bin/install-plugins.sh metrics
+RUN /usr/local/bin/install-plugins.sh view-job-filters
+RUN /usr/local/bin/install-plugins.sh test-results-analyzer
+RUN /usr/local/bin/install-plugins.sh bootstraped-multi-test-results-report
+RUN /usr/local/bin/install-plugins.sh performance
+RUN /usr/local/bin/install-plugins.sh junit
+RUN /usr/local/bin/install-plugins.sh perfpublisher
 # Project or RBAC Role Based Access Control Authorization Strategies
 RUN /usr/local/bin/install-plugins.sh authorize-project
 RUN /usr/local/bin/install-plugins.sh role-strategy
@@ -73,9 +82,10 @@ RUN /usr/local/bin/install-plugins.sh oauth-credentials
 # UI
 RUN /usr/local/bin/install-plugins.sh greenballs # Changes Hudson to use green balls instead of blue for successful builds
 RUN /usr/local/bin/install-plugins.sh simple-theme-plugin # Customize appearance with custom CSS and JavaScript, replace Favicon
-# Cloud: AWS
+# Cloud: AWS, Elastic Container Services
 RUN /usr/local/bin/install-plugins.sh aws-credentials
 RUN /usr/local/bin/install-plugins.sh aws-bucket-credentials
+RUN /usr/local/bin/install-plugins.sh amazon-ecs
 # Docker
 RUN /usr/local/bin/install-plugins.sh docker-plugin
 RUN /usr/local/bin/install-plugins.sh docker-build-publish
