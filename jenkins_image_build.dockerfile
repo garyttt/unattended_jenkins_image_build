@@ -1,4 +1,4 @@
-# jenkins_image_build.dockerfile v1.0.5
+# jenkins_image_build.dockerfile v1.0.6
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
 FROM jenkins/jenkins:2.235.3-lts-jdk11
 WORKDIR /var/jenkins_home
@@ -104,6 +104,13 @@ RUN /usr/local/bin/install-plugins.sh active-directory
 RUN /usr/local/bin/install-plugins.sh aqua-security-scanner
 RUN /usr/local/bin/install-plugins.sh aqua-microscanner
 RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
+# JCasC Jenkins Configuration As Code 
+RUN /usr/local/bin/install-plugins.sh configuration-as-code
+RUN /usr/local/bin/install-plugins.sh configuration-as-code-groovy
+# Pipeline As YAML
+RUN /usr/local/bin/install-plugins.sh pipeline-as-yaml
+# HashiCorp Vault Pipeline
+RUN /usr/local/bin/install-plugins.sh hashicorp-vault-pipeline
 # Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, vim, wget, zip, ansible/jinja2/dnspythonn... 
 # HTTPS SSL Ciphers suppoet: apt-transport-https ca-certificates gnupg2 software-properties-common 
 # Pre-Create folder for periodicbackup plugin to backup ConfigOnly data, please 'enable' it in GUI
