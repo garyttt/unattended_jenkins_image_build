@@ -126,6 +126,10 @@ RUN set -x && \
   bash /var/tmp/download_install_awscli_v2.sh
 USER jenkins
 # Jenkins init.groovy.d scripts, if you make changes, please also copy the changes to $DOCKER_HOST:$PWD/jenkins_home/init.groovy.d/
+# You may automate these groovy scripts using JCasC Jenkins Configuration As Code plugin - automate the automation server
+# Ref 1: https://github.com/jenkinsci/jep/blob/master/jep/201/README.adoc
+# Ref 2: https://github.com/jenkinsci/configuration-as-code-plugin
+# Ref 3: https://docs.google.com/presentation/d/1VsvDuffinmxOjg0a7irhgJSRWpCzLg_Yskf7Fw7FpBg/edit?usp=sharing
 COPY 00_create_first_admin_user.groovy            /usr/share/jenkins/ref/init.groovy.d/
 COPY 01_set_baseURL.groovy                        /usr/share/jenkins/ref/init.groovy.d/
 COPY 02_enable_agent2master_access_control.groovy /usr/share/jenkins/ref/init.groovy.d/
