@@ -37,6 +37,6 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 
 # Automate the automation server
 20. You may automate these groovy scripts using JCasC Jenkins Configuration As Code plugin
-. Ref 1: https://github.com/jenkinsci/jep/blob/master/jep/201/README.adoc
-. Ref 2: https://github.com/jenkinsci/configuration-as-code-plugin
-. Ref 3: https://docs.google.com/presentation/d/1VsvDuffinmxOjg0a7irhgJSRWpCzLg_Yskf7Fw7FpBg/edit?usp=sharing
+* Ref 1: https://github.com/jenkinsci/jep/blob/master/jep/201/README.adoc
+* Ref 2: https://github.com/jenkinsci/configuration-as-code-plugin
+* Ref 3: https://docs.google.com/presentation/d/1VsvDuffinmxOjg0a7irhgJSRWpCzLg_Yskf7Fw7FpBg/edit?usp=sharing
