@@ -4,10 +4,10 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 1. Disable Jenkins Install Setup Wizard, and install the suggested plugins as seen by the setup wizard
 2. Install a list of useful plugins, examples: periodicbackup, monitoring (JavaMelody), green-ball button,...
 3. Groovy init scripts to be placed in reference (/usr/share/jenkins/ref/init.groovy.d) folder and later be copied to $JENKINS_HOME/init.grooy.d to:
-3.1 create first admin user account
-3.2 set baseURL
-3.3 enable agent to master access control
-3.4 set number of executors
+* 3.1 create first admin user account
+* 3.2 set baseURL
+* 3.3 enable agent to master access control
+* 3.4 set number of executors
 4. The build script makes use of bash shell functions to download/install awscli v2 (in container), download kops and terraform binaries so as to be copied to jenkins docker image
 5. The jenkins docker image also includes typical tools including curl, git, jq, maven, tree, wget, zip, python3, pip3, ansible 2.9.10, jinja2, dnspython
 
