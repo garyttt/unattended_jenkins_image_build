@@ -12,8 +12,8 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 5. The jenkins docker image also includes typical tools including curl, git, jq, maven, tree, wget, zip, python3, pip3, ansible 2.9.10, jinja2, dnspython
 
 # How to build the image
-6. git clone https://github.com/garyttt/unattended_jenkins_image_build.git using an account with uidNumber=1000 (jenkins)
-7. cd unattended_jenkins_image_build
+6. "git clone https://github.com/garyttt/unattended_jenkins_image_build.git jenkins" using an account with uidNumber=1000 (jenkins)
+7. cd jenkins/
 8. edit all .sh scripts, replace 'REPO=garyttt8' (my Docker Hub account) with your Docker Hub account 'REPO=yourdockerhubaccount'
 9. edit 01_set_baseURL.groovy, replace hostname in 'localtion.url' with your actual docker hostname
 10. ./jenkins_image_build.sh 1.0.0  # where 1.0.0 is the docker image tag you so desired
@@ -34,3 +34,9 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 
 # How to enable HTTPS
 19. first run 'generate_self_signed_jks.sh', then un-comment the related lines in dockerfile, re-build the image, as well as copy/paste the right lines in jenkins_run.sh, re-run to test
+
+# Automate the automation server
+20. You may automate these groovy scripts using JCasC Jenkins Configuration As Code plugin
+. Ref 1: https://github.com/jenkinsci/jep/blob/master/jep/201/README.adoc
+. Ref 2: https://github.com/jenkinsci/configuration-as-code-plugin
+. Ref 3: https://docs.google.com/presentation/d/1VsvDuffinmxOjg0a7irhgJSRWpCzLg_Yskf7Fw7FpBg/edit?usp=sharing
