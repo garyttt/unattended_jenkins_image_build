@@ -16,12 +16,12 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 7. cd jenkins/
 8. edit all .sh scripts, replace 'REPO=garyttt8' (my Docker Hub account) with your Docker Hub account 'REPO=yourdockerhubaccount'
 9. edit 01_set_baseURL.groovy, replace hostname in 'localtion.url' with your actual docker hostname
-10. ./jenkins_image_build.sh 1.0.0  # where 1.0.0 is the docker image tag you so desired
+10. ./jenkins_image_build.sh 1.0.X # where 1.0.X is the docker image tag you so desired
 11. go for a 30-min or so coffee break, preferably you rebuild during non-peak/lunch hour
 12. you may inspect the docker_build.log post build for errors, note that warnings could usaully be ignored
 
 # How to run the image 
-13. ./jenkins_run.sh 1.0.3   # it is actually restarting jenkins, i.e. it calls ./jenkins_stop.sh first
+13. ./jenkins_run.sh 1.0.X   # it is actually restarting jenkins, i.e. it calls ./jenkins_stop.sh first
 14. docker run log file will be fetched continuously, you may Ctrl-C to break it
 
 # How to access Jenkins
