@@ -1,4 +1,4 @@
-# jenkins_image_build.dockerfile v1.0.10
+# jenkins_image_build.dockerfile v1.0.11
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
 FROM jenkins/jenkins:2.263.1-lts-jdk11
 WORKDIR /var/jenkins_home
@@ -46,15 +46,18 @@ RUN /usr/local/bin/install-plugins.sh job-dsl
 RUN /usr/local/bin/install-plugins.sh maven-plugin
 RUN /usr/local/bin/install-plugins.sh parameterized-trigger
 RUN /usr/local/bin/install-plugins.sh pipeline-utility-steps
-RUN /usr/local/bin/install-plugins.sh ssh-agent	# SSH Agent Plugin: provides SSH credentials to builds
+RUN /usr/local/bin/install-plugins.sh ssh-agent                       # SSH Agent Plugin: provides SSH credentials to builds
 RUN /usr/local/bin/install-plugins.sh workflow-multibranch
-RUN /usr/local/bin/install-plugins.sh command-launcher # Command Agent Launcher
-RUN /usr/local/bin/install-plugins.sh external-monitor-job # External Monitor Job Type
-RUN /usr/local/bin/install-plugins.sh jaxb # JAXB packaging for more transparent Java 9+ compatibility 
-RUN /usr/local/bin/install-plugins.sh jdk-tool # Oracle Java SE Development Kit Installer
-RUN /usr/local/bin/install-plugins.sh windows-slaves # WMI Windows Agent
+RUN /usr/local/bin/install-plugins.sh command-launcher                # Command Agent Launcher
+RUN /usr/local/bin/install-plugins.sh external-monitor-job            # External Monitor Job Type
+RUN /usr/local/bin/install-plugins.sh jaxb                            # JAXB packaging for more transparent Java 9+ compatibility 
+RUN /usr/local/bin/install-plugins.sh jdk-tool                        # Oracle Java SE Development Kit Installer
+RUN /usr/local/bin/install-plugins.sh windows-slaves                  # WMI Windows Agent
 RUN /usr/local/bin/install-plugins.sh jenkins-multijob-plugin
 RUN /usr/local/bin/install-plugins.sh github-pullrequest
+RUN /usr/local/bin/install-plugins.sh pipeline-aws                    # Pipeline AWS Steps
+RUN /usr/local/bin/install-plugins.sh pipeline-maven                  # Pipeline Maven
+RUN /usr/local/bin/install-plugins.sh pipeline-npm                    # Pipeline NPM
 # Strict Crumb Issuer Plugin to help with Web Security (CSRF Cross Site Request Forging attacks and External Reverse Proxy)
 RUN /usr/local/bin/install-plugins.sh strict-crumb-issuer
 # Backup Jenkins Configuration
@@ -90,6 +93,7 @@ RUN /usr/local/bin/install-plugins.sh amazon-ecs
 RUN /usr/local/bin/install-plugins.sh docker-plugin
 RUN /usr/local/bin/install-plugins.sh docker-build-publish
 RUN /usr/local/bin/install-plugins.sh docker-compose-build-step
+RUN /usr/local/bin/install-plugins.sh docker-workflow                 # Docker Pipeline 
 # Kubernetes
 RUN /usr/local/bin/install-plugins.sh kubernetes
 RUN /usr/local/bin/install-plugins.sh kubernetes-cli
