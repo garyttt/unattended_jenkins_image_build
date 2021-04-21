@@ -1,6 +1,6 @@
 # jenkins_image_build.dockerfile tag: 2.277.1-lts-jdk11
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
-FROM jenkins/jenkins:2.277.1-lts-jdk11
+FROM jenkins/jenkins:2.277.3-lts-jdk11
 WORKDIR /var/jenkins_home
 # Prior to running docker build, run the ONE-TIME generate_self_signed_jks.sh manually to generate the selfsigned.jks
 # Un-comment the next 3 lines to enable HTTPS, do not set httpPort to -1 just in case we also need HTTP
@@ -125,6 +125,7 @@ RUN set -x && \
   apt-get install -y apt-transport-https ca-certificates python3 python3-pip curl git gnupg2 jq maven tree software-properties-common unzip vim wget zip && \
   rm -rf /var/lib/apt/lists/* && \
   pip3 install ansible==2.9.10 jinja2 dnspython && \
+  apt-get upgrade && \
   mkdir -p /var/tmp/jenkins_config_backup && \
   chown 1000:1000 /var/tmp/jenkins_config_backup && \
   bash /var/tmp/download_install_awscli_v2.sh

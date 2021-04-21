@@ -28,6 +28,7 @@ END=`date`
 echo "Start: $START"
 echo "End  : $END"
 
-# Clean-up
+# Clean-up AWSCLIv2 install cache
+rm -rf ./aws
 rm -f ./kops
 rm -f ./terraform
