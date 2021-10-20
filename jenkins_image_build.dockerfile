@@ -1,6 +1,7 @@
-# jenkins_image_build.dockerfile tag: 2.289.2-lts-jdk11
+# jenkins_image_build.dockerfile tag: 2.303.2-lts-jdk11
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
-FROM jenkins/jenkins:2.289.2-lts-jdk11
+# Ref: 2.303.2-lts is the fix for https://www.jenkins.io/security/advisory/2021-10-06/
+FROM jenkins/jenkins:2.303.2-lts-jdk11
 WORKDIR /var/jenkins_home
 # Prior to running docker build, run the ONE-TIME generate_self_signed_jks.sh manually to generate the selfsigned.jks
 # Un-comment the next 3 lines to enable HTTPS, do not set httpPort to -1 just in case we also need HTTP
@@ -11,8 +12,7 @@ EXPOSE 8083
 ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
 ENV JENKINS_FIRST_ADMIN_USER admin
 ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
-# Docker build script will download kops, terraform (>0.12) and create download/install scriot for awscli v2
-COPY kops /usr/local/bin/kops
+# Docker build customization: for examples you may copy terraform (>1.0) and script for awscli v2 download/install, un-comment the COPY lines if needed
 COPY terraform /usr/local/bin/terraform
 COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
 # Install the same list as the suggested plugsins during default interactive initial login screen
@@ -115,6 +115,11 @@ RUN /usr/local/bin/install-plugins.sh configuration-as-code-groovy
 RUN /usr/local/bin/install-plugins.sh pipeline-as-yaml
 # HashiCorp Vault Pipeline
 RUN /usr/local/bin/install-plugins.sh hashicorp-vault-pipeline
+# Git Server
+RUN /usr/local/bin/install-plugins.sh git-server
+# SSH Server
+RUN /usr/local/bin/install-plugins.sh sshd
+#
 # Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, vim, wget, zip, ansible/jinja2/dnspythonn... 
 # HTTPS SSL Ciphers suppoet: apt-transport-https ca-certificates gnupg2 software-properties-common 
 # Pre-Create folder for periodicbackup plugin to backup ConfigOnly data, please 'enable' it in GUI

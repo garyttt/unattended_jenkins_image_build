@@ -6,3 +6,4 @@ jenkins_config_backup/*
 kops
 selfsigned.???
 terraform
+docker_build.log

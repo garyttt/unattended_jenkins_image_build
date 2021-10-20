@@ -15,7 +15,7 @@ echo "install_awscli_v2" >>download_install_awscli_v2.sh
 sed -i 's/sudo //g' download_install_awscli_v2.sh    # container does not have sudo installed
 echo "rm -rf ./aws" >>download_install_awscli_v2.sh  # clean-up 100M+ of ./aws v2 source files
 echo "download kops and terraform binaries, these will be copied to /usr/local/bin of final jenkins image"
-download_kops
+
 download_terraform
 
 REPO=garyttt8
@@ -30,5 +30,4 @@ echo "End  : $END"
 
 # Clean-up AWSCLIv2 install cache
 rm -rf ./aws
-rm -f ./kops
 rm -f ./terraform
