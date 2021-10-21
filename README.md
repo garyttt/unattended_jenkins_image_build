@@ -1,7 +1,7 @@
 # unattended_jenkins_image_build
 
 Customized jenkins image build Dockerfile that lets you build a Jenkins docker image with (but not limited to) the following use cases:
-1. Disable Jenkins Install Setup Wizard, and install the suggested plugins as seen by the setup wizard
+1. Disable Jenkins Install Setup Wizard (JAVA_OPTS "-Djenkins.install.runSetupWizard=false"), and install the suggested plugins as seen by the setup wizard
 2. Install a list of useful plugins, examples: periodicbackup, monitoring (JavaMelody), green-ball button,...
 3. Groovy init scripts to be placed in reference (/usr/share/jenkins/ref/init.groovy.d) folder and later be copied to $JENKINS_HOME/init.grooy.d to:
 * 3.1 create first admin user account
