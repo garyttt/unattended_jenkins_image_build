@@ -1,7 +1,7 @@
-# jenkins_image_build.dockerfile tag: 2.303.2-lts-jdk11
+# jenkins_image_build.dockerfile tag: 2.320-jdk11
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
-# Ref: 2.303.2-lts is the fix for https://www.jenkins.io/security/advisory/2021-10-06/
-FROM jenkins/jenkins:2.303.2-lts-jdk11
+# Ref: This release fixes Guava library CVE (CVE-2018-10237) 
+FROM jenkins/jenkins:2.320-jdk11
 WORKDIR /var/jenkins_home
 # Prior to running docker build, run the ONE-TIME generate_self_signed_jks.sh manually to generate the selfsigned.jks
 # Un-comment the next 3 lines to enable HTTPS, do not set httpPort to -1 just in case we also need HTTP
