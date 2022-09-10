@@ -14,14 +14,15 @@ display_shell_function install_awscli_v2 >>download_install_awscli_v2.sh
 echo "install_awscli_v2" >>download_install_awscli_v2.sh
 sed -i 's/sudo //g' download_install_awscli_v2.sh    # container does not have sudo installed
 echo "rm -rf ./aws" >>download_install_awscli_v2.sh  # clean-up 100M+ of ./aws v2 source files
-echo "download kops and terraform binaries, these will be copied to /usr/local/bin of final jenkins image"
+echo "download terraform which will be copied to /usr/local/bin of final jenkins image"
 
 download_terraform
 
 REPO=garyttt8
 IMAGE=jenkins
 TAG=$1
-OPTS="-f ${IMAGE}_image_build.dockerfile -t $REPO/$IMAGE:$TAG"
+MORE=$2
+OPTS="-f ${IMAGE}_image_build.dockerfile -t $REPO/$IMAGE:$TAG $MORE"
 echo "Please be patience, it takes a while to initialize..."
 docker build $OPTS . | tee docker_build.log
 END=`date`

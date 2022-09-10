@@ -1,7 +1,6 @@
-# jenkins_image_build.dockerfile tag: 2.320-jdk11
+# jenkins_image_build.dockerfile tag: 2.361.1-jdk11
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
-# Ref: This release fixes Guava library CVE (CVE-2018-10237) 
-FROM jenkins/jenkins:2.320-jdk11
+FROM jenkins/jenkins:2.361.1-jdk11
 WORKDIR /var/jenkins_home
 # Prior to running docker build, run the ONE-TIME generate_self_signed_jks.sh manually to generate the selfsigned.jks
 # Un-comment the next 3 lines to enable HTTPS, do not set httpPort to -1 just in case we also need HTTP
@@ -17,108 +16,104 @@ COPY terraform /usr/local/bin/terraform
 COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
 # Install the same list as the suggested plugsins during default interactive initial login screen
 # Sorted by plugin description
-RUN /usr/local/bin/install-plugins.sh ant                             # Ant
-RUN /usr/local/bin/install-plugins.sh build-timeout                   # Build Tumeout
-RUN /usr/local/bin/install-plugins.sh credentials-binding             # Credentials Binding
-RUN /usr/local/bin/install-plugins.sh cloudbees-folder                # Folders Plugin
-RUN /usr/local/bin/install-plugins.sh git                             # Git
-RUN /usr/local/bin/install-plugins.sh github-branch-source            # Github Branch Source
-RUN /usr/local/bin/install-plugins.sh gradle                          # Gradle
-RUN /usr/local/bin/install-plugins.sh email-ext                       # Email Extension
-RUN /usr/local/bin/install-plugins.sh ldap                            # LDAP Plugin
-RUN /usr/local/bin/install-plugins.sh mailer                          # Mailer Plugin
-RUN /usr/local/bin/install-plugins.sh matrix-auth                     # Matrix Authorization Strategy
-RUN /usr/local/bin/install-plugins.sh antisamy-markup-formatter       # OWSASP Markup Formatter
-RUN /usr/local/bin/install-plugins.sh pam-auth                        # PAM Authentication Plugin
-RUN /usr/local/bin/install-plugins.sh workflow-aggregator             # Pipeline
-RUN /usr/local/bin/install-plugins.sh pipeline-github-lib             # Pipeline: Github Groovy Libraries
-RUN /usr/local/bin/install-plugins.sh workflow-durable-task-step      # Pipeline: Node and Processes
-RUN /usr/local/bin/install-plugins.sh pipeline-stage-view             # Pipeline: Stage View Plugin
-RUN /usr/local/bin/install-plugins.sh ssh-credentials                 # SSH Credentials Plugin
-RUN /usr/local/bin/install-plugins.sh ssh-slaves                      # SSH Build Agents
-RUN /usr/local/bin/install-plugins.sh timestamper                     # Timestamper
-RUN /usr/local/bin/install-plugins.sh trilead-api                     # Trilead API Plugin
-RUN /usr/local/bin/install-plugins.sh ws-cleanup                      # Workspace Cleanup
+RUN jenkins-plugin-cli --plugins ant                             # Ant
+RUN jenkins-plugin-cli --plugins build-timeout                   # Build Tumeout
+RUN jenkins-plugin-cli --plugins credentials-binding             # Credentials Binding
+RUN jenkins-plugin-cli --plugins cloudbees-folder                # Folders Plugin
+RUN jenkins-plugin-cli --plugins git                             # Git
+RUN jenkins-plugin-cli --plugins github-branch-source            # Github Branch Source
+RUN jenkins-plugin-cli --plugins gradle                          # Gradle
+RUN jenkins-plugin-cli --plugins email-ext                       # Email Extension
+RUN jenkins-plugin-cli --plugins ldap                            # LDAP Plugin
+RUN jenkins-plugin-cli --plugins mailer                          # Mailer Plugin
+RUN jenkins-plugin-cli --plugins matrix-auth                     # Matrix Authorization Strategy
+RUN jenkins-plugin-cli --plugins antisamy-markup-formatter       # OWSASP Markup Formatter
+RUN jenkins-plugin-cli --plugins pam-auth                        # PAM Authentication Plugin
+RUN jenkins-plugin-cli --plugins workflow-aggregator             # Pipeline
+RUN jenkins-plugin-cli --plugins pipeline-github-lib             # Pipeline: Github Groovy Libraries
+RUN jenkins-plugin-cli --plugins workflow-durable-task-step      # Pipeline: Node and Processes
+RUN jenkins-plugin-cli --plugins pipeline-stage-view             # Pipeline: Stage View Plugin
+RUN jenkins-plugin-cli --plugins ssh-credentials                 # SSH Credentials Plugin
+RUN jenkins-plugin-cli --plugins ssh-slaves                      # SSH Build Agents
+RUN jenkins-plugin-cli --plugins timestamper                     # Timestamper
+RUN jenkins-plugin-cli --plugins trilead-api                     # Trilead API Plugin
+RUN jenkins-plugin-cli --plugins ws-cleanup                      # Workspace Cleanup
 # SCM, Builds, Job DSL, Pipeline, Workflows, GITHub Integration
-RUN /usr/local/bin/install-plugins.sh git-parameter
-RUN /usr/local/bin/install-plugins.sh groovy
-RUN /usr/local/bin/install-plugins.sh job-dsl
-RUN /usr/local/bin/install-plugins.sh maven-plugin
-RUN /usr/local/bin/install-plugins.sh parameterized-trigger
-RUN /usr/local/bin/install-plugins.sh pipeline-utility-steps
-RUN /usr/local/bin/install-plugins.sh ssh-agent                       # SSH Agent Plugin: provides SSH credentials to builds
-RUN /usr/local/bin/install-plugins.sh workflow-multibranch
-RUN /usr/local/bin/install-plugins.sh command-launcher                # Command Agent Launcher
-RUN /usr/local/bin/install-plugins.sh external-monitor-job            # External Monitor Job Type
-RUN /usr/local/bin/install-plugins.sh jaxb                            # JAXB packaging for more transparent Java 9+ compatibility 
-RUN /usr/local/bin/install-plugins.sh jdk-tool                        # Oracle Java SE Development Kit Installer
-RUN /usr/local/bin/install-plugins.sh windows-slaves                  # WMI Windows Agent
-RUN /usr/local/bin/install-plugins.sh jenkins-multijob-plugin
-RUN /usr/local/bin/install-plugins.sh github-pullrequest
-RUN /usr/local/bin/install-plugins.sh pipeline-aws                    # Pipeline AWS Steps
-RUN /usr/local/bin/install-plugins.sh pipeline-maven                  # Pipeline Maven
-RUN /usr/local/bin/install-plugins.sh pipeline-npm                    # Pipeline NPM
+RUN jenkins-plugin-cli --plugins git-parameter
+RUN jenkins-plugin-cli --plugins groovy
+RUN jenkins-plugin-cli --plugins job-dsl
+RUN jenkins-plugin-cli --plugins maven-plugin
+RUN jenkins-plugin-cli --plugins parameterized-trigger
+RUN jenkins-plugin-cli --plugins pipeline-utility-steps
+RUN jenkins-plugin-cli --plugins ssh-agent                       # SSH Agent Plugin: provides SSH credentials to builds
+RUN jenkins-plugin-cli --plugins workflow-multibranch
+RUN jenkins-plugin-cli --plugins command-launcher                # Command Agent Launcher
+RUN jenkins-plugin-cli --plugins jaxb                            # JAXB packaging for more transparent Java 9+ compatibility 
+RUN jenkins-plugin-cli --plugins jdk-tool                        # Oracle Java SE Development Kit Installer
+RUN jenkins-plugin-cli --plugins windows-slaves                  # WMI Windows Agent
+RUN jenkins-plugin-cli --plugins github-pullrequest
+RUN jenkins-plugin-cli --plugins pipeline-aws                    # Pipeline AWS Steps
+RUN jenkins-plugin-cli --plugins pipeline-maven                  # Pipeline Maven
+RUN jenkins-plugin-cli --plugins pipeline-npm                    # Pipeline NPM
 # Strict Crumb Issuer Plugin to help with Web Security (CSRF Cross Site Request Forging attacks and External Reverse Proxy)
-RUN /usr/local/bin/install-plugins.sh strict-crumb-issuer
+RUN jenkins-plugin-cli --plugins strict-crumb-issuer
 # Backup Jenkins Configuration
-RUN /usr/local/bin/install-plugins.sh periodicbackup
+RUN jenkins-plugin-cli --plugins periodicbackup
 # Java Memory Monitoring (JavaMelody), Metrics, View-Job-Filters, Test-Results-Analyzer, Multi-Test-Results-Report, Performance
-RUN /usr/local/bin/install-plugins.sh monitoring
-RUN /usr/local/bin/install-plugins.sh metrics
-RUN /usr/local/bin/install-plugins.sh view-job-filters
-RUN /usr/local/bin/install-plugins.sh test-results-analyzer
-RUN /usr/local/bin/install-plugins.sh bootstraped-multi-test-results-report
-RUN /usr/local/bin/install-plugins.sh performance
-RUN /usr/local/bin/install-plugins.sh junit
-RUN /usr/local/bin/install-plugins.sh perfpublisher
+RUN jenkins-plugin-cli --plugins monitoring
+RUN jenkins-plugin-cli --plugins metrics
+RUN jenkins-plugin-cli --plugins view-job-filters
+RUN jenkins-plugin-cli --plugins test-results-analyzer
+RUN jenkins-plugin-cli --plugins bootstraped-multi-test-results-report
+# RUN jenkins-plugin-cli --plugins junit
+RUN jenkins-plugin-cli --plugins perfpublisher
 # Project or RBAC Role Based Access Control Authorization Strategies
-RUN /usr/local/bin/install-plugins.sh authorize-project
-RUN /usr/local/bin/install-plugins.sh role-strategy
+RUN jenkins-plugin-cli --plugins authorize-project
+RUN jenkins-plugin-cli --plugins role-strategy
 # Artifact, Packaging
-RUN /usr/local/bin/install-plugins.sh nexus-jenkins-plugin
+RUN jenkins-plugin-cli --plugins nexus-jenkins-plugin
 # Alerts, Notifications and Publishing
-RUN /usr/local/bin/install-plugins.sh mailer
-RUN /usr/local/bin/install-plugins.sh slack
-RUN /usr/local/bin/install-plugins.sh htmlpublisher
+RUN jenkins-plugin-cli --plugins mailer
+RUN jenkins-plugin-cli --plugins slack
+RUN jenkins-plugin-cli --plugins htmlpublisher
 # Credentials Binding: to use 'withCredntials, OAuth
-RUN /usr/local/bin/install-plugins.sh oauth-credentials
+RUN jenkins-plugin-cli --plugins oauth-credentials
 # UI
-RUN /usr/local/bin/install-plugins.sh greenballs # Changes Hudson to use green balls instead of blue for successful builds
-RUN /usr/local/bin/install-plugins.sh simple-theme-plugin # Customize appearance with custom CSS and JavaScript, replace Favicon
+RUN jenkins-plugin-cli --plugins simple-theme-plugin # Customize appearance with custom CSS and JavaScript, replace Favicon
 # Cloud: AWS, Elastic Container Services
-RUN /usr/local/bin/install-plugins.sh aws-credentials
-RUN /usr/local/bin/install-plugins.sh aws-bucket-credentials
-RUN /usr/local/bin/install-plugins.sh amazon-ecs
+RUN jenkins-plugin-cli --plugins aws-credentials
+RUN jenkins-plugin-cli --plugins aws-bucket-credentials
+RUN jenkins-plugin-cli --plugins amazon-ecs
 # Docker
-RUN /usr/local/bin/install-plugins.sh docker-plugin
-RUN /usr/local/bin/install-plugins.sh docker-build-publish
-RUN /usr/local/bin/install-plugins.sh docker-compose-build-step
-RUN /usr/local/bin/install-plugins.sh docker-workflow                 # Docker Pipeline 
+RUN jenkins-plugin-cli --plugins docker-plugin
+RUN jenkins-plugin-cli --plugins docker-build-publish
+RUN jenkins-plugin-cli --plugins docker-compose-build-step
+RUN jenkins-plugin-cli --plugins docker-workflow                 # Docker Pipeline 
 # Kubernetes
-RUN /usr/local/bin/install-plugins.sh kubernetes
-RUN /usr/local/bin/install-plugins.sh kubernetes-cli
+RUN jenkins-plugin-cli --plugins kubernetes
+RUN jenkins-plugin-cli --plugins kubernetes-cli
 # Deployment
-RUN /usr/local/bin/install-plugins.sh ansible
-RUN /usr/local/bin/install-plugins.sh ansible-tower
+RUN jenkins-plugin-cli --plugins ansible
+RUN jenkins-plugin-cli --plugins ansible-tower
 # Infrastructure As Code
-RUN /usr/local/bin/install-plugins.sh terraform
+RUN jenkins-plugin-cli --plugins terraform
 # Active Directory
-RUN /usr/local/bin/install-plugins.sh active-directory
+RUN jenkins-plugin-cli --plugins active-directory
 # Container/OWASP security scanning
-RUN /usr/local/bin/install-plugins.sh aqua-security-scanner
-RUN /usr/local/bin/install-plugins.sh aqua-microscanner
-RUN /usr/local/bin/install-plugins.sh dependency-check-jenkins-plugin
+RUN jenkins-plugin-cli --plugins aqua-security-scanner
+RUN jenkins-plugin-cli --plugins aqua-microscanner
+RUN jenkins-plugin-cli --plugins dependency-check-jenkins-plugin
 # JCasC Jenkins Configuration As Code 
-RUN /usr/local/bin/install-plugins.sh configuration-as-code
-RUN /usr/local/bin/install-plugins.sh configuration-as-code-groovy
+RUN jenkins-plugin-cli --plugins configuration-as-code
+RUN jenkins-plugin-cli --plugins configuration-as-code-groovy
 # Pipeline As YAML
-RUN /usr/local/bin/install-plugins.sh pipeline-as-yaml
+RUN jenkins-plugin-cli --plugins pipeline-as-yaml
 # HashiCorp Vault Pipeline
-RUN /usr/local/bin/install-plugins.sh hashicorp-vault-pipeline
+RUN jenkins-plugin-cli --plugins hashicorp-vault-pipeline
 # Git Server
-RUN /usr/local/bin/install-plugins.sh git-server
+RUN jenkins-plugin-cli --plugins git-server
 # SSH Server
-RUN /usr/local/bin/install-plugins.sh sshd
+# RUN jenkins-plugin-cli --plugins sshd
 #
 # Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, vim, wget, zip, ansible/jinja2/dnspythonn... 
 # HTTPS SSL Ciphers suppoet: apt-transport-https ca-certificates gnupg2 software-properties-common 
