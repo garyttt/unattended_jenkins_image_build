@@ -21,11 +21,11 @@ Customized jenkins image build Dockerfile that lets you build a Jenkins docker i
 12. you may inspect the docker_build.log post build for errors, note that warnings could usaully be ignored
 
 # How to run the image 
-13. ./jenkins_run.sh <tag> where tag is the docker tag you have assigned to jenkins image, it is actually restarting jenkins, i.e. it calls ./jenkins_stop.sh first. Please note it would take at least few minutes for browser to fully launch jenkins.
+13. ./jenkins_run.sh <tag> where tag is the docker tag you have assigned to jenkins image, it is actually restarting jenkins, i.e. it calls ./jenkins_stop.sh first
 14. docker run log file will be fetched continuously, you may Ctrl-C to break it
 
 # How to access Jenkins
-15. http://hostname:8080 (HTTP) or http://hostname:8080/jenkins if "--prefix=/jenkins is set in 'env JENKINS_OPTS'" in dockerfile, https://hostname:8083 (HTTPS) or http://hostname:8083/jenkins if "--prefix=/jenkins is set in 'env JENKINS_OPTS'" in dockerfile. Replace hostname with actual docker hostname, please change admin password ASAP
+15. http://hostname:8080 (HTTP) or http://hostname:8080/jenkins if "--prefix=/jenkins is set in 'env JENKINS_OPTS'" in dockerfile, https://hostname:8083 (HTTPS) or http://hostname:8083/jenkins if "--prefix=/jenkins is set in 'env JENKINS_OPTS'" in dockerfile. Please note it would take at least few minutes for browser to fully launch jenkins. Replace hostname with actual docker hostname, please change admin password ASAP
 
 # How to backup/restore config changes between image builds
 16. refer to 'Jenkins_Period_Backup_Config_Example.pdf' to quickly configure it, do not forget to validate cron syntax and existence of backup folder
