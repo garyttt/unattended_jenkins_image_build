@@ -52,7 +52,7 @@ RUN jenkins-plugin-cli --plugins jaxb                            # JAXB packagin
 RUN jenkins-plugin-cli --plugins jdk-tool                        # Oracle Java SE Development Kit Installer
 RUN jenkins-plugin-cli --plugins windows-slaves                  # WMI Windows Agent
 RUN jenkins-plugin-cli --plugins github-pullrequest
-RUN jenkins-plugin-cli --plugins pipeline-aws                    # Pipeline AWS Steps
+# RUN jenkins-plugin-cli --plugins pipeline-aws                    # Pipeline AWS Steps
 RUN jenkins-plugin-cli --plugins pipeline-maven                  # Pipeline Maven
 RUN jenkins-plugin-cli --plugins pipeline-npm                    # Pipeline NPM
 # Strict Crumb Issuer Plugin to help with Web Security (CSRF Cross Site Request Forging attacks and External Reverse Proxy)
@@ -81,17 +81,17 @@ RUN jenkins-plugin-cli --plugins oauth-credentials
 # UI
 RUN jenkins-plugin-cli --plugins simple-theme-plugin # Customize appearance with custom CSS and JavaScript, replace Favicon
 # Cloud: AWS, Elastic Container Services
-RUN jenkins-plugin-cli --plugins aws-credentials
-RUN jenkins-plugin-cli --plugins aws-bucket-credentials
-RUN jenkins-plugin-cli --plugins amazon-ecs
+# RUN jenkins-plugin-cli --plugins aws-credentials
+# RUN jenkins-plugin-cli --plugins aws-bucket-credentials
+# RUN jenkins-plugin-cli --plugins amazon-ecs
 # Docker
 RUN jenkins-plugin-cli --plugins docker-plugin
 RUN jenkins-plugin-cli --plugins docker-build-publish
 RUN jenkins-plugin-cli --plugins docker-compose-build-step
 RUN jenkins-plugin-cli --plugins docker-workflow                 # Docker Pipeline 
 # Kubernetes
-RUN jenkins-plugin-cli --plugins kubernetes
-RUN jenkins-plugin-cli --plugins kubernetes-cli
+# RUN jenkins-plugin-cli --plugins kubernetes
+# RUN jenkins-plugin-cli --plugins kubernetes-cli
 # Deployment
 RUN jenkins-plugin-cli --plugins ansible
 RUN jenkins-plugin-cli --plugins ansible-tower
