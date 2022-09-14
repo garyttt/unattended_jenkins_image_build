@@ -24,7 +24,7 @@ TAG=$1
 MORE=$2
 OPTS="-f ${IMAGE}_image_build.dockerfile -t $REPO/$IMAGE:$TAG $MORE"
 echo "Please be patience, it takes a while to initialize..."
-docker build $OPTS . | tee docker_build.log
+docker build $OPTS . 2>&1 | tee docker_build.log
 END=`date`
 echo "Start: $START"
 echo "End  : $END"
