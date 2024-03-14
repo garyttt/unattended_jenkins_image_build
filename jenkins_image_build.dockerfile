@@ -80,7 +80,7 @@ RUN jenkins-plugin-cli --plugins oauth-credentials
 # UI
 RUN jenkins-plugin-cli --plugins simple-theme-plugin # Customize appearance with custom CSS and JavaScript, replace Favicon
 # Webhook
-RUN generic-webhook-trigger
+RUN jenkins-plugin-cli --plugins generic-webhook-trigger
 # Cloud: AWS, Elastic Container Services
 # RUN jenkins-plugin-cli --plugins aws-credentials
 # RUN jenkins-plugin-cli --plugins aws-bucket-credentials
@@ -123,9 +123,8 @@ RUN jenkins-plugin-cli --plugins git-server
 USER root
 RUN set -x && \
   apt-get update && \
-  apt-get install -y apt-transport-https ca-certificates python3 python3-pip curl git gnupg2 jq maven tree software-properties-common unzip vim wget zip && \
+  apt-get install -y apt-transport-https ca-certificates python3 python3-pip python3-jinja2 python3-dnspython curl git gnupg2 jq maven tree software-properties-common unzip vim wget zip && \
   rm -rf /var/lib/apt/lists/* && \
-  pip3 install ansible==2.9.10 jinja2 dnspython && \
   apt-get upgrade && \
   mkdir -p /var/tmp/jenkins_config_backup && \
   chown 1000:1000 /var/tmp/jenkins_config_backup && \
