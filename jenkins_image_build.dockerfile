@@ -16,7 +16,6 @@ COPY terraform /usr/local/bin/terraform
 COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
 # Install the same list as the suggested plugsins during default interactive initial login screen
 # Sorted by plugin description
-RUN jenkins-plugin-cli --plugins ant                             # Ant
 RUN jenkins-plugin-cli --plugins build-timeout                   # Build Tumeout
 RUN jenkins-plugin-cli --plugins credentials-binding             # Credentials Binding
 RUN jenkins-plugin-cli --plugins cloudbees-folder                # Folders Plugin
