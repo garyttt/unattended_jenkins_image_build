@@ -1,4 +1,4 @@
-# jenkins_image_build.dockerfile tag: 2.368-jdk11
+# jenkins_image_build.dockerfile tag: 2.449-jdk17
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
 FROM jenkins/jenkins:2.449-jdk17
 WORKDIR /var/jenkins_home
@@ -120,7 +120,7 @@ RUN jenkins-plugin-cli --plugins docker-workflow
 # SSH Server
 # RUN jenkins-plugin-cli --plugins sshd
 #
-# Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, vim, wget, zip, ansible/jinja2/dnspythonn... 
+# Install various tools: python3, pip3, curl, git, jq, maven, tree, unzip, vim, wget, zip, ansible/jinja2/dnspython... 
 # HTTPS SSL Ciphers suppoet: apt-transport-https ca-certificates gnupg2 software-properties-common 
 # Pre-Create folder for periodicbackup plugin to backup ConfigOnly data, please 'enable' it in GUI
 # Group all packages on same command line to reduce image size`
