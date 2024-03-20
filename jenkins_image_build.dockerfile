@@ -71,7 +71,7 @@ RUN jenkins-plugin-cli --plugins view-job-filters
 RUN jenkins-plugin-cli --plugins test-results-analyzer
 RUN jenkins-plugin-cli --plugins bootstraped-multi-test-results-report
 # RUN jenkins-plugin-cli --plugins junit
-RUN jenkins-plugin-cli --plugins perfpublisher
+# RUN jenkins-plugin-cli --plugins perfpublisher
 # Project or RBAC Role Based Access Control Authorization Strategies
 RUN jenkins-plugin-cli --plugins authorize-project
 RUN jenkins-plugin-cli --plugins role-strategy                    # Role-based Authorization Strategy (RBAC) 
