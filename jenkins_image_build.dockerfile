@@ -44,16 +44,22 @@ RUN jenkins-plugin-cli --plugins job-dsl
 RUN jenkins-plugin-cli --plugins maven-plugin
 RUN jenkins-plugin-cli --plugins parameterized-trigger
 RUN jenkins-plugin-cli --plugins pipeline-utility-steps
+RUN jenkins-plugin-cli --plugins pipeline-stage-tags-metadata
 RUN jenkins-plugin-cli --plugins ssh-agent                       # SSH Agent Plugin: provides SSH credentials to builds
 RUN jenkins-plugin-cli --plugins workflow-multibranch
+RUN jenkins-plugin-cli --plugins workflow-scm-step               # Workflow SCM Step
+RUN jenkins-plugin-cli --plugins workflow-support                # Pipeline Supporting APIs
 RUN jenkins-plugin-cli --plugins command-launcher                # Command Agent Launcher
 RUN jenkins-plugin-cli --plugins jaxb                            # JAXB packaging for more transparent Java 9+ compatibility 
 RUN jenkins-plugin-cli --plugins jdk-tool                        # Oracle Java SE Development Kit Installer
-RUN jenkins-plugin-cli --plugins windows-slaves                  # WMI Windows Agent
+# RUN jenkins-plugin-cli --plugins windows-slaves                  # WMI Windows Agent
 RUN jenkins-plugin-cli --plugins github-pullrequest
 # RUN jenkins-plugin-cli --plugins pipeline-aws                    # Pipeline AWS Steps
-RUN jenkins-plugin-cli --plugins pipeline-maven                  # Pipeline Maven
+RUN jenkins-plugin-cli --plugins pipeline-maven                  # Pipeline Maven Integration
 RUN jenkins-plugin-cli --plugins pipeline-npm                    # Pipeline NPM
+RUN jenkins-plugin-cli --plugins pipeline-model-definition       # Pipeline Declarative
+RUN jenkins-plugin-cli --plugins pipeline-model-extensions       # Pipeline Declaratve Extension Points API
+RUN jenkins-plugin-cli --plugins pipeline-model-api              # Pipeline Model API
 # Strict Crumb Issuer Plugin to help with Web Security (CSRF Cross Site Request Forging attacks and External Reverse Proxy)
 RUN jenkins-plugin-cli --plugins strict-crumb-issuer
 # Backup Jenkins Configuration
@@ -68,9 +74,13 @@ RUN jenkins-plugin-cli --plugins bootstraped-multi-test-results-report
 RUN jenkins-plugin-cli --plugins perfpublisher
 # Project or RBAC Role Based Access Control Authorization Strategies
 RUN jenkins-plugin-cli --plugins authorize-project
-RUN jenkins-plugin-cli --plugins role-strategy
+RUN jenkins-plugin-cli --plugins role-strategy                    # Role-based Authorization Strategy (RBAC) 
 # Artifact, Packaging
-RUN jenkins-plugin-cli --plugins nexus-jenkins-plugin
+# RUN jenkins-plugin-cli --plugins nexus-jenkins-plugin
+RUN jenkins-plugin-cli --plugins atlassian-bitbucket-server-integration
+RUN jenkins-plugin-cli --plugins jackson2-api
+RUN jenkins-plugin-cli --plugins json-path-api
+RUN jenkins-plugin-cli --plugins pipeline-maven-api
 # Alerts, Notifications and Publishing
 RUN jenkins-plugin-cli --plugins mailer
 RUN jenkins-plugin-cli --plugins slack
