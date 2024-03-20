@@ -142,7 +142,7 @@ RUN set -x && \
   apt-get upgrade && \
   mkdir -p /var/tmp/jenkins_config_backup && \
   chown 1000:1000 /var/tmp/jenkins_config_backup && \
-  bash /var/tmp/download_install_awscli_v2.sh
+  bash /var/tmp/download_install_awscli_v2.sh || true
 USER jenkins
 # Jenkins init.groovy.d scripts, if you make changes, please also copy the changes to $DOCKER_HOST:$PWD/jenkins_home/init.groovy.d/
 # You may automate these groovy scripts using JCasC Jenkins Configuration As Code plugin - automate the automation server
