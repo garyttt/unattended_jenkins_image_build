@@ -29,6 +29,7 @@ RUN jenkins-plugin-cli --plugins matrix-auth                     # Matrix Author
 RUN jenkins-plugin-cli --plugins antisamy-markup-formatter       # OWSASP Markup Formatter
 RUN jenkins-plugin-cli --plugins pam-auth                        # PAM Authentication Plugin
 RUN jenkins-plugin-cli --plugins workflow-aggregator             # Pipeline
+RUN jenkins-plugin-cli --plugins workflow-cps                    # Pipeline: Groovy
 RUN jenkins-plugin-cli --plugins pipeline-github-lib             # Pipeline: Github Groovy Libraries
 RUN jenkins-plugin-cli --plugins workflow-durable-task-step      # Pipeline: Node and Processes
 RUN jenkins-plugin-cli --plugins pipeline-stage-view             # Pipeline: Stage View Plugin
