@@ -5,12 +5,12 @@ WORKDIR /var/jenkins_home
 # Prior to running docker build, run the ONE-TIME generate_self_signed_jks.sh manually to generate the selfsigned.jks
 # Un-comment the next 3 lines to enable HTTPS, do not set httpPort to -1 just in case we also need HTTP
 COPY selfsigned.jks /var/jenkins_home
-ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=8080 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
+ENV JENKINS_OPTS="--prefix=/jenkins --httpPort=8080 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
 EXPOSE 8083
 # Define fisrt admin user/pass
-ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false -Xmx4g"
-ENV JENKINS_FIRST_ADMIN_USER admin
-ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false -Xmx4g"
+ENV JENKINS_FIRST_ADMIN_USER=admin
+ENV JENKINS_FIRST_ADMIN_PASS=1amKohsuke!
 # Docker build customization: for examples you may copy terraform (>1.0) and script for awscli v2 download/install, un-comment the COPY lines if needed
 COPY terraform /usr/local/bin/terraform
 COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
