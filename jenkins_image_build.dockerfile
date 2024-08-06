@@ -8,7 +8,7 @@ COPY selfsigned.jks /var/jenkins_home
 ENV JENKINS_OPTS "--prefix=/jenkins --httpPort=8080 --httpsPort=8083 --httpsKeyStore=/var/jenkins_home/selfsigned.jks --httpsKeyStorePassword=secret"
 EXPOSE 8083
 # Define fisrt admin user/pass
-ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false"
+ENV JAVA_OPTS "-Djenkins.install.runSetupWizard=false -Xmx4g"
 ENV JENKINS_FIRST_ADMIN_USER admin
 ENV JENKINS_FIRST_ADMIN_PASS 1amKohsuke!
 # Docker build customization: for examples you may copy terraform (>1.0) and script for awscli v2 download/install, un-comment the COPY lines if needed
