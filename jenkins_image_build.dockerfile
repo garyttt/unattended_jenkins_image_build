@@ -1,6 +1,6 @@
-# jenkins_image_build.dockerfile tag: 2.470-jdk17
+# jenkins_image_build.dockerfile tag: 2.471-jdk17
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
-FROM jenkins/jenkins:2.470-jdk17
+FROM jenkins/jenkins:2.471-jdk17
 WORKDIR /var/jenkins_home
 # Prior to running docker build, run the ONE-TIME generate_self_signed_jks.sh manually to generate the selfsigned.jks
 # Un-comment the next 3 lines to enable HTTPS, do not set httpPort to -1 just in case we also need HTTP
