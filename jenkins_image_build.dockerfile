@@ -70,7 +70,7 @@ RUN jenkins-plugin-cli --plugins monitoring
 RUN jenkins-plugin-cli --plugins metrics
 RUN jenkins-plugin-cli --plugins view-job-filters
 RUN jenkins-plugin-cli --plugins test-results-analyzer
-RUN jenkins-plugin-cli --plugins bootstraped-multi-test-results-report
+# RUN jenkins-plugin-cli --plugins bootstraped-multi-test-results-report
 # RUN jenkins-plugin-cli --plugins junit
 # RUN jenkins-plugin-cli --plugins perfpublisher
 # Project or RBAC Role Based Access Control Authorization Strategies
