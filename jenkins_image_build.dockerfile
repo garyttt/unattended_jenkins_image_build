@@ -64,7 +64,7 @@ RUN jenkins-plugin-cli --plugins pipeline-model-api              # Pipeline Mode
 # Strict Crumb Issuer Plugin to help with Web Security (CSRF Cross Site Request Forging attacks and External Reverse Proxy)
 RUN jenkins-plugin-cli --plugins strict-crumb-issuer
 # Backup Jenkins Configuration
-RUN jenkins-plugin-cli --plugins periodicbackup
+RUN jenkins-plugin-cli --plugins thinBackup
 # Java Memory Monitoring (JavaMelody), Metrics, View-Job-Filters, Test-Results-Analyzer, Multi-Test-Results-Report, Performance
 RUN jenkins-plugin-cli --plugins monitoring
 RUN jenkins-plugin-cli --plugins metrics
