@@ -1,4 +1,4 @@
-# jenkins_image_build.dockerfile tag: 2.517-jdk17
+# jenkins_image_build.dockerfile tag: 2.518-jdk17
 # Ref: https://github.com/jenkinsci/docker/blob/master/README.md
 FROM jenkins/jenkins:2.517-jdk17
 WORKDIR /var/jenkins_home
