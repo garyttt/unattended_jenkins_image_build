@@ -11,6 +11,7 @@ EXPOSE 8083
 ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false -Xmx4g"
 ENV JENKINS_FIRST_ADMIN_USER=admin
 ENV JENKINS_FIRST_ADMIN_PASS=1amKohsuke!
+ENV TZ=Asia/Singapore
 # Docker build customization: for examples you may copy terraform (>1.0) and script for awscli v2 download/install, un-comment the COPY lines if needed
 COPY terraform /usr/local/bin/terraform
 COPY download_install_awscli_v2.sh /var/tmp/download_install_awscli_v2.sh
@@ -112,6 +113,10 @@ RUN jenkins-plugin-cli --plugins terraform
 # Active Directory
 RUN jenkins-plugin-cli --plugins active-directory
 # Container/OWASP security scanning
+<<<<<<< HEAD
+=======
+# RUN jenkins-plugin-cli --plugins aqua-security-scanner
+>>>>>>> 918f7f7d8fd03adbe1f74f07add6bdc2ea102b00
 RUN jenkins-plugin-cli --plugins aqua-microscanner
 RUN jenkins-plugin-cli --plugins dependency-check-jenkins-plugin
 # JCasC Jenkins Configuration As Code 
