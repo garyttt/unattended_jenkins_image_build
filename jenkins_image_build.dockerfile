@@ -112,7 +112,7 @@ RUN jenkins-plugin-cli --plugins terraform
 # Active Directory
 RUN jenkins-plugin-cli --plugins active-directory
 # Container/OWASP security scanning
-RUN jenkins-plugin-cli --plugins aqua-security-scanner
+# RUN jenkins-plugin-cli --plugins aqua-security-scanner
 RUN jenkins-plugin-cli --plugins aqua-microscanner
 RUN jenkins-plugin-cli --plugins dependency-check-jenkins-plugin
 # JCasC Jenkins Configuration As Code 
