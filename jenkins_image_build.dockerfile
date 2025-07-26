@@ -112,7 +112,6 @@ RUN jenkins-plugin-cli --plugins terraform
 # Active Directory
 RUN jenkins-plugin-cli --plugins active-directory
 # Container/OWASP security scanning
-RUN jenkins-plugin-cli --plugins aqua-security-scanner
 RUN jenkins-plugin-cli --plugins aqua-microscanner
 RUN jenkins-plugin-cli --plugins dependency-check-jenkins-plugin
 # JCasC Jenkins Configuration As Code 
@@ -138,11 +137,12 @@ RUN jenkins-plugin-cli --plugins docker-workflow
 USER root
 RUN set -x && \
   apt-get update && \
-  apt-get install -y apt-transport-https ca-certificates python3 python3-pip python3-jinja2 python3-dnspython curl git gnupg2 jq maven tree software-properties-common unzip vim wget zip && \
+  apt-get install -y apt-transport-https ca-certificates python3 python3-pip python3-jinja2 python3-dnspython curl git gnupg2 jq maven tree software-properties-common unzip vim wget zip tzdata && \
   rm -rf /var/lib/apt/lists/* && \
   apt-get upgrade && \
   mkdir -p /var/tmp/jenkins_config_backup && \
   chown 1000:1000 /var/tmp/jenkins_config_backup && \
+  ln -sf /usr/share/zoneinfo/Asia/Singapore /etc/localtime && \
   bash /var/tmp/download_install_awscli_v2.sh || true
 USER jenkins
 # Jenkins init.groovy.d scripts, if you make changes, please also copy the changes to $DOCKER_HOST:$PWD/jenkins_home/init.groovy.d/
