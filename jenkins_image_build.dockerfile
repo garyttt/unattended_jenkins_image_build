@@ -122,7 +122,7 @@ RUN jenkins-plugin-cli --plugins configuration-as-code-groovy
 # Pipeline As YAML
 RUN jenkins-plugin-cli --plugins pipeline-as-yaml
 # HashiCorp Vault Pipeline
-RUN jenkins-plugin-cli --plugins hashicorp-vault-pipeline
+# RUN jenkins-plugin-cli --plugins hashicorp-vault-pipeline
 # Git Server / Client
 RUN jenkins-plugin-cli --plugins git-server
 RUN jenkins-plugin-cli --plugins git-client
